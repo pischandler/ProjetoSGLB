@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Adicione esse estilo ao seu CSS */
+#show-game {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+#start-button {
+  display: none; /* Inicialmente oculto */
+}
+
+
+.game {
+  display: none;
+  border-bottom: 1px solid;
+  height: 300px;
+  width: 800px;
+  position: relative;
+  overflow: hidden;
+}
+
+.score {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  font-size: x-large;
+}
+
+.dino {
+
+  position: absolute;
+  bottom: 0;
+  background-image: url(../assets/touro.gif);
+  width: 280px;
+  height: 170px;
+  background-size: 280px;
+  background-repeat: no-repeat;
+}
+
+
+
+.cacto {
+  position: absolute;
+  bottom: 0;
+  background-image: url(../assets/cacto.png);
+  width: 35px;
+  height: 70px;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  animation: cacto 3s linear infinite;
+}
+
+@keyframes cacto {
+  0% {
+    right: -20px;
+  }
+  100% {
+    right: 850px;
+  }
+}
+
+.jump {
+  animation: jump 1.1s linear;
+}
+
+@keyframes jump {
+  0% {
+    bottom: 0;
+  }
+
+  30% {
+    bottom: 80px;
+  }
+
+  50% {
+    bottom: 100px;
+  }
+
+  80% {
+    bottom: 80px;
+  }
+
+  100% {
+    bottom: 0;
+  }
+}
