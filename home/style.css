@@ -3,6 +3,98 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+#visualizarModal {
+  color: #000;
+}
+        .dashboard-section {
+            background-color: #ffffff; /* Fundo branco */
+            color: #333; /* Texto preto suave */
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        .dashboard-section h2 {
+            color: #e74c3c; /* Título em vermelho suave */
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .dashboard-section ul li {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo dos cards */
+        .event-card, .event-card-events, .jogos-card-events, .historico-card-events {
+            flex: 0 0 auto;
+            width: 220px;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: #e4e5e7;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            color: #070606;
+            text-align: center;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        .event-card, .event-card-events {
+          flex: 0 0 auto;
+          width: 220px;
+          padding: 16px;
+          border-radius: 8px;
+          background-color: #b9c9df;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+          color: #ffffff;
+          text-align: center;
+          transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+      }
+
+        .event-card:hover, .event-card-events:hover, .jogos-card-events:hover, .historico-card-events:hover{
+            transform: scale(1.08); /* Aumenta levemente ao passar o mouse */
+            background-color: #a4bde0; /* Muda a cor do fundo */
+        }
+
+        .teamlogo {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+        }
+        /* Outros ajustes */
+        #event-cards-container, #jogos-cards-container, #historico-cards-container {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 18px;
+            box-sizing: border-box;
+        }
+
+/* Centraliza a mensagem e o botão dentro do contêiner de eventos */
+.no-events-message {
+padding-left: 110px;
+}
+
+/* Estilos para o botão */
+.no-events-button {
+  padding-left: 45px;
+  margin-top: 10px; /* Adiciona um espaçamento entre a mensagem e o botão */
+}
+        
+        #aniversariantes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
 /* Adicione esse estilo ao seu CSS */
 #show-game {
   position: fixed;

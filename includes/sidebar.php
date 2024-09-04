@@ -7,6 +7,7 @@ function gerarSidebar($paginaAtual) {
     $isAssociados = $paginaAtual === 'associados';
     $isEventos = $paginaAtual === 'eventos';
     $isJogos = $paginaAtual === 'jogos';
+    $isSair = $paginaAtual === 'sair';
 
     return "
     <div class='offcanvas offcanvas-start sidebar' data-bs-scroll='true' tabindex='-1' id='offcanvasWithBothOptions' aria-labelledby='offcanvasWithBothOptionsLabel'>
@@ -20,6 +21,7 @@ function gerarSidebar($paginaAtual) {
                 <a href='/SGLB/associados' class='list-group-item list-group-item-action " . ($isAssociados ? "highlight-home" : "") . "'><i class='fa-solid fa-users'></i> Associados</a>
                 <a href='/SGLB/eventos' class='list-group-item list-group-item-action " . ($isEventos ? "highlight-home" : "") . "'><i class='fa-solid fa-calendar'></i> Eventos</a>
                 <a href='/SGLB/jogos' class='list-group-item list-group-item-action " . ($isJogos ? "highlight-home" : "") . "'><i class='fa-regular fa-futbol'></i></i> Jogos</a>
+                <a href='../login/' class='list-group-item list-group-item-action" . ($isSair ? "highlight-home" : "") . "'><i  class='fa-solid fa-arrow-right-from-bracket'></i></i> Sair</a>
             </div>
         </div>
     </div>";

@@ -2,12 +2,11 @@
 const tbody = document.querySelector(".listar-associados");
 const cadForm = document.getElementById("cad-associado-form");
 const editForm = document.getElementById("edit-associado-form");
-const msgAlerta = document.getElementById("msgAlerta"); 
+const msgAlerta = document.getElementById("msgAlerta");
 const msgAlertaErroCad = document.getElementById("msgAlertaErroCad");
 const msgAlertaErroEdit = document.getElementById("msgAlertaErroEdit");
 const cadModal = new bootstrap.Modal(document.getElementById("cadAssociadoModal"));
 const searchInput = document.getElementById("searchTerm");
-
 
 
 // Função para formatar CPF
@@ -26,11 +25,11 @@ function formatarCPF(cpf) {
 }
 
 // Adiciona formatação ao CPF nos formulários
-document.getElementById('cpf').addEventListener('input', function(e) {
+document.getElementById('cpf').addEventListener('input', function (e) {
     e.target.value = formatarCPF(e.target.value);
 });
 
-document.getElementById('edit_cpf').addEventListener('input', function(e) {
+document.getElementById('edit_cpf').addEventListener('input', function (e) {
     e.target.value = formatarCPF(e.target.value);
 });
 
@@ -56,7 +55,7 @@ listarAssociados(1);
 // Evento de submissão do formulário de cadastro
 cadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    
+
     document.getElementById("cad-associado-btn").value = "Salvando...";
 
     // Remove a formatação do CPF antes de enviar
@@ -82,6 +81,8 @@ cadForm.addEventListener("submit", async (e) => {
         } else {
             msgAlerta.innerHTML = resposta['msg'];
             cadForm.reset();
+            // Resetando as modalidades selecionadas no formulário de cadastro
+            $('#modalidades').val(null).trigger('change');
             cadModal.hide();
             atualizarListaComPesquisa();
         }
@@ -108,7 +109,7 @@ async function visAssociado(id) {
         document.getElementById("visualizar_cpf").innerHTML = formatarCPF(resposta['dados'].cpf); // Aplica a formatação
         document.getElementById("visualizar_genero").innerHTML = resposta['dados'].genero;
         document.getElementById("visualizar_modalidade").innerHTML = resposta['dados'].modalidades; // Adiciona as modalidades
-        
+
     }
 }
 
@@ -131,12 +132,12 @@ async function editAssociadoDados(id) {
         document.getElementById("edit_genero").value = resposta['dados'].genero;
 
         // Divida as modalidades em um array
-        const modalidades = resposta['dados'].modalidades.split(',').map(id => id.trim());
+        const modalidades_id = resposta['dados'].modalidades_id.split(',').map(id => id.trim());
 
-        console.log(modalidades); // Verifica o array de IDs de modalidades
+        console.log(modalidades_id); // Verifica o array de IDs de modalidades
 
         // Defina os valores selecionados no Select2
-        $('#edit_modalidades').val(modalidades).trigger('change');
+        $('#edit_modalidades').val(modalidades_id).trigger('change');
     }
 }
 
@@ -183,7 +184,7 @@ document.getElementById("confirmar-excluir-btn").addEventListener("click", async
     const id = document.getElementById("confirmar-excluir-btn").getAttribute('data-id');
     const dados = await fetch(`apagar.php?id=${id}`);
     const resposta = await dados.json();
-    
+
     if (resposta['erro']) {
         msgAlerta.innerHTML = resposta['msg'];
     } else {
@@ -192,7 +193,5 @@ document.getElementById("confirmar-excluir-btn").addEventListener("click", async
         const excluirModal = bootstrap.Modal.getInstance(document.getElementById("excluirAssociadoModal"));
         excluirModal.hide();
     }
-    
+
 });
-
-

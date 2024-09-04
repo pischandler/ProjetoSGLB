@@ -19,8 +19,7 @@ function gerarHeader($nomeUsuario)
                 <img src='https://losbravosuepg.com.br/assets/logolb.png' height='100' alt='Los Bravos' title='Página Inicial.'>
             </a>
         </div>
-        <h1 id='header-title'>Bem-vindo, " . htmlspecialchars($nomeUsuario) . "</h1>
-        <a class='btn btn-secondary btn-sm' href='../login/' role='button'>Sair <i class='fa-solid fa-arrow-right-from-bracket'></i></a>
+        <h1 id='header-title'></h1>
     </header>";
 }
 
@@ -32,26 +31,26 @@ $header = gerarHeader($_SESSION['nome']);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+
+  <!-- Custom CSS -->
+  <link href="./css/custom.css" rel="stylesheet">
+
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
-  
+
   <!-- Select2 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
   <!-- Select2 Bootstrap Theme -->
   <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
-  
+
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/5414af6fb5.js" crossorigin="anonymous"></script>
-  
-  <!-- Custom CSS -->
-  <link href="css/custom.css" rel="stylesheet">
-  
+
   <title>Página Inicial</title>
-  
+
   <style>
     .offcanvas-title {
       color: aliceblue;
@@ -64,11 +63,20 @@ $header = gerarHeader($_SESSION['nome']);
       color: #fff;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 20px;
+      justify-content: center;
+      /* Centraliza os itens do header */
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: top 0.3s ease-in-out;
     }
 
     .header-left {
+      position: absolute;
+      /* Posiciona o logo à esquerda */
+      left: 20px;
+      /* Ajusta a distância da margem esquerda */
       display: flex;
       align-items: center;
     }
@@ -79,8 +87,9 @@ $header = gerarHeader($_SESSION['nome']);
 
     #header-title {
       margin: 0;
-      flex-grow: 1;
       text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
     }
 
     .sidebar {
@@ -167,9 +176,18 @@ $header = gerarHeader($_SESSION['nome']);
             <div class="mb-3">
               <label for="modalidades" class="col-form-label">Modalidades:</label>
               <select name="modalidades[]" class="form-control" id="modalidades" multiple>
-                <option value="1">Futebol</option>
-                <option value="2">Vôlei</option>
-                <option value="3">Basquete</option>
+                <option value="1">Atletismo</option>
+                <option value="2">Basquetebol</option>
+                <option value="3">Futebol</option>
+                <option value="4">Futsal</option>
+                <option value="5">Handebol</option>
+                <option value="6">Judô</option>
+                <option value="7">Natação</option>
+                <option value="8">Tênis</option>
+                <option value="9">Tênis de Mesa</option>
+                <option value="10">Voleibol</option>
+                <option value="11">Vôlei de Praia</option>
+                <option value="12">Xadrez</option>
                 <!-- Adicione outras opções conforme necessário -->
               </select>
             </div>
@@ -253,9 +271,18 @@ $header = gerarHeader($_SESSION['nome']);
             <div class="mb-3">
               <label for="edit_modalidades" class="col-form-label">Modalidades:</label>
               <select name="modalidades[]" class="form-control" id="edit_modalidades" multiple>
-                <option value="1">Futebol</option>
-                <option value="2">Vôlei</option>
-                <option value="3">Basquete</option>
+                <option value="1">Atletismo</option>
+                <option value="2">Basquetebol</option>
+                <option value="3">Futebol</option>
+                <option value="4">Futsal</option>
+                <option value="5">Handebol</option>
+                <option value="6">Judô</option>
+                <option value="7">Natação</option>
+                <option value="8">Tênis</option>
+                <option value="9">Tênis de Mesa</option>
+                <option value="10">Voleibol</option>
+                <option value="11">Vôlei de Praia</option>
+                <option value="12">Xadrez</option>
                 <!-- Adicione outras opções conforme necessário -->
               </select>
             </div>
@@ -301,35 +328,91 @@ $header = gerarHeader($_SESSION['nome']);
   <!-- Scripts -->
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <!-- Select2 JS -->
   <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-  
+
   <!-- Custom JS -->
   <script src="js/custom.js"></script>
-  
+
   <script>
-    $(document).ready(function () {
-      // Inicialização do Select2 no modal de cadastro
-      $('#modalidades').select2({
-        theme: 'bootstrap-5',
-        placeholder: "Selecione as modalidades",
-        closeOnSelect: false,
-        width: '100%'
+    
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      var lastScrollTop = 0;
+      var header = document.querySelector(".header");
+
+      window.addEventListener("scroll", function() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+          // Scroll para baixo, esconde o header
+          header.style.top = "-110px"; // Altura do header
+        } else {
+          // Scroll para cima, mostra o header
+          header.style.top = "0";
+        }
+
+        lastScrollTop = scrollTop;
       });
 
-      // Inicialização do Select2 no modal de edição
-      $('#edit_modalidades').select2({
-        theme: 'bootstrap-5',
-        placeholder: "Selecione as modalidades",
-        closeOnSelect: false,
-        width: '100%'
+      var editBtn = document.getElementById('edit-associado-btn');
+      var modal = document.getElementById('editAssociadoModal');
+
+      editBtn.addEventListener('click', function() {
+        modal.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       });
     });
 
+    $(document).ready(function() {
+  function initializeSelect2() {
+    $('#modalidades').select2({
+      theme: 'bootstrap-5',
+      placeholder: "Selecione as modalidades",
+      closeOnSelect: false,
+      width: '100%'
+    });
+
+    $('#edit_modalidades').select2({
+      theme: 'bootstrap-5',
+      placeholder: "Selecione as modalidades",
+      closeOnSelect: false,
+      width: '100%'
+    });
+  }
+
+  // Inicializa o Select2 ao carregar a página
+  initializeSelect2();
+
+  // Atualiza o Select2 quando o modal de cadastro é mostrado
+  $('#cadAssociadoModal').on('shown.bs.modal', function () {
+    $('#modalidades').select2('destroy').select2({
+      theme: 'bootstrap-5',
+      placeholder: "Selecione as modalidades",
+      closeOnSelect: false,
+      width: '100%'
+    });
+  });
+
+  // Atualiza o Select2 quando o modal de edição é mostrado
+  $('#editAssociadoModal').on('shown.bs.modal', function () {
+    $('#edit_modalidades').select2('destroy').select2({
+      theme: 'bootstrap-5',
+      placeholder: "Selecione as modalidades",
+      closeOnSelect: false,
+      width: '100%'
+    });
+  });
+});
+    
+
+    
     // Função para definir o título e a mensagem de boas-vindas
     function setHeaderContent(title) {
       if (title) {

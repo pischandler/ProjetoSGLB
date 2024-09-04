@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
     // Receber o SELETOR da janela modal cadastrar
-    const cadastrarModal = new bootstrap.Modal(document.getElementById("cadastrarModal")); 
+    const cadastrarModal = new bootstrap.Modal(document.getElementById("cadastrarModal"));
 
     // Receber o SELETOR da janela modal visualizar
     const visualizarModal = new bootstrap.Modal(document.getElementById("visualizarModal"));
@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Identificar o clique do usuário sobre o evento
         eventClick: function (info) {
+            console.log("Evento:", info.event); // Para depuração
+            console.log("Modalidade:", info.event.extendedProps.modalidade); // Para depuração
+            console.log("Associados:", info.event.extendedProps.associados);
 
             // Apresentar os detalhes do evento
             document.getElementById("visualizarEvento").style.display = "block";
@@ -63,11 +66,31 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("editarModalLabel").style.display = "none";
 
             // Enviar para a janela modal os dados do evento
-            document.getElementById("visualizar_id").innerText = info.event.id;
-            document.getElementById("visualizar_title").innerText = info.event.title;
+            //document.getElementById("visualizar_id").innerText = info.event.id;
+            document.getElementById("visualizar_title").innerText = info.event.title + " de " + info.event.extendedProps.modalidade;
             document.getElementById("visualizar_adversario").innerText = info.event.extendedProps.adversario;
-            document.getElementById('visualizar_associados').textContent = info.event.extendedProps.associados || 'Nenhum associado relacionado';
-            document.getElementById("visualizar_modalidade").innerText = info.event.extendedProps.modalidade || 'Nenhuma modalidade relacionada';
+
+            var adversarioElement = document.getElementById('visualizar_adversario');
+            var logoAdversarioElement = document.getElementById('visualizar_logo_adversario');
+
+            var adversario = adversarioElement.textContent;
+
+            if (adversario === "Capetada") {
+                logoAdversarioElement.src = "../assets/logo_capetada.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Sharks") {
+                logoAdversarioElement.src = "../assets/logo_sharks.blob"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else {
+                logoAdversarioElement.src = "../assets/logo_default.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            }
+
+            //document.getElementById('visualizar_associados').innerText = info.event.extendedProps.associados || 'Nenhum associado relacionado';
+            //document.getElementById("visualizar_modalidade").innerText = info.event.extendedProps.modalidade
             document.getElementById("visualizar_start").innerText = info.event.start.toLocaleString();
             document.getElementById("visualizar_end").innerText = info.event.end !== null ? info.event.end.toLocaleString() : info.event.start.toLocaleString();
 
@@ -75,9 +98,41 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("edit_id").value = info.event.id;
             document.getElementById("edit_title").value = info.event.title;
             document.getElementById("edit_adversario").value = info.event.extendedProps.adversario;
+            document.getElementById("edit_modalidade").value = info.event.extendedProps.modalidade_id;
             document.getElementById("edit_start").value = converterData(info.event.start);
             document.getElementById("edit_end").value = info.event.end !== null ? converterData(info.event.end) : converterData(info.event.start);
             document.getElementById("edit_color").value = info.event.backgroundColor;
+
+            const btnShowDetails = document.getElementById('btnShowDetails');
+            const eventDetails = document.getElementById('eventDetails');
+            const eventDetailsContent = document.getElementById('eventDetailsContent');
+            var associados = info.event.extendedProps.associados || 'Nenhum associado relacionado';
+
+            if (btnShowDetails) {
+                btnShowDetails.addEventListener('click', function () {
+                    if (eventDetails.style.display === 'none' || eventDetails.style.display === '') {
+                        // Mostrar detalhes
+                        eventDetails.style.display = 'block';
+                        // Adicionar conteúdo adicional aos detalhes
+                        eventDetailsContent.innerText = associados;
+                        btnShowDetails.textContent = "Ocultar convocação";
+                    } else {
+                        // Ocultar detalhes
+                        eventDetails.style.display = 'none';
+                        btnShowDetails.textContent = "Mostrar detalhes";
+                    }
+                });
+            }
+
+            // Divida as modalidades em um array
+            const associados_id = info.event.extendedProps.associados_id ?
+                info.event.extendedProps.associados_id.split(',').map(id => id.trim()) : [];
+
+            console.log(associados_id); // Verifica o array de IDs de associados_id
+
+            // Defina os valores selecionados no Select2
+            $('#edit_associados').val(associados_id).trigger('change');
+
 
             var visualizarModal = new bootstrap.Modal(document.getElementById('visualizarModal'));
             // Abrir a janela modal visualizar
@@ -150,10 +205,10 @@ document.addEventListener('DOMContentLoaded', function () {
             btnCadEvento.value = "Salvando...";
 
             // Receber os dados do formulário
+            // Receber os dados do formulário
             const dadosForm = new FormData(formCadEvento);
-            
 
-            // Chamar o arquivo PHP responsável em salvar o evento
+            // Chamar o arquivo PHP responsável por salvar o evento
             const dados = await fetch("cadastrar_evento.php", {
                 method: "POST",
                 body: dadosForm
@@ -186,13 +241,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     adversario: resposta['adversario'],
                     color: resposta['color'],
                     start: resposta['start'],
-                    end: resposta['end'], // Associado retornado do PHP
-                }
+                    end: resposta['end'],
+                    extendedProps: {
+                        modalidade: resposta['modalidade'],
+                        associados: resposta['associados'],
+                        modalidade_id: resposta['modalidade_id'], // Se disponível
+                        associados_id: resposta['associados_id']  // Se disponível
+                    }
+                };
+
 
                 // Adicionar o evento ao calendário
                 calendar.addEvent(novoEvento);
 
-                // Chamar a função para remover a mensagem após 3 segundo
+                // Chamar a função para remover a mensagem após 3 segundos
                 removerMsg();
 
                 // Fechar a janela modal
@@ -202,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Apresentar no botão o texto Cadastrar
             btnCadEvento.value = "Cadastrar";
 
+
         });
     }
 
@@ -210,25 +273,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             document.getElementById('msg').innerHTML = "";
         }, 3000)
-    }
-    const btnShowDetails = document.getElementById('btnShowDetails');
-    const eventDetails = document.getElementById('eventDetails');
-    const eventDetailsContent = document.getElementById('eventDetailsContent');
-
-    if (btnShowDetails) {
-        btnShowDetails.addEventListener('click', function () {
-            if (eventDetails.style.display === 'none' || eventDetails.style.display === '') {
-                // Mostrar detalhes
-                eventDetails.style.display = 'block';
-                // Adicionar conteúdo adicional aos detalhes
-                eventDetailsContent.textContent = "Aqui você pode adicionar mais detalhes sobre o evento.";
-                btnShowDetails.textContent = "Ocultar detalhes";
-            } else {
-                // Ocultar detalhes
-                eventDetails.style.display = 'none';
-                btnShowDetails.textContent = "Mostrar detalhes";
-            }
-        });
     }
 
     // Receber o SELETOR ocultar detalhes do evento e apresentar o formulário editar evento
@@ -249,6 +293,26 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("editarModalLabel").style.display = "block";
         });
     }
+
+    // Receber o SELETOR ocultar formulário editar evento e apresentar o detalhes do evento
+    const btnViewEvento = document.getElementById("btnViewEvento");
+
+    // Somente acessa o IF quando existir o SELETOR "btnViewEvento"
+    if (btnViewEvento) {
+
+        // Aguardar o usuario clicar no botao editar
+        btnViewEvento.addEventListener("click", () => {
+
+            // Apresentar os detalhes do evento
+            document.getElementById("visualizarEvento").style.display = "block";
+            document.getElementById("visualizarModalLabel").style.display = "block";
+
+            // Ocultar o formulário editar do evento
+            document.getElementById("editarEvento").style.display = "none";
+            document.getElementById("editarModalLabel").style.display = "none";
+        });
+    }
+
 
     // Receber o SELETOR do formulário editar evento
     const formEditEvento = document.getElementById("formEditEvento");
@@ -304,6 +368,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (evento) {
                     evento.setProp('title', resposta['title']);
                     evento.setExtendedProp('adversario', resposta['adversario']);
+                    evento.setExtendedProp('modalidade', resposta['modalidade']);
+                    evento.setExtendedProp('associados', resposta['associados']);
                     evento.setProp('color', resposta['color']);
                     evento.setStart(resposta['start']);
                     evento.setEnd(resposta['end']);
@@ -311,7 +377,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Chamar a função para remover a mensagem após 3 segundo
                 removerMsg();
-
+                calendar.refetchEvents();
+                $('#visualizarModal').modal('hide');
                 // Fechar a janela modal
                 visualizarModal.hide();
             }
@@ -370,7 +437,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         removerMsg();
 
                         // Fechar a janela modal
-                        visualizarModal.hide();
+                        $('#visualizarModal').modal('hide');
+
                     }
                 } catch (error) {
                     console.error("Erro ao apagar o evento:", error); // Log para erro

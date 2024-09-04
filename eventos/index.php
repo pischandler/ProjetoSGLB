@@ -7,7 +7,8 @@ if (empty($_SESSION['id'])) {
 }
 
 // Função para gerar o header com saudação personalizada
-function gerarHeader($nomeUsuario) {
+function gerarHeader($nomeUsuario)
+{
     return "
     <header class='header'>
         <div class='header-left'>
@@ -18,8 +19,8 @@ function gerarHeader($nomeUsuario) {
                 <img src='https://losbravosuepg.com.br/assets/logolb.png' height='100' alt='Los Bravos' title='Página Inicial.'>
             </a>
         </div>
-        <h1 id='header-title'>Bem-vindo, " . $_SESSION['nome'] . "</h1>
-        <a class='btn btn-link btn-sm' href='../login/' role='button'>Sair <i class='fa-solid fa-arrow-right-from-bracket'></i></a>
+        <h1 id='header-title'></h1>
+
     </header>";
 }
 
@@ -28,6 +29,7 @@ $header = gerarHeader($_SESSION['nome']);
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,63 +39,79 @@ $header = gerarHeader($_SESSION['nome']);
     <link href="css/custom.css" rel="stylesheet">
     <title>Página Inicial</title>
     <style>
+.header {
+    width: 100%;
+    height: 110px;
+    background-color: #d30909;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza os itens do header */
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: top 0.3s ease-in-out;
+}
 
-        
-        .header {
-            width: 100%;
-            height: 110px;
-            background-color: #d30909;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-        .header-left img {
-            margin-left: 10px;
-        }
-        #header-title {
-            margin: 0;
-            flex-grow: 1;
-            text-align: center;
-        }
+.header-left {
+    position: absolute; /* Posiciona o logo à esquerda */
+    left: 20px; /* Ajusta a distância da margem esquerda */
+    display: flex;
+    align-items: center;
+}
+
+.header-left img {
+    margin-left: 10px;
+}
+
+#header-title {
+    margin: 0;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
         .sidebar {
             background-color: #d30909;
         }
+
         .list-group-item {
             background-color: transparent;
             color: #c2c2c2;
             border: none;
         }
-        .list-group-item:hover, .list-group-item:focus {
+
+        .list-group-item:hover,
+        .list-group-item:focus {
             background-color: #ee3a34;
             color: #ffffff;
         }
+
         .list-group-item i {
             margin-right: 10px;
         }
+
         #sidebar_button {
-            background-color:  #ee3a34;
-            border-color:  #ee3a34;
+            background-color: #ee3a34;
+            border-color: #ee3a34;
         }
+
         .highlight-home {
             color: #1b98e0 !important;
         }
     </style>
 </head>
+
 <body>
     <!-- Inserir o header gerado pela função -->
     <?php echo $header; ?>
 
     <!-- Inserir o sidebar -->
     <?php include '../includes/sidebar.php'; ?>
-  <div class="row mb-4">
+    <div class="row mb-4">
 
-  </div>
+    </div>
 
     <div class="container">
 
@@ -101,7 +119,7 @@ $header = gerarHeader($_SESSION['nome']);
         <span id="msg"></span>
 
         <div id='calendar'></div>
-        
+
     </div>
 
     <!-- Modal Visualizar -->
@@ -275,24 +293,43 @@ $header = gerarHeader($_SESSION['nome']);
     <script src='js/custom.js'></script>
 
     <script>
-      // Função para definir o título e a mensagem de boas-vindas
-      function setHeaderContent(title, welcomeMessage) {
-          if (title) {
-              document.getElementById('header-title').textContent = title;
-          } else {
-              document.getElementById('header-title').style.display = 'none';
-          }
-          
-          if (welcomeMessage) {
-              document.getElementById('welcome-message').textContent = welcomeMessage + ", ...";
-          } else {
-              document.getElementById('welcome-message').style.display = 'none';
-          }
-      }
+        document.addEventListener("DOMContentLoaded", function() {
+            var lastScrollTop = 0;
+            var header = document.querySelector(".header");
 
-      // Exemplo de uso:
-      setHeaderContent("Eventos Sociais");
-  </script>
+            window.addEventListener("scroll", function() {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop) {
+                    // Scroll para baixo, esconde o header
+                    header.style.top = "-110px"; // Altura do header
+                } else {
+                    // Scroll para cima, mostra o header
+                    header.style.top = "0";
+                }
+
+                lastScrollTop = scrollTop;
+            });
+        });
+
+        // Função para definir o título e a mensagem de boas-vindas
+        function setHeaderContent(title, welcomeMessage) {
+            if (title) {
+                document.getElementById('header-title').textContent = title;
+            } else {
+                document.getElementById('header-title').style.display = 'none';
+            }
+
+            if (welcomeMessage) {
+                document.getElementById('welcome-message').textContent = welcomeMessage + ", ...";
+            } else {
+                document.getElementById('welcome-message').style.display = 'none';
+            }
+        }
+
+        // Exemplo de uso:
+        setHeaderContent("Eventos Sociais");
+    </script>
 
 </body>
 
