@@ -6,10 +6,11 @@ include_once './conexao.php';
 // QUERY para recuperar os eventos, os associados e a modalidade relacionada
 $query_events = "
     SELECT j.id, j.title, j.color, j.start, j.end, j.adversario, 
+           j.placar_casa, j.placar_adversario, -- Adicionar placar
            m.nome AS modalidade,
-                      m.id AS modalidade_id,
+           m.id AS modalidade_id,
            GROUP_CONCAT(a.nome ORDER BY a.nome ASC SEPARATOR '\n') AS associados,
-                      GROUP_CONCAT(a.id ORDER BY a.id ASC SEPARATOR ',') AS associados_id
+           GROUP_CONCAT(a.id ORDER BY a.id ASC SEPARATOR ',') AS associados_id
     FROM jogos j
     LEFT JOIN associado_jogo aj ON j.id = aj.jogo_id
     LEFT JOIN associados a ON aj.associado_id = a.id
@@ -17,6 +18,7 @@ $query_events = "
     LEFT JOIN modalidade m ON mj.modalidade_id = m.id
     GROUP BY j.id
 ";
+
 
 // Prepara a QUERY
 $result_events = $conn->prepare($query_events);
@@ -43,7 +45,9 @@ while ($row_events = $result_events->fetch(PDO::FETCH_ASSOC)) {
         'modalidade' => $modalidade,
         'modalidade_id' => $modalidade_id,
         'associados' => $associados,
-        'associados_id' => $associados_id // Adicionar este campo ao array
+        'associados_id' => $associados_id,
+        'placar_casa' => $placar_casa,           // Adicionar placar da casa
+        'placar_adversario' => $placar_adversario // Adicionar placar do adversário
     ];
 }
 

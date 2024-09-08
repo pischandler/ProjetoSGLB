@@ -19,14 +19,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const visualizarModalElement = document.getElementById('visualizarModal_jogos');
     const visualizarModal = new bootstrap.Modal(visualizarModalElement);
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString('pt-BR', {
+            timeZone: 'UTC', // Certifique-se de que a data é exibida no UTC
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
+        });
+    }
+
     function createEventCard(event) {
-        const startDate = new Date(event.start).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
-        const endDate = new Date(event.end).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
-    
+        const startDate = formatDate(event.start);
+        const endDate = formatDate(event.end);
+
         let logoSrc = '';
         let displayAdversario = true;
-    
-        switch (event.adversario) { // Assuming 'event.adversario' contains the adversary name
+
+        switch (event.adversario) {
             case "Capetada":
                 logoSrc = "../assets/logo_capetada.png";
                 displayAdversario = false;
@@ -35,36 +46,82 @@ document.addEventListener("DOMContentLoaded", function () {
                 logoSrc = "../assets/logo_sharks.blob";
                 displayAdversario = false;
                 break;
-            // Add more cases as needed
+            case "Capetada":
+                logoSrc = "../assets/logo_capetada.png";
+                displayAdversario = false;
+                break;
+            case "XIX":
+                logoSrc = "../assets/logo_XIX.png";
+                displayAdversario = false;
+                break;
+            case "A.A.A.Z":
+                logoSrc = "../assets/logo_AAAZ.png";
+                displayAdversario = false;
+                break;
+            case "Caoticos":
+                logoSrc = "../assets/logo_caoticos.png";
+                displayAdversario = false;
+                break;
+            case "XV":
+                logoSrc = "../assets/logo_XV.png";
+                displayAdversario = false;
+                break;
+            case "Javas":
+                logoSrc = "../assets/logo_Javas.png";
+                displayAdversario = false;
+                break;
+            case "Coringaco":
+                logoSrc = "../assets/logo_coringaco.png";
+                displayAdversario = false;
+                break;
+            case "Direito":
+                logoSrc = "../assets/logo_direito.png";
+                displayAdversario = false;
+                break;
+            case "Gorilas":
+                logoSrc = "../assets/logo_gorilas.png";
+                displayAdversario = false;
+                break;
+            case "Hornets":
+                logoSrc = "../assets/logo_hornets.png";
+                displayAdversario = false;
+                break;
+            case "Hunters":
+                logoSrc = "../assets/logo_hunters.png";
+                displayAdversario = false;
+                break;
+            case "Troia":
+                logoSrc = "../assets/logo_troia.png";
+                displayAdversario = false;
+                break;
+            case "Soberana":
+                logoSrc = "../assets/logo_soberana.png";
+                displayAdversario = false;
+                break;
             default:
                 logoSrc = '../assets/logo_default.png';
-                displayAdversario = false;
+                displayAdversario = true;
         }
-    
+
         return `
             <div class="jogos-card-events" data-id="${event.id}" style="cursor: pointer;">
                 <h4>${event.title}</h4>
                 <h5>de ${event.modalidade}</h5>
-    
+
                 <div class="d-flex align-items-center justify-content-center">
-                    <!-- Logo da equipe -->
                     <div class="team">
                         <img src="../assets/imagemLosBravos.png" alt="Los Bravos" class="teamlogo" style="width: 80px; height: 80px;">
                     </div>
-    
-                    <!-- X no meio -->
                     <div class="versus d-flex align-items-center mx-3" style="font-size: 30px; font-weight: bold;">
                         <span>X</span>
                     </div>
-    
-                    <!-- Logo do adversário -->
                     <div class="adversario d-flex align-items-center">
                         ${displayAdversario ? `<span>${event.adversario}</span>` : `<img src="${logoSrc}" alt="Logo do adversário" style="height: 80px;">`}
                     </div>
                 </div>
-    
+
                 <div class="event-dates">
-                <div class="row mb-3"></div>
+                    <div class="row mb-3"></div>
                     <div class="start-time">
                         <strong>Início: </strong> ${startDate}
                     </div>
@@ -77,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
 
+    
     function loadEvents() {
         fetch('listar_jogos.php')
             .then(response => response.json())
@@ -95,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
 
-                    // Adiciona o manipulador de eventos ao botão
                     document.getElementById('goToJogosPage').addEventListener('click', function () {
                         window.location.href = '/SGLB/jogos';
                     });
@@ -108,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     document.querySelectorAll('.jogos-card-events').forEach(card => {
                         card.addEventListener('click', function () {
-                            console.log(document.getElementById('visualizar_start_jogos'));
                             const eventId = this.getAttribute('data-id');
                             const eventDetails = events.find(e => e.id === parseInt(eventId));
 
@@ -117,8 +173,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById("visualizar_title_jogos").innerText = eventDetails.title + " de " + eventDetails.modalidade;
                                 document.getElementById("visualizar_adversario_jogos").innerText = eventDetails.adversario;
 
+                                
+
                                 var adversarioElement = document.getElementById('visualizar_adversario_jogos');
                                 var logoAdversarioElement = document.getElementById('visualizar_logo_adversario_jogos');
+
 
                                 var adversario = adversarioElement.textContent;
 
@@ -130,36 +189,89 @@ document.addEventListener("DOMContentLoaded", function () {
                                     logoAdversarioElement.src = "../assets/logo_sharks.blob"; // Caminho da logo da Capetada
                                     logoAdversarioElement.style.display = "block"; // Exibe a imagem
                                     adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Coringaco") {
+                                    logoAdversarioElement.src = "../assets/logo_coringaco.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "XV") {
+                                    logoAdversarioElement.src = "../assets/logo_XV.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "A.A.A.Z") {
+                                    logoAdversarioElement.src = "../assets/logo_AAAZ.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Hunters") {
+                                    logoAdversarioElement.src = "../assets/logo_hunters.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Troia") {
+                                    logoAdversarioElement.src = "../assets/logo_troia.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Direito") {
+                                    logoAdversarioElement.src = "../assets/logo_direito.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Caoticos") {
+                                    logoAdversarioElement.src = "../assets/logo_caoticos.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Javas") {
+                                    logoAdversarioElement.src = "../assets/logo_javas.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Gorilas") {
+                                    logoAdversarioElement.src = "../assets/logo_gorilas.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Hornets") {
+                                    logoAdversarioElement.src = "../assets/logo_hornets.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "XIX") {
+                                    logoAdversarioElement.src = "../assets/logo_XIX.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                    logoAdversarioElement.style.height = "115px"; // Exibe a imagem
+                                    logoAdversarioElement.style.paddingTop = "15px"; // Exibe a imagem
+                                    logoAdversarioElement.style.paddingLeft = "17px"; // Exibe a imagem
+                                } else if (adversario === "A.A.I.J") {
+                                    logoAdversarioElement.src = "../assets/logo_AAAIJ.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Soberana") {
+                                    logoAdversarioElement.src = "../assets/logo_soberana.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
+                                } else if (adversario === "Gorilas") {
+                                    logoAdversarioElement.src = "../assets/logo_gorilas.png"; // Caminho da logo da Capetada
+                                    logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                                    adversarioElement.style.display = "none"; // Oculta o nome
                                 } else {
                                     logoAdversarioElement.src = "../assets/logo_default.png"; // Caminho da logo da Capetada
                                     logoAdversarioElement.style.display = "block"; // Exibe a imagem
                                     adversarioElement.style.display = "none"; // Oculta o nome
                                 }
 
-                                //document.getElementById('visualizar_associados').innerText = eventDetails.extendedProps.associados || 'Nenhum associado relacionado';
-                                //document.getElementById("visualizar_modalidade").innerText = eventDetails.extendedProps.modalidade
-
-                                document.getElementById('visualizar_start_jogos').innerText = new Date(eventDetails.start).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
-                                document.getElementById('visualizar_end_jogos').innerText = new Date(eventDetails.end).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+                                document.getElementById('visualizar_start_jogos').innerText = formatDate(eventDetails.start);
+                                document.getElementById('visualizar_end_jogos').innerText = formatDate(eventDetails.end);
 
                                 const btnEditEvento = document.getElementById('btnViewEditEvento_jogos');
                                 btnEditEvento.style.display = 'block';
 
                                 visualizarModal.show();
 
-                                // Resetar modal ao fechar
                                 visualizarModalElement.addEventListener('hidden.bs.modal', function () {
                                     document.querySelector('#modalBody_jogos').style.display = 'block';
                                     document.getElementById('editarEvento_jogos').style.display = 'none';
-                                    document.querySelector('#modalDialog_jogos').style.maxWidth = ''; // Reseta o tamanho do modal
+                                    document.querySelector('#modalDialog_jogos').style.maxWidth = '';
                                 });
 
                                 btnEditEvento.addEventListener('click', function () {
                                     const adjustTimeForModal = (time) => {
                                         const date = new Date(time);
-                                        const userTimezoneOffset = date.getTimezoneOffset() * 60000;
-                                        const adjustedDate = new Date(date.getTime() - userTimezoneOffset);
-                                        return adjustedDate.toISOString().slice(0, 16); // Retorna no formato YYYY-MM-DDTHH:MM
+                                        return date.toISOString().slice(0, 16);
                                     };
 
                                     document.getElementById('editarEvento_jogos').style.display = 'block';
@@ -171,31 +283,21 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById('edit_end_jogos').value = adjustTimeForModal(eventDetails.end);
                                     document.getElementById('edit_color_jogos').value = eventDetails.color;
 
-                                    // Divida as modalidades em um array
-                                    const modalidade_id = eventDetails.modalidade_id
+                                    const modalidade_id = eventDetails.modalidade_id;
                                     const associados_id = eventDetails.associados_id ?
                                         eventDetails.associados_id.split(',').map(id => id.trim()) : [];
 
-                                    console.log(associados_id); // Verifica o array de IDs de associados_id
-                                    console.log(modalidade_id); // Verifica o array de IDs de associados_id
-
-                                    // Defina os valores selecionados no Select2
                                     $('#edit_associados_jogos').val(associados_id).trigger('change');
-
-
 
                                     document.querySelector('#modalBody_jogos').style.display = 'none';
 
-                                    // Aumentar o tamanho do modal ao editar
-                                    document.querySelector('#modalContent_jogos').style.padding = '20px'; // Adiciona padding ao conteúdo
+                                    document.querySelector('#modalContent_jogos').style.padding = '20px';
 
                                     document.getElementById('btnViewEvento_jogos').addEventListener('click', function () {
                                         document.querySelector('#modalBody_jogos').style.display = 'block';
                                         document.getElementById('editarEvento_jogos').style.display = 'none';
-                                        //width: 100px;
-                                        // Resetar o tamanho do modal
-                                        document.querySelector('#modalDialog_jogos').style.maxWidth = ''; // Reseta o tamanho do modal
-                                        document.querySelector('#modalContent_jogos').style.padding = ''; // Reseta o padding
+                                        document.querySelector('#modalDialog_jogos').style.maxWidth = '';
+                                        document.querySelector('#modalContent_jogos').style.padding = '';
                                     });
 
                                     document.getElementById('formEditEvento_jogos').addEventListener('submit', function (e) {
@@ -212,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 if (data.status) {
                                                     alert(data.msg);
                                                     visualizarModal.hide();
-                                                    loadEvents();  // Recarregar os eventos para refletir as mudanças
+                                                    loadEvents();
                                                 } else {
                                                     alert(data.msg);
                                                 }
@@ -231,11 +333,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Receber o SELETOR apagar evento
     const btnApagarEvento = document.getElementById("btnApagarEvento_jogos");
 
     if (btnApagarEvento) {
-
         btnApagarEvento.addEventListener("click", async () => {
             const confirmacao = window.confirm("Tem certeza de que deseja apagar este evento?");
 
@@ -257,7 +357,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             msg.innerHTML = `<div class="alert alert-success" role="alert">${resposta.msg}</div>`;
                         }
 
-                        // Chama loadEvents para atualizar a lista
                         loadEvents();
 
                         const visualizarModal = bootstrap.Modal.getInstance(visualizarModalElement);
@@ -266,7 +365,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }
 
-                    // Chamar a função para remover a mensagem após 3 segundos
                     setTimeout(() => {
                         const msg = document.getElementById('msg');
                         if (msg) {
@@ -280,5 +378,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    loadEvents(); // Inicializa a lista de eventos ao carregar a página
+    loadEvents();
 });

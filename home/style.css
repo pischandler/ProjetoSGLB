@@ -11,16 +11,37 @@
             background-color: #ffffff; /* Fundo branco */
             color: #333; /* Texto preto suave */
             padding: 20px;
+            max-height: 400px; /* Defina o máximo de altura desejada */
+    overflow: hidden;  /* Evita que conteúdo extra role */
             margin-bottom: 10px;
             border-radius: 8px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
         }
+        
+        #inputPlacar {
+          transition: all 0.3s ease;
+      }
+      
+      #btnSalvarPlacar {
+          transition: all 0.3s ease;
+      }
+
+        canvas {
+    width: 100%;
+    height: auto;  /* Ajusta a altura para o gráfico não expandir */
+}
+
 
         .dashboard-section h2 {
             color: #e74c3c; /* Título em vermelho suave */
             font-size: 1.5rem;
             margin-bottom: 15px;
         }
+
+        /* Remove a margem apenas do título Gráfico de Jogos */
+.grafico h2 {
+  margin: -10px;
+}
 
         .dashboard-section ul {
             list-style-type: none;

@@ -11,12 +11,13 @@ try {
     $conn->beginTransaction();
     
     // Atualizar o evento
-    $query_edit_event = "UPDATE jogos SET title=:title, color=:color, start=:start, end=:end, adversario=:adversario WHERE id=:id";
+    $query_edit_event = "UPDATE jogos SET title=:title, color=:color, start=:start, end=:end, adversario=:adversario, genero=:genero WHERE id=:id";
     $edit_event = $conn->prepare($query_edit_event);
     $edit_event->bindParam(':title', $dados['edit_title']);
     $edit_event->bindParam(':color', $dados['edit_color']);
     $edit_event->bindParam(':start', $dados['edit_start']);
     $edit_event->bindParam(':end', $dados['edit_end']);
+    $edit_event->bindParam(':genero', $dados['edit_genero']);
     $edit_event->bindParam(':adversario', $dados['edit_adversario']);
     $edit_event->bindParam(':id', $dados['edit_id']);
     $edit_event->execute();
@@ -50,7 +51,7 @@ try {
     }
 
     // Recuperar os dados atualizados para retorno
-    $query_event_details = "SELECT title, color, start, end, adversario FROM jogos WHERE id=:id";
+    $query_event_details = "SELECT title, color, start, end, adversario, genero FROM jogos WHERE id=:id";
     $get_event_details = $conn->prepare($query_event_details);
     $get_event_details->bindParam(':id', $dados['edit_id']);
     $get_event_details->execute();
@@ -82,6 +83,7 @@ try {
         'color' => $event_details['color'], 
         'start' => $event_details['start'], 
         'end' => $event_details['end'],
+        'genero' => $event_details['genero'],
         'modalidade' => $modalidade,
         'associados' => $associados
     ];

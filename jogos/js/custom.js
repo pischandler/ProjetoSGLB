@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Identificar o clique do usuário sobre o evento
         eventClick: function (info) {
+
+            
             console.log("Evento:", info.event); // Para depuração
             console.log("Modalidade:", info.event.extendedProps.modalidade); // Para depuração
             console.log("Associados:", info.event.extendedProps.associados);
@@ -66,9 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("editarModalLabel").style.display = "none";
 
             // Enviar para a janela modal os dados do evento
-            //document.getElementById("visualizar_id").innerText = info.event.id;
+            document.getElementById("visualizar_id").innerText = info.event.id;
             document.getElementById("visualizar_title").innerText = info.event.title + " de " + info.event.extendedProps.modalidade;
             document.getElementById("visualizar_adversario").innerText = info.event.extendedProps.adversario;
+            document.getElementById("visualizar_genero").innerText = info.event.extendedProps.genero;
 
             var adversarioElement = document.getElementById('visualizar_adversario');
             var logoAdversarioElement = document.getElementById('visualizar_logo_adversario');
@@ -83,46 +86,373 @@ document.addEventListener('DOMContentLoaded', function () {
                 logoAdversarioElement.src = "../assets/logo_sharks.blob"; // Caminho da logo da Capetada
                 logoAdversarioElement.style.display = "block"; // Exibe a imagem
                 adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Coringaco") {
+                logoAdversarioElement.src = "../assets/logo_coringaco.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "XV") {
+                logoAdversarioElement.src = "../assets/logo_XV.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "A.A.A.Z") {
+                logoAdversarioElement.src = "../assets/logo_AAAZ.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Hunters") {
+                logoAdversarioElement.src = "../assets/logo_hunters.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Troia") {
+                logoAdversarioElement.src = "../assets/logo_troia.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Direito") {
+                logoAdversarioElement.src = "../assets/logo_direito.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Caoticos") {
+                logoAdversarioElement.src = "../assets/logo_caoticos.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Javas") {
+                logoAdversarioElement.src = "../assets/logo_javas.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Gorilas") {
+                logoAdversarioElement.src = "../assets/logo_gorilas.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Hornets") {
+                logoAdversarioElement.src = "../assets/logo_hornets.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "XIX") {
+                logoAdversarioElement.src = "../assets/logo_XIX.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+                logoAdversarioElement.style.height = "115px"; // Exibe a imagem
+                logoAdversarioElement.style.paddingTop = "15px"; // Exibe a imagem
+                logoAdversarioElement.style.paddingLeft = "17px"; // Exibe a imagem
+            } else if (adversario === "A.A.I.J") {
+                logoAdversarioElement.src = "../assets/logo_AAAIJ.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
+            } else if (adversario === "Soberana") {
+                logoAdversarioElement.src = "../assets/logo_soberana.png"; // Caminho da logo da Capetada
+                logoAdversarioElement.style.display = "block"; // Exibe a imagem
+                adversarioElement.style.display = "none"; // Oculta o nome
             } else {
                 logoAdversarioElement.src = "../assets/logo_default.png"; // Caminho da logo da Capetada
                 logoAdversarioElement.style.display = "block"; // Exibe a imagem
                 adversarioElement.style.display = "none"; // Oculta o nome
             }
 
+// Função para resetar o modal
+/*function resetModal() {
+    const inputPlacar = document.getElementById("inputPlacar");
+    const btnPlacar = document.getElementById("btnPlacar");
+
+    if (inputPlacar) {
+        inputPlacar.style.display = "none";
+    }
+    if (btnPlacar) {
+        btnPlacar.style.display = "block";
+    }
+
+    // Resetar os valores dos inputs
+    const placarCasaInput = document.getElementById("placar_casa");
+    const placarAdversarioInput = document.getElementById("placar_adversario");
+
+    if (placarCasaInput) placarCasaInput.value = '';
+    if (placarAdversarioInput) placarAdversarioInput.value = '';
+}
+
+// Função para exibir os inputs de placar com valores existentes, se disponíveis
+function exibirInputPlacar() {
+    const inputPlacar = document.getElementById("inputPlacar");
+    const btnPlacar = document.getElementById("btnPlacar");
+
+    if (inputPlacar) {
+        inputPlacar.style.display = "block"; // Exibe os inputs de placar
+    }
+    if (btnPlacar) {
+        btnPlacar.style.display = "none"; // Esconde o botão "Adicionar Placar" ao exibir os inputs
+    }
+
+    // Definir os valores dos inputs se não forem NULL
+    const placarCasaElem = document.getElementById("visualizar_placar_casa");
+    const placarAdversarioElem = document.getElementById("visualizar_placar_adversario");
+
+    const placarCasaInput = document.getElementById("placar_casa");
+    const placarAdversarioInput = document.getElementById("placar_adversario");
+
+    if (placarCasaElem && placarCasaInput) {
+        const placarCasa = placarCasaElem.innerText.trim();
+        placarCasaInput.value = (placarCasa && placarCasa !== "NULL") ? placarCasa : '';
+    }
+    if (placarAdversarioElem && placarAdversarioInput) {
+        const placarAdversario = placarAdversarioElem.innerText.trim();
+        placarAdversarioInput.value = (placarAdversario && placarAdversario !== "NULL") ? placarAdversario : '';
+    }
+}
+
+// Função para salvar o placar
+function salvarPlacar() {
+    const placarCasa = document.getElementById("placar_casa").value;
+    const placarAdversario = document.getElementById("placar_adversario").value;
+    const eventId = document.getElementById("visualizar_id").innerText;
+
+    if (placarCasa !== "" && placarAdversario !== "") {
+        fetch('salvar_placar.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: eventId,
+                    placar_casa: placarCasa,
+                    placar_adversario: placarAdversario
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert("Placar salvo com sucesso!");
+                    document.getElementById("visualizar_placar").innerText = placarCasa + " - " + placarAdversario;
+                    resetModal(); // Esconde os inputs após salvar
+                } else {
+                    alert("Erro ao salvar o placar.");
+                }
+            })
+            .catch(error => console.error("Erro:", error));
+    } else {
+        alert("Por favor, preencha ambos os placares.");
+    }
+}*/
             //document.getElementById('visualizar_associados').innerText = info.event.extendedProps.associados || 'Nenhum associado relacionado';
             //document.getElementById("visualizar_modalidade").innerText = info.event.extendedProps.modalidade
+            
+            if (info.event.extendedProps.placar_casa !== null && info.event.extendedProps.placar_adversario !== null) {
+                document.getElementById("visualizar_placar").innerText = info.event.extendedProps.placar_casa + " - " + info.event.extendedProps.placar_adversario;
+            } else {
+                document.getElementById("visualizar_placar").innerText = ""; // Limpa o campo se o placar não estiver disponível
+            }
+
             document.getElementById("visualizar_start").innerText = info.event.start.toLocaleString();
             document.getElementById("visualizar_end").innerText = info.event.end !== null ? info.event.end.toLocaleString() : info.event.start.toLocaleString();
+
+            const btnPlacar = document.getElementById("btnPlacar");
+            const endDate = info.event.end ? new Date(info.event.end) : new Date(info.event.start);
+            const now = new Date();
+            const placarCasa = info.event.extendedProps.placar_casa;
+            const placarAdversario = info.event.extendedProps.placar_adversario;
+        
+            // Condições para exibir botão de placar
+            if (placarCasa === null && placarAdversario === null && endDate < now) {
+                btnPlacar.style.display = "block";
+                btnPlacar.innerText = "Adicionar Placar";
+            } else if (placarCasa !== null && placarAdversario !== null && endDate < now) {
+                btnPlacar.style.display = "block";
+                btnPlacar.innerText = "Alterar Placar";
+            } else {
+                btnPlacar.style.display = "none";
+            }
+        
+            // Função para exibir os inputs de placar com valores existentes, se disponíveis
+            // Função para exibir os inputs de placar com valores existentes, se disponíveis
+function exibirInputPlacar() {
+    const inputPlacar = document.getElementById("inputPlacar");
+    const btnPlacar = document.getElementById("btnPlacar");
+    const btnSalvarPlacar = document.getElementById("btnSalvarPlacar");
+
+    if (inputPlacar) {
+        inputPlacar.style.display = "block"; // Mostra os inputs
+    }
+    if (btnPlacar) {
+        btnPlacar.style.display = "none"; // Esconde o botão "Adicionar Placar"
+    }
+    if (btnSalvarPlacar) {
+        btnSalvarPlacar.style.display = "inline-block"; // Mostra o botão "Salvar Placar"
+    }
+
+    // Definir os valores dos inputs se disponíveis
+    const placarCasaInput = document.getElementById("placar_casa");
+    const placarAdversarioInput = document.getElementById("placar_adversario");
+
+    if (placarCasaInput) placarCasaInput.value = (info.event.extendedProps.placar_casa !== null) ? info.event.extendedProps.placar_casa : '';
+    if (placarAdversarioInput) placarAdversarioInput.value = (info.event.extendedProps.placar_adversario !== null) ? info.event.extendedProps.placar_adversario : '';
+}
+
+// Função para resetar o modal
+function resetModal() {
+    const inputPlacar = document.getElementById("inputPlacar");
+    const btnPlacar = document.getElementById("btnPlacar");
+    const btnSalvarPlacar = document.getElementById("btnSalvarPlacar");
+    
+    if (inputPlacar) {
+        inputPlacar.style.display = "none"; // Esconde os inputs
+    }
+    if (btnPlacar) {
+        btnPlacar.style.display = "block"; // Mostra o botão "Adicionar Placar"
+    }
+    if (btnSalvarPlacar) {
+        btnSalvarPlacar.style.display = "none"; // Esconde o botão "Salvar Placar"
+    }
+
+    // Resetar os valores dos inputs
+    const placarCasaInput = document.getElementById("placar_casa");
+    const placarAdversarioInput = document.getElementById("placar_adversario");
+
+    if (placarCasaInput) placarCasaInput.value = '';
+    if (placarAdversarioInput) placarAdversarioInput.value = '';
+    //calendar.refetchEvents();
+}
+
+
+
+// Adicionar event listener para o botão "Adicionar Placar"
+document.getElementById("btnPlacar").addEventListener("click", exibirInputPlacar);
+
+// Adicionar event listener para o botão "Cancelar"
+document.getElementById("btnCancelar").addEventListener("click", function() {
+    resetModal(); // Apenas esconde os inputs e exibe o botão "Adicionar Placar"
+});
+
+function salvarPlacar() {
+    const placarCasa = document.getElementById("placar_casa").value;
+    const placarAdversario = document.getElementById("placar_adversario").value;
+    const eventId = document.getElementById("visualizar_id").innerText;
+
+    if (placarCasa !== "" && placarAdversario !== "") {
+        fetch('salvar_placar.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: eventId,
+                    placar_casa: placarCasa,
+                    placar_adversario: placarAdversario
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert("Placar salvo com sucesso!");
+                    document.getElementById("visualizar_placar").innerText = placarCasa + " - " + placarAdversario;
+                    resetModal(); // Esconde os inputs após salvar
+                } else {
+                    alert("Erro ao salvar o placar.");
+                }
+            })
+            .catch(error => console.error("Erro:", error));
+    } else {
+        alert("Por favor, preencha ambos os placares.");
+    }
+}
+            // Adicionar event listener para o botão "Salvar Placar"
+            document.getElementById("btnSalvarPlacar").addEventListener("click", function() {
+                salvarPlacar();
+                calendar.refetchEvents();
+            });
+
+            $('#visualizarModal').on('hidden.bs.modal', function () {
+                resetModal(); // Reseta os inputs sempre que o modal for fechado
+            });
+            
 
             // Enviar os dados do evento para o formulário editar
             document.getElementById("edit_id").value = info.event.id;
             document.getElementById("edit_title").value = info.event.title;
             document.getElementById("edit_adversario").value = info.event.extendedProps.adversario;
+            document.getElementById("edit_genero").value = info.event.extendedProps.genero;
             document.getElementById("edit_modalidade").value = info.event.extendedProps.modalidade_id;
             document.getElementById("edit_start").value = converterData(info.event.start);
             document.getElementById("edit_end").value = info.event.end !== null ? converterData(info.event.end) : converterData(info.event.start);
             document.getElementById("edit_color").value = info.event.backgroundColor;
 
-            const btnShowDetails = document.getElementById('btnShowDetails');
-            const eventDetails = document.getElementById('eventDetails');
-            const eventDetailsContent = document.getElementById('eventDetailsContent');
-            var associados = info.event.extendedProps.associados || 'Nenhum associado relacionado';
 
-            if (btnShowDetails) {
-                btnShowDetails.addEventListener('click', function () {
-                    if (eventDetails.style.display === 'none' || eventDetails.style.display === '') {
+
+            /*const btnPlacar = document.getElementById('btnPlacar');
+            const placarSection = document.getElementById('placarSection');
+            const placarCasa = document.getElementById('placarCasa');
+            const placarAdversario = document.getElementById('placarAdversario');
+            var placar_casa = info.event.extendedProps.placar_casa;
+            var placar_adversario = info.event.extendedProps.placar_adversario;
+
+            console.log(info.event.end); // Log da data de término
+
+            /*if (btnPlacar) {
+                var dataAtual = new Date(); // Data atual
+                var eventoInicio = info.event.start; // Data de início do evento
+                var eventoFim = info.event.end; // Data de fim do evento
+
+                // Verifica se o evento já passou (seja pelo fim ou, se end for null, pela data de início)
+                if ((eventoFim && dataAtual > eventoFim) || (!eventoFim && dataAtual > eventoInicio)) {
+                    btnPlacar.style.display = 'block'; // Exibe o botão se o evento já passou
+
+                    // Define o texto do botão com base nos valores dos placares
+                    if (placar_casa === null || placar_adversario === null) {
+                        btnPlacar.textContent = "Adicionar Placar";
+                    } else {
+                        btnPlacar.textContent = "Alterar Placar";
+                    }
+
+                } else {
+                    btnPlacar.style.display = 'none'; // Oculta o botão se o evento ainda não passou
+                }
+
+                // Remove qualquer listener anterior do botão
+                const novoBtnPlacar = btnPlacar.cloneNode(true);
+                btnPlacar.parentNode.replaceChild(novoBtnPlacar, btnPlacar);
+
+                novoBtnPlacar.addEventListener('click', function () {
+                    if (placarSection.style.display === 'none' || placarSection.style.display === '') {
                         // Mostrar detalhes
-                        eventDetails.style.display = 'block';
+                        placarSection.style.display = 'block';
+
                         // Adicionar conteúdo adicional aos detalhes
-                        eventDetailsContent.innerText = associados;
-                        btnShowDetails.textContent = "Ocultar convocação";
+                        placarCasa.innerText = placar_casa;
+                        placarAdversario.innerText = placar_adversario;
+
+                        novoBtnPlacar.textContent = "Cancelar";
                     } else {
                         // Ocultar detalhes
-                        eventDetails.style.display = 'none';
-                        btnShowDetails.textContent = "Mostrar detalhes";
+                        placarSection.style.display = 'none';
+
+                        // Verifica novamente se o placar já foi adicionado ou se deve adicionar
+                        if (placar_casa === null || placar_adversario === null) {
+                            novoBtnPlacar.textContent = "Adicionar Placar";
+                        } else {
+                            novoBtnPlacar.textContent = "Alterar Placar";
+                        }
                     }
                 });
-            }
+            }*/
+
+
+                const btnShowDetails = document.getElementById('btnShowDetails');
+                const eventDetails = document.getElementById('eventDetails');
+                const eventDetailsContent = document.getElementById('eventDetailsContent');
+                const associados = (info && info.event && info.event.extendedProps && info.event.extendedProps.associados) || 'Nenhum associado relacionado';
+                
+                if (btnShowDetails && eventDetails && eventDetailsContent) {
+                    btnShowDetails.addEventListener('click', function () {
+                        const isHidden = getComputedStyle(eventDetails).display === 'none';
+                
+                        if (isHidden) {
+                            // Mostrar detalhes
+                            eventDetails.style.display = 'block';
+                            eventDetailsContent.innerText = associados;
+                            btnShowDetails.textContent = "Ocultar convocação";
+                        } else {
+                            // Ocultar detalhes
+                            eventDetails.style.display = 'none';
+                            btnShowDetails.textContent = "Mostrar detalhes";
+                        }
+                    });
+                }
+                
 
             // Divida as modalidades em um array
             const associados_id = info.event.extendedProps.associados_id ?
@@ -244,6 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     end: resposta['end'],
                     extendedProps: {
                         modalidade: resposta['modalidade'],
+                        genero: resposta['genero'],
                         associados: resposta['associados'],
                         modalidade_id: resposta['modalidade_id'], // Se disponível
                         associados_id: resposta['associados_id']  // Se disponível
@@ -368,6 +699,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (evento) {
                     evento.setProp('title', resposta['title']);
                     evento.setExtendedProp('adversario', resposta['adversario']);
+                    evento.setExtendedProp('genero', resposta['genero']);
                     evento.setExtendedProp('modalidade', resposta['modalidade']);
                     evento.setExtendedProp('associados', resposta['associados']);
                     evento.setProp('color', resposta['color']);
@@ -402,7 +734,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Verificar se o usuário confirmou
             if (confirmacao) {
-
                 // Receber o id do evento
                 var idEvento = document.getElementById("visualizar_id").textContent;
                 console.log("ID do Evento para Exclusão:", idEvento); // Log para debug

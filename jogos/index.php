@@ -174,6 +174,19 @@ $header = gerarHeader($_SESSION['nome']);
                                     <span id="visualizar_adversario"></span>
                                 </div>
                             </div>
+                            <div id="modalPlacar" class="d-flex align-items-center justify-content-center">
+                                <div id="inputPlacar" style="display: none;">
+                                    <label for="placar_casa">Placar Casa:</label>
+                                    <input type="number" id="placar_casa">
+                                    <br>
+                                    <label for="placar_adversario">Placar Adversário:</label>
+                                    <input type="number" id="placar_adversario">
+                                    <br>
+                                    <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
+                                    <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                                </div>
+                                <button class="btn btn-primary" id="btnPlacar">Adicionar Placar</button>
+                            </div>
 
                             <div class="row mb-3"></div>
                             <dt class="d-flex align-items-center justify-content-center">Início: </dt>
@@ -186,7 +199,8 @@ $header = gerarHeader($_SESSION['nome']);
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_modalidade"></dd>
 
                             <!--<dt class="col-sm-3">Gênero: </dt>-->
-                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_gen"></dd>
+                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_genero"></dd>
+                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_placar"></dd>
 
                             <!--<dt class="col-sm-3">Associados: </dt>
                             <dd class="col-sm-9" id="visualizar_associados"></dd>-->
@@ -230,9 +244,26 @@ $header = gerarHeader($_SESSION['nome']);
                                 <div class="col-sm-10">
                                     <select name="edit_adversario" class="form-control" id="edit_adversario">
                                         <option value="">Selecione</option>
+                                        <option value="A.A.i.J">A.A.i.J</option>
+                                        <option value="A.A.A.Z">A.A.A.Z</option>
+                                        <option value="Barbaros">Bárbaros</option>
+                                        <option value="Caoticos">Caóticos</option>
                                         <option value="Capetada">Capetada</option>
-                                        <option value="XV">XV</option>
+                                        <option value="Coringaco">Coringaço</option>
+                                        <option value="Corvos">Corvos</option>
+                                        <option value="Direito">Direito UEPG</option>
+                                        <option value="Gorilas">Gorilas</option>
+                                        <option value="Hornets">Hornets</option>
+                                        <option value="Hunters">Hunters</option>
+                                        <option value="Javas">Javas</option>
+                                        <option value="Medicina">Medicina UEPG</option>
                                         <option value="Sharks">Sharks</option>
+                                        <option value="Soberana">Soberana</option>
+                                        <option value="Troia">Tróia</option>
+                                        <option value="VI">VI de Novembro</option>
+                                        <option value="XIX">XIX de Setembro</option>
+                                        <option value="XV">XV de Outubro</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -269,6 +300,18 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="edit_genero" class="col-sm-2 col-form-label">Gênero</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_genero" class="form-control" id="edit_genero">
+                                        <option value="">Selecione</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Feminino">Feminino</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Adicionar Modalidade -->
                             <div class="row mb-3">
                                 <label for="edit_modalidade" class="col-sm-2 col-form-label">Modalidade</label>
@@ -290,6 +333,12 @@ $header = gerarHeader($_SESSION['nome']);
                                         <!-- Adicione mais modalidades conforme necessário -->
                                     </select>
                                 </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="filtrar_por_modalidade">
+                                <label class="form-check-label" for="filtrar_por_modalidade">
+                                    Filtrar por modalidade
+                                </label>
                             </div>
 
                             <!-- Adicionar Seleção de Associados -->
@@ -357,9 +406,25 @@ $header = gerarHeader($_SESSION['nome']);
                                     <!-- Select adversário -->
                                     <select name="cad_adversario" class="form-control" id="cad_adversario" style="margin-left: 10px;">
                                         <option value="">Selecione</option>
+                                        <option value="A.A.i.J" data-logo="../assets/logo_AAIJ.png">A.A.i.J</option>
+                                        <option value="A.A.A.Z" data-logo="../assets/logo_AAAZ.png">A.A.A.Z</option>
+                                        <option value="Barbaros" data-logo="">Bárbaros</option>
+                                        <option value="Caoticos" data-logo="../assets/logo_caoticos.png">Caóticos</option>
                                         <option value="Capetada" data-logo="../assets/logo_capetada.png">Capetada</option>
-                                        <option value="XV">XV</option>
+                                        <option value="Coringaco" data-logo="../assets/logo_coringaco.png">Coringaço</option>
+                                        <option value="Corvos" data-logo="">Corvos</option>
+                                        <option value="Direito" data-logo="../assets/logo_direito.png">Direito UEPG</option>
+                                        <option value="Gorilas" data-logo="../assets/logo_gorilas.png">Gorilas</option>
+                                        <option value="Hornets" data-logo="../assets/logo_hornets.png">Hornets</option>
+                                        <option value="Hunters" data-logo="../assets/logo_hunters.png">Hunters</option>
+                                        <option value="Javas" data-logo="../assets/logo_javas.png">Javas</option>
+                                        <option value="Medicina" data-logo="">Medicina UEPG</option>
                                         <option value="Sharks" data-logo="../assets/logo_sharks.blob">Sharks</option>
+                                        <option value="Soberana" data-logo="../assets/logo_soberana.png">Soberana</option>
+                                        <option value="Troia" data-logo="../assets/logo_troia.png">Tróia</option>
+                                        <option value="VI" data-logo="">VI de Novembro</option>
+                                        <option value="XIX" data-logo="../assets/logo_XIX.png">XIX de Setembro</option>
+                                        <option value="XV" data-logo="../assets/logo_XV.png">XV de Outubro</option>
                                     </select>
                                 </div>
                             </div>
@@ -400,12 +465,13 @@ $header = gerarHeader($_SESSION['nome']);
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="cad_gen" class="col-sm-2 col-form-label">Gênero</label>
+                            <label for="cad_genero" class="col-sm-2 col-form-label">Gênero</label>
                             <div class="col-sm-10">
-                                <select name="cad_gen" class="form-control" id="cad_gen">
+                                <select name="cad_genero" class="form-control" id="cad_genero">
                                     <option value="">Selecione</option>
-                                    <option value="Homem">Homem</option>
-                                    <option value="Mulher">Mulher</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Outro">Outro</option>
                                 </select>
                             </div>
                         </div>
@@ -432,8 +498,15 @@ $header = gerarHeader($_SESSION['nome']);
                             </div>
                         </div>
 
+
                         <!-- Div Oculta para Seleção de Associados -->
                         <div id="associadosDiv" style="display: none;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="cad_filtrar_por_modalidade">
+                                <label class="form-check-label" for="cad_filtrar_por_modalidade">
+                                    Filtrar por modalidade
+                                </label>
+                            </div>
                             <div class="row mb-3">
                                 <label for="cad_associados" class="col-sm-2 col-form-label">Associados</label>
                                 <div class="col-sm-10">
@@ -472,6 +545,19 @@ $header = gerarHeader($_SESSION['nome']);
     <script src='js/custom.js'></script>
 
     <script>
+        // Função para resetar o modal
+
+        // Função para exibir os inputs de placar com valores existentes, se disponíveis
+
+        // Função para salvar o placar
+
+
+
+
+
+        // Supondo que você tenha uma forma de chamar openModal com os dados do evento
+        // Exemplo:
+        // openModal({ placar_casa: 4, placar_adversario: 3 });
         document.getElementById('cad_adversario').addEventListener('change', function() {
             // Obtém a imagem correspondente ao adversário selecionado
             var logoSrc = this.options[this.selectedIndex].getAttribute('data-logo');
@@ -516,26 +602,27 @@ $header = gerarHeader($_SESSION['nome']);
             document.getElementById('adversario_logo').src = logoUrl ? logoUrl : '../assets/logo_default.png';
         });
 
-        $(document).ready(function() {
-            // Inicialização do Select2 no modal de cadastro
-            $('#cad_associados').select2({
-                theme: 'bootstrap-5',
-                placeholder: "Selecione os associados",
-                closeOnSelect: false,
-                width: '100%'
-            });
-
-            $('#edit_associados').select2({
-                theme: 'bootstrap-5',
-                placeholder: "Selecione os associados",
-                closeOnSelect: false,
-                width: '100%'
-            });
-
-            // Inicialização do Select2 no modal de edição
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
+
+            $(document).ready(function() {
+                // Inicialização do Select2 no modal de cadastro
+                $('#cad_associados').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: "Selecione os associados",
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+
+                $('#edit_associados').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: "Selecione os associados",
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+
+                // Inicialização do Select2 no modal de edição
+            });
+
             const adversarioLogo = document.getElementById('adversario_logo');
             const defaultLogo = '../assets/logo_default.png';
 
@@ -562,50 +649,167 @@ $header = gerarHeader($_SESSION['nome']);
                 lastScrollTop = scrollTop;
             });
 
-            fetch('get_associados.php')
-                .then(response => response.json())
-                .then(data => {
-                    const select = document.getElementById('cad_associados');
-                    select.innerHTML = ''; // Limpar as opções existentes
-                    data.forEach(associado => {
-                        const option = document.createElement('option');
-                        option.value = associado.id;
-                        option.textContent = associado.nome;
-                        select.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Erro ao buscar associados:', error));
-            fetch('get_associados.php')
-                .then(response => response.json())
-                .then(data => {
-                    const select = document.getElementById('edit_associados');
-                    select.innerHTML = ''; // Limpar as opções existentes
-                    data.forEach(associado => {
-                        const option = document.createElement('option');
-                        option.value = associado.id;
-                        option.textContent = associado.nome;
-                        select.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Erro ao buscar associados:', error));
+            // Função para atualizar a lista de associados no cadastro
+            // Função para atualizar a lista de associados no cadastro
+            function atualizarAssociados() {
+                const genero = document.getElementById('cad_genero').value;
+                const modalidade = document.getElementById('cad_modalidade').value;
+                const filtrarPorModalidade = document.getElementById('cad_filtrar_por_modalidade').checked; // ID corrigido para "cad_filtrar_por_modalidade"
+                const select = document.getElementById('cad_associados');
+
+                console.log('Gênero:', genero);
+                console.log('Modalidade:', modalidade);
+                console.log('Filtrar por Modalidade:', filtrarPorModalidade);
+
+                // Capturar os IDs e nomes dos associados que já estão selecionados
+                const selecionados = Array.from(select.options)
+                    .filter(option => option.selected)
+                    .map(option => ({
+                        id: option.value,
+                        nome: option.textContent
+                    }));
+
+                console.log('Selecionados:', selecionados);
+
+                // Construir a URL da requisição dependendo se o filtro de modalidade está ativado
+                let url = `get_associados.php?genero=${encodeURIComponent(genero)}`;
+                if (filtrarPorModalidade) {
+                    url += `&modalidade=${encodeURIComponent(modalidade)}`;
+                }
+
+                console.log('URL:', url);
+
+                // Enviar requisição ao PHP com os parâmetros de gênero e modalidade (se aplicável)
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Dados recebidos:', data);
+
+                        select.innerHTML = ''; // Limpar as opções existentes
+
+                        // Manter as opções previamente selecionadas
+                        selecionados.forEach(associado => {
+                            const option = document.createElement('option');
+                            option.value = associado.id;
+                            option.textContent = associado.nome;
+                            option.selected = true;
+                            select.appendChild(option);
+                        });
+
+                        // Adicionar as novas opções de associados filtrados
+                        data.forEach(associado => {
+                            if (!selecionados.some(sel => sel.id === associado.id)) {
+                                const option = document.createElement('option');
+                                option.value = associado.id;
+                                option.textContent = associado.nome;
+                                select.appendChild(option);
+                            }
+                        });
+
+                        // Reinicializar o Select2 para refletir as mudanças
+                        $('#cad_associados').select2({
+                            theme: 'bootstrap-5',
+                            placeholder: "Selecione os associados",
+                            closeOnSelect: false,
+                            width: '100%'
+                        });
+                    })
+                    .catch(error => console.error('Erro ao buscar associados:', error));
+            }
+
+            // Adicionar eventos para chamar atualizarAssociados quando o gênero, modalidade ou checkbox mudar
+            document.getElementById('cad_genero').addEventListener('change', atualizarAssociados);
+            document.getElementById('cad_modalidade').addEventListener('change', atualizarAssociados);
+            document.getElementById('cad_filtrar_por_modalidade').addEventListener('change', atualizarAssociados); // ID corrigido para "cad_filtrar_por_modalidade"
+
+
+            // Função para atualizar a lista de associados no modal de edição
+            function atualizarAssociadosEdicao() {
+                const genero = document.getElementById('edit_genero').value;
+                const modalidade = document.getElementById('edit_modalidade').value;
+                const filtrarPorModalidade = document.getElementById('filtrar_por_modalidade').checked; // Verificar se o checkbox está marcado
+                const select = document.getElementById('edit_associados');
+
+                // Capturar os IDs e nomes dos associados que já estão selecionados
+                const selecionados = Array.from(select.options)
+                    .filter(option => option.selected)
+                    .map(option => ({
+                        id: option.value,
+                        nome: option.textContent
+                    }));
+
+                // Construir a URL da requisição dependendo se o filtro de modalidade está ativado
+                let url = `get_associados.php?genero=${encodeURIComponent(genero)}`;
+                if (filtrarPorModalidade) {
+                    url += `&modalidade=${encodeURIComponent(modalidade)}`;
+                }
+
+                // Enviar requisição ao PHP com os parâmetros de gênero e modalidade (se aplicável)
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        select.innerHTML = ''; // Limpar as opções existentes
+
+                        // Manter as opções previamente selecionadas
+                        selecionados.forEach(associado => {
+                            const option = document.createElement('option');
+                            option.value = associado.id;
+                            option.textContent = associado.nome; // Manter o nome original
+                            option.selected = true;
+                            select.appendChild(option);
+                        });
+
+                        // Adicionar as novas opções de associados filtrados
+                        data.forEach(associado => {
+                            if (!selecionados.some(sel => sel.id === associado.id)) {
+                                const option = document.createElement('option');
+                                option.value = associado.id;
+                                option.textContent = associado.nome;
+                                select.appendChild(option);
+                            }
+                        });
+
+                        // Reinicializar o Select2 para refletir as mudanças
+                        $('#edit_associados').select2({
+                            theme: 'bootstrap-5',
+                            placeholder: "Selecione os associados",
+                            closeOnSelect: false,
+                            width: '100%'
+                        });
+                    })
+                    .catch(error => console.error('Erro ao buscar associados:', error));
+            }
+
+            // Adicionar eventos para chamar atualizarAssociados quando o gênero, modalidade ou checkbox mudar
+
+            document.getElementById('edit_genero').addEventListener('change', atualizarAssociadosEdicao);
+            document.getElementById('edit_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+            document.getElementById('filtrar_por_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+
+            // Forçar a atualização dos associados ao abrir o modal de edição
+            document.getElementById('editModal').addEventListener('show.bs.modal', function() {
+                atualizarAssociadosEdicao();
+            });
+
+
+            // Função para definir o título e a mensagem de boas-vindas
+            function setHeaderContent(title, welcomeMessage) {
+                if (title) {
+                    document.getElementById('header-title').textContent = title;
+                } else {
+                    document.getElementById('header-title').style.display = 'none';
+                }
+
+                if (welcomeMessage) {
+                    document.getElementById('welcome-message').textContent = welcomeMessage + ", ...";
+                } else {
+                    document.getElementById('welcome-message').style.display = 'none';
+                }
+            }
+
+            // Exemplo de uso:
+            setHeaderContent("Calendário de Jogos");
         });
-        // Função para definir o título e a mensagem de boas-vindas
-        function setHeaderContent(title, welcomeMessage) {
-            if (title) {
-                document.getElementById('header-title').textContent = title;
-            } else {
-                document.getElementById('header-title').style.display = 'none';
-            }
-
-            if (welcomeMessage) {
-                document.getElementById('welcome-message').textContent = welcomeMessage + ", ...";
-            } else {
-                document.getElementById('welcome-message').style.display = 'none';
-            }
-        }
-
-        // Exemplo de uso:
-        setHeaderContent("Calendário de Jogos");
     </script>
 
 </body>

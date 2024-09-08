@@ -12,7 +12,7 @@ $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
 try {
     // Criar a QUERY para cadastrar evento no banco de dados
-    $query_cad_event = "INSERT INTO jogos (title, color, start, end, adversario) VALUES (:title, :color, :start, :end, :adversario)";
+    $query_cad_event = "INSERT INTO jogos (title, color, start, end, adversario, placar_casa, placar_adversario, genero) VALUES (:title, :color, :start, :end, :adversario, :placar_casa, :placar_adversario, :genero)";
     $cad_event = $conn->prepare($query_cad_event);
 
     // Substituir o link pelo valor
@@ -20,7 +20,10 @@ try {
     $cad_event->bindParam(':color', $dados['cad_color']);
     $cad_event->bindParam(':start', $dados['cad_start']);
     $cad_event->bindParam(':end', $dados['cad_end']);
+    $cad_event->bindParam(':genero', $dados['cad_genero']);
     $cad_event->bindParam(':adversario', $dados['cad_adversario']);
+    $cad_event->bindParam(':placar_casa', $dados['cad_placar_casa']);
+    $cad_event->bindParam(':placar_adversario', $dados['cad_placar_adversario']);
 
     // Executar a query
     if ($cad_event->execute()) {
@@ -72,6 +75,9 @@ try {
             'color' => $dados['cad_color'],
             'start' => $dados['cad_start'],
             'end' => $dados['cad_end'],
+            'genero' => $dados['cad_genero'],
+            'placar_adversario' => $dados['cad_placar_adversario'],
+            'placar_adversario' => $dados['cad_placar_adversario'],
             'modalidade' => $modalidade, // Inclui o nome da modalidade
             'modalidade_id' => strval($dados['cad_modalidade']), // Inclui o ID da modalidade como string
             'associados' => implode("\n", $associados), // Inclui o nome dos associados com quebras de linha

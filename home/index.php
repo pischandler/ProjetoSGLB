@@ -129,8 +129,9 @@ $header = gerarHeader($_SESSION['nome']);
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-3">
-                <div class="dashboard-section">
-                    grafico
+                <div class="dashboard-section grafico">
+                    <h2>Gráfico de Jogos</h2>
+                    <canvas id="victoryDonutChart"></canvas>
                 </div>
             </div>
             <div class="col-md-9">
@@ -272,6 +273,7 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
+
                             <div class="row mb-3"></div>
                             <dt class="d-flex align-items-center justify-content-center">Início: </dt>
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_start_jogos"></dd>
@@ -296,110 +298,126 @@ $header = gerarHeader($_SESSION['nome']);
                         </div>
                     </div>
 
-                <div id="editarEvento_jogos" style="display: none;">
-                <span id="msgEditEvento_jogos"></span>
+                    <div id="editarEvento_jogos" style="display: none;">
+                        <span id="msgEditEvento_jogos"></span>
 
 
-                    <form method="POST" id="formEditEvento_jogos">
+                        <form method="POST" id="formEditEvento_jogos">
 
-                        <input type="hidden" name="edit_id_jogos" id="edit_id_jogos">
+                            <input type="hidden" name="edit_id_jogos" id="edit_id_jogos">
 
-                        <div class="row mb-3">
-                            <label for="edit_title_jogos" class="col-sm-2 col-form-label">Título</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="edit_title_jogos" class="form-control" id="edit_title_jogos" placeholder="Título do evento">
+                            <div class="row mb-3">
+                                <label for="edit_title_jogos" class="col-sm-2 col-form-label">Título</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="edit_title_jogos" class="form-control" id="edit_title_jogos" placeholder="Título do evento">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="edit_adversario_jogos" class="col-sm-2 col-form-label">Adversário</label>
-                            <div class="col-sm-10">
-                                <select name="edit_adversario_jogos" class="form-control" id="edit_adversario_jogos">
-                                    <option value="">Selecione</option>
-                                    <option value="Capetada">Capetada</option>
-                                    <option value="XV">XV</option>
-                                    <option value="Sharks">Sharks</option>
-                                </select>
+                            <div class="row mb-3">
+                                <label for="edit_adversario_jogos" class="col-sm-2 col-form-label">Adversário</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_adversario_jogos" class="form-control" id="edit_adversario_jogos">
+                                        <option value="">Selecione</option>
+                                        <option value="A.A.i.J">A.A.i.J</option>
+                                        <option value="A.A.A.Z">A.A.A.Z</option>
+                                        <option value="Barbaros">Bárbaros</option>
+                                        <option value="Caoticos">Caóticos</option>
+                                        <option value="Capetada">Capetada</option>
+                                        <option value="Coringaco">Coringaço</option>
+                                        <option value="Corvos">Corvos</option>
+                                        <option value="Direito">Direito UEPG</option>
+                                        <option value="Gorilas">Gorilas</option>
+                                        <option value="Hornets">Hornets</option>
+                                        <option value="Hunters">Hunters</option>
+                                        <option value="Javas">Javas</option>
+                                        <option value="Medicina">Medicina UEPG</option>
+                                        <option value="Sharks">Sharks</option>
+                                        <option value="Soberana">Soberana</option>
+                                        <option value="Troia">Tróia</option>
+                                        <option value="VI">VI de Novembro</option>
+                                        <option value="XIX">XIX de Setembro</option>
+                                        <option value="XV">XV de Outubro</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="edit_start_jogos" class="col-sm-2 col-form-label">Início</label>
-                            <div class="col-sm-10">
-                                <input type="datetime-local" name="edit_start_jogos" class="form-control" id="edit_start_jogos">
+                            <div class="row mb-3">
+                                <label for="edit_start_jogos" class="col-sm-2 col-form-label">Início</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="edit_start_jogos" class="form-control" id="edit_start_jogos">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="edit_end_jogos" class="col-sm-2 col-form-label">Fim</label>
-                            <div class="col-sm-10">
-                                <input type="datetime-local" name="edit_end_jogos" class="form-control" id="edit_end_jogos">
+                            <div class="row mb-3">
+                                <label for="edit_end_jogos" class="col-sm-2 col-form-label">Fim</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="edit_end_jogos" class="form-control" id="edit_end_jogos">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="edit_color_jogos" class="col-sm-2 col-form-label">Cor</label>
-                            <div class="col-sm-10">
-                                <select name="edit_color_jogos" class="form-control" id="edit_color_jogos">
-                                    <option value="">Selecione</option>
-                                    <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
-                                    <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
-                                    <option style="color:#FF4500;" value="#FF4500">Laranja</option>
-                                    <option style="color:#8B4513;" value="#8B4513">Marrom</option>
-                                    <option style="color:#1C1C1C;" value="#1C1C1C">Preto</option>
-                                    <option style="color:#436EEE;" value="#436EEE">Royal Blue</option>
-                                    <option style="color:#A020F0;" value="#A020F0">Roxo</option>
-                                    <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
-                                    <option style="color:#228B22;" value="#228B22">Verde</option>
-                                    <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
-                                </select>
+                            <div class="row mb-3">
+                                <label for="edit_color_jogos" class="col-sm-2 col-form-label">Cor</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_color_jogos" class="form-control" id="edit_color_jogos">
+                                        <option value="">Selecione</option>
+                                        <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
+                                        <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
+                                        <option style="color:#FF4500;" value="#FF4500">Laranja</option>
+                                        <option style="color:#8B4513;" value="#8B4513">Marrom</option>
+                                        <option style="color:#1C1C1C;" value="#1C1C1C">Preto</option>
+                                        <option style="color:#436EEE;" value="#436EEE">Royal Blue</option>
+                                        <option style="color:#A020F0;" value="#A020F0">Roxo</option>
+                                        <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
+                                        <option style="color:#228B22;" value="#228B22">Verde</option>
+                                        <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Adicionar Modalidade -->
-                        <div class="row mb-3">
-                            <label for="edit_modalidade_jogos" class="col-sm-2 col-form-label">Modalidade</label>
-                            <div class="col-sm-10">
-                                <select name="edit_modalidade_jogos" class="form-control" id="edit_modalidade_jogos">
-                                    <option value="">Selecione</option>
-                                    <option value="1">Atletismo</option>
-                                    <option value="2">Basquetebol</option>
-                                    <option value="3">Futebol</option>
-                                    <option value="4">Futsal</option>
-                                    <option value="5">Handebol</option>
-                                    <option value="6">Judô</option>
-                                    <option value="7">Natação</option>
-                                    <option value="8">Tênis</option>
-                                    <option value="9">Tênis de Mesa</option>
-                                    <option value="10">Voleibol</option>
-                                    <option value="11">Vôlei de Praia</option>
-                                    <option value="12">Xadrez</option>
-                                    <!-- Adicione mais modalidades conforme necessário -->
-                                </select>
+                            <!-- Adicionar Modalidade -->
+                            <div class="row mb-3">
+                                <label for="edit_modalidade_jogos" class="col-sm-2 col-form-label">Modalidade</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_modalidade_jogos" class="form-control" id="edit_modalidade_jogos">
+                                        <option value="">Selecione</option>
+                                        <option value="1">Atletismo</option>
+                                        <option value="2">Basquetebol</option>
+                                        <option value="3">Futebol</option>
+                                        <option value="4">Futsal</option>
+                                        <option value="5">Handebol</option>
+                                        <option value="6">Judô</option>
+                                        <option value="7">Natação</option>
+                                        <option value="8">Tênis</option>
+                                        <option value="9">Tênis de Mesa</option>
+                                        <option value="10">Voleibol</option>
+                                        <option value="11">Vôlei de Praia</option>
+                                        <option value="12">Xadrez</option>
+                                        <!-- Adicione mais modalidades conforme necessário -->
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Adicionar Seleção de Associados -->
-                        <div class="row mb-3">
-                            <label for="edit_associados_jogos" class="col-sm-2 col-form-label">Associados</label>
-                            <div class="col-sm-10">
-                                <select name="associados[]" class="form-control" id="edit_associados_jogos" multiple>
-                                    <!-- As opções serão preenchidas dinamicamente -->
-                                </select>
+                            <!-- Adicionar Seleção de Associados -->
+                            <div class="row mb-3">
+                                <label for="edit_associados_jogos" class="col-sm-2 col-form-label">Associados</label>
+                                <div class="col-sm-10">
+                                    <select name="associados[]" class="form-control" id="edit_associados_jogos" multiple>
+                                        <!-- As opções serão preenchidas dinamicamente -->
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="button" name="btnViewEvento_jogos" class="btn btn-primary" id="btnViewEvento_jogos">Cancelar</button>
+                            <button type="button" name="btnViewEvento_jogos" class="btn btn-primary" id="btnViewEvento_jogos">Cancelar</button>
 
-                        <button type="submit" name="btnEditEvento_jogos" class="btn btn-warning" id="btnEditEvento_jogos">Salvar</button>
+                            <button type="submit" name="btnEditEvento_jogos" class="btn btn-warning" id="btnEditEvento_jogos">Salvar</button>
 
-                    </form>
+                        </form>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Visualizar -->
+        <!-- Modal Visualizar -->
         <div class="modal fade" id="visualizarModal_historico" style="color: #000;" tabindex="-1" aria-labelledby="visualizarModalLabel_historico" aria-hidden="true">
             <div class="modal-dialog" id="modalDialog_historico">
                 <div class="modal-content" id="modalContent_historico">
@@ -436,6 +454,20 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
+                            <div id="modalPlacar" class="d-flex align-items-center justify-content-center">
+                                <div id="inputPlacar" style="display: none;">
+                                    <label for="placar_casa">Placar Casa:</label>
+                                    <input type="number" id="placar_casa">
+                                    <br>
+                                    <label for="placar_adversario">Placar Adversário:</label>
+                                    <input type="number" id="placar_adversario">
+                                    <br>
+                                    <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
+                                    <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                                </div>
+                                <button class="btn btn-primary" id="btnPlacar">Adicionar Placar</button>
+                            </div>
+
                             <div class="row mb-3"></div>
                             <dt class="d-flex align-items-center justify-content-center">Início: </dt>
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_start_historico"></dd>
@@ -449,6 +481,8 @@ $header = gerarHeader($_SESSION['nome']);
                             <!--<dt class="col-sm-3">Gênero: </dt>-->
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_gen_historico"></dd>
 
+                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_placar"></dd>
+
                             <!--<dt class="col-sm-3">Associados: </dt>
 <dd class="col-sm-9" id="visualizar_associados"></dd>-->
 
@@ -460,112 +494,128 @@ $header = gerarHeader($_SESSION['nome']);
                         </div>
                     </div>
 
-                <div id="editarEvento_historico" style="display: none;">
-                <span id="msgEditEvento_historico"></span>
+                    <div id="editarEvento_historico" style="display: none;">
+                        <span id="msgEditEvento_historico"></span>
 
 
-                    <form method="POST" id="formEditEvento_historico">
+                        <form method="POST" id="formEditEvento_historico">
 
-                        <input type="hidden" name="edit_id_historico" id="edit_id_historico">
+                            <input type="hidden" name="edit_id_historico" id="edit_id_historico">
 
-                        <div class="row mb-3">
-                            <label for="edit_title_historico" class="col-sm-2 col-form-label">Título</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="edit_title_historico" class="form-control" id="edit_title_historico" placeholder="Título do evento">
+                            <div class="row mb-3">
+                                <label for="edit_title_historico" class="col-sm-2 col-form-label">Título</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="edit_title_historico" class="form-control" id="edit_title_historico" placeholder="Título do evento">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="edit_adversario_historico" class="col-sm-2 col-form-label">Adversário</label>
-                            <div class="col-sm-10">
-                                <select name="edit_adversario_historico" class="form-control" id="edit_adversario_historico">
-                                    <option value="">Selecione</option>
-                                    <option value="Capetada">Capetada</option>
-                                    <option value="XV">XV</option>
-                                    <option value="Sharks">Sharks</option>
-                                </select>
+                            <div class="row mb-3">
+                                <label for="edit_adversario_historico" class="col-sm-2 col-form-label">Adversário</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_adversario_historico" class="form-control" id="edit_adversario_historico">
+                                        <option value="">Selecione</option>
+                                        <option value="A.A.i.J">A.A.i.J</option>
+                                        <option value="A.A.A.Z">A.A.A.Z</option>
+                                        <option value="Barbaros">Bárbaros</option>
+                                        <option value="Caoticos">Caóticos</option>
+                                        <option value="Capetada">Capetada</option>
+                                        <option value="Coringaco">Coringaço</option>
+                                        <option value="Corvos">Corvos</option>
+                                        <option value="Direito">Direito UEPG</option>
+                                        <option value="Gorilas">Gorilas</option>
+                                        <option value="Hornets">Hornets</option>
+                                        <option value="Hunters">Hunters</option>
+                                        <option value="Javas">Javas</option>
+                                        <option value="Medicina">Medicina UEPG</option>
+                                        <option value="Sharks">Sharks</option>
+                                        <option value="Soberana">Soberana</option>
+                                        <option value="Troia">Tróia</option>
+                                        <option value="VI">VI de Novembro</option>
+                                        <option value="XIX">XIX de Setembro</option>
+                                        <option value="XV">XV de Outubro</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="edit_start_historico" class="col-sm-2 col-form-label">Início</label>
-                            <div class="col-sm-10">
-                                <input type="datetime-local" name="edit_start_historico" class="form-control" id="edit_start_historico">
+                            <div class="row mb-3">
+                                <label for="edit_start_historico" class="col-sm-2 col-form-label">Início</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="edit_start_historico" class="form-control" id="edit_start_historico">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="edit_end_historico" class="col-sm-2 col-form-label">Fim</label>
-                            <div class="col-sm-10">
-                                <input type="datetime-local" name="edit_end_historico" class="form-control" id="edit_end_historico">
+                            <div class="row mb-3">
+                                <label for="edit_end_historico" class="col-sm-2 col-form-label">Fim</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="edit_end_historico" class="form-control" id="edit_end_historico">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="edit_color_historico" class="col-sm-2 col-form-label">Cor</label>
-                            <div class="col-sm-10">
-                                <select name="edit_color_historico" class="form-control" id="edit_color_historico">
-                                    <option value="">Selecione</option>
-                                    <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
-                                    <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
-                                    <option style="color:#FF4500;" value="#FF4500">Laranja</option>
-                                    <option style="color:#8B4513;" value="#8B4513">Marrom</option>
-                                    <option style="color:#1C1C1C;" value="#1C1C1C">Preto</option>
-                                    <option style="color:#436EEE;" value="#436EEE">Royal Blue</option>
-                                    <option style="color:#A020F0;" value="#A020F0">Roxo</option>
-                                    <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
-                                    <option style="color:#228B22;" value="#228B22">Verde</option>
-                                    <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
-                                </select>
+                            <div class="row mb-3">
+                                <label for="edit_color_historico" class="col-sm-2 col-form-label">Cor</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_color_historico" class="form-control" id="edit_color_historico">
+                                        <option value="">Selecione</option>
+                                        <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
+                                        <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
+                                        <option style="color:#FF4500;" value="#FF4500">Laranja</option>
+                                        <option style="color:#8B4513;" value="#8B4513">Marrom</option>
+                                        <option style="color:#1C1C1C;" value="#1C1C1C">Preto</option>
+                                        <option style="color:#436EEE;" value="#436EEE">Royal Blue</option>
+                                        <option style="color:#A020F0;" value="#A020F0">Roxo</option>
+                                        <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
+                                        <option style="color:#228B22;" value="#228B22">Verde</option>
+                                        <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Adicionar Modalidade -->
-                        <div class="row mb-3">
-                            <label for="edit_modalidade_historico" class="col-sm-2 col-form-label">Modalidade</label>
-                            <div class="col-sm-10">
-                                <select name="edit_modalidade_historico" class="form-control" id="edit_modalidade_historico">
-                                    <option value="">Selecione</option>
-                                    <option value="1">Atletismo</option>
-                                    <option value="2">Basquetebol</option>
-                                    <option value="3">Futebol</option>
-                                    <option value="4">Futsal</option>
-                                    <option value="5">Handebol</option>
-                                    <option value="6">Judô</option>
-                                    <option value="7">Natação</option>
-                                    <option value="8">Tênis</option>
-                                    <option value="9">Tênis de Mesa</option>
-                                    <option value="10">Voleibol</option>
-                                    <option value="11">Vôlei de Praia</option>
-                                    <option value="12">Xadrez</option>
-                                    <!-- Adicione mais modalidades conforme necessário -->
-                                </select>
+                            <!-- Adicionar Modalidade -->
+                            <div class="row mb-3">
+                                <label for="edit_modalidade_historico" class="col-sm-2 col-form-label">Modalidade</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_modalidade_historico" class="form-control" id="edit_modalidade_historico">
+                                        <option value="">Selecione</option>
+                                        <option value="1">Atletismo</option>
+                                        <option value="2">Basquetebol</option>
+                                        <option value="3">Futebol</option>
+                                        <option value="4">Futsal</option>
+                                        <option value="5">Handebol</option>
+                                        <option value="6">Judô</option>
+                                        <option value="7">Natação</option>
+                                        <option value="8">Tênis</option>
+                                        <option value="9">Tênis de Mesa</option>
+                                        <option value="10">Voleibol</option>
+                                        <option value="11">Vôlei de Praia</option>
+                                        <option value="12">Xadrez</option>
+                                        <!-- Adicione mais modalidades conforme necessário -->
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Adicionar Seleção de Associados -->
-                        <div class="row mb-3">
-                            <label for="edit_associados_historico" class="col-sm-2 col-form-label">Associados</label>
-                            <div class="col-sm-10">
-                                <select name="associados[]" class="form-control" id="edit_associados_historico" multiple>
-                                    <!-- As opções serão preenchidas dinamicamente -->
-                                </select>
+                            <!-- Adicionar Seleção de Associados -->
+                            <div class="row mb-3">
+                                <label for="edit_associados_historico" class="col-sm-2 col-form-label">Associados</label>
+                                <div class="col-sm-10">
+                                    <select name="associados[]" class="form-control" id="edit_associados_historico" multiple>
+                                        <!-- As opções serão preenchidas dinamicamente -->
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="button" name="btnViewEvento_historico" class="btn btn-primary" id="btnViewEvento_historico">Cancelar</button>
+                            <button type="button" name="btnViewEvento_historico" class="btn btn-primary" id="btnViewEvento_historico">Cancelar</button>
 
-                        <button type="submit" name="btnEditEvento_historico" class="btn btn-warning" id="btnEditEvento_historico">Salvar</button>
+                            <button type="submit" name="btnEditEvento_historico" class="btn btn-warning" id="btnEditEvento_historico">Salvar</button>
 
-                    </form>
+                        </form>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
-    <!--<div class="col-md-3">
+        <!--<div class="col-md-3">
                 <div class="dashboard-section" id="aniversariantes">
                     <h2>Aniversariantes</br>do Dia</h2>
                     <ul>
@@ -592,49 +642,52 @@ $header = gerarHeader($_SESSION['nome']);
     </div>
     <script src="script.js"></script>-->
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/home_eventos/custom_eventos.js"></script>
-    <script src="./js/home_jogos/custom_jogos.js"></script>
-    <script src="./js/home_historico/custom_historico.js"></script>
+        <!-- Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="./js/home_eventos/custom_eventos.js"></script>
+        <script src="./js/home_jogos/custom_jogos.js"></script>
+        <script src="./js/home_historico/custom_historico.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="./js/donutChart.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('#edit_associados_jogos').select2({
-                theme: 'bootstrap-5',
-                placeholder: "Selecione os associados",
-                closeOnSelect: false,
-                width: '100%'
+
+        <script>
+            $(document).ready(function() {
+                $('#edit_associados_jogos').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: "Selecione os associados",
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+
+                // Inicialização do Select2 no modal de edição
             });
 
-            // Inicialização do Select2 no modal de edição
-        });
 
+            document.addEventListener("DOMContentLoaded", function() {
+                var lastScrollTop = 0;
+                var header = document.querySelector(".header");
 
-        document.addEventListener("DOMContentLoaded", function() {
-            var lastScrollTop = 0;
-            var header = document.querySelector(".header");
+                window.addEventListener("scroll", function() {
+                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            window.addEventListener("scroll", function() {
-                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop > lastScrollTop) {
+                        // Scroll para baixo, esconde o header
+                        header.style.top = "-110px"; // Altura do header
+                    } else {
+                        // Scroll para cima, mostra o header
+                        header.style.top = "0";
+                    }
 
-                if (scrollTop > lastScrollTop) {
-                    // Scroll para baixo, esconde o header
-                    header.style.top = "-110px"; // Altura do header
-                } else {
-                    // Scroll para cima, mostra o header
-                    header.style.top = "0";
-                }
-
-                lastScrollTop = scrollTop;
+                    lastScrollTop = scrollTop;
+                });
             });
-        });
-    </script>
+        </script>
 
 </body>
 
