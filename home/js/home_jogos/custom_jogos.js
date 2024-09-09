@@ -1,18 +1,73 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    fetch('get_associados.php')
-        .then(response => response.json())
-        .then(data => {
-            const select = document.getElementById('edit_associados_jogos');
-            select.innerHTML = ''; // Limpar as opções existentes
-            data.forEach(associado => {
-                const option = document.createElement('option');
-                option.value = associado.id;
-                option.textContent = associado.nome;
-                select.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Erro ao buscar associados:', error));
+    // Função para atualizar a lista de associados no modal de edição
+    function atualizarAssociadosEdicao() {
+        const genero = document.getElementById('edit_genero_jogos').value;
+        const modalidade = document.getElementById('edit_modalidade_jogos').value;
+        const filtrarPorModalidade = document.getElementById('filtrar_por_modalidade').checked; // Verificar se o checkbox está marcado
+        const select = document.getElementById('edit_associados_jogos');
+
+        // Capturar os IDs e nomes dos associados que já estão selecionados
+        const selecionados = Array.from(select.options)
+            .filter(option => option.selected)
+            .map(option => ({
+                id: option.value,
+                nome: option.textContent
+            }));
+
+        // Construir a URL da requisição dependendo se o filtro de modalidade está ativado
+        let url = `get_associados.php?genero=${encodeURIComponent(genero)}`;
+        if (filtrarPorModalidade) {
+            url += `&modalidade=${encodeURIComponent(modalidade)}`;
+        }
+
+        // Enviar requisição ao PHP com os parâmetros de gênero e modalidade (se aplicável)
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                select.innerHTML = ''; // Limpar as opções existentes
+
+                // Manter as opções previamente selecionadas
+                selecionados.forEach(associado => {
+                    const option = document.createElement('option');
+                    option.value = associado.id;
+                    option.textContent = associado.nome; // Manter o nome original
+                    option.selected = true;
+                    select.appendChild(option);
+                });
+
+                // Adicionar as novas opções de associados filtrados
+                data.forEach(associado => {
+                    if (!selecionados.some(sel => sel.id === associado.id)) {
+                        const option = document.createElement('option');
+                        option.value = associado.id;
+                        option.textContent = associado.nome;
+                        select.appendChild(option);
+                    }
+                });
+
+                // Reinicializar o Select2 para refletir as mudanças
+                $('#edit_associados_jogos').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: "Selecione os associados",
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+            })
+            .catch(error => console.error('Erro ao buscar associados:', error));
+    }
+
+    // Adicionar eventos para chamar atualizarAssociados quando o gênero, modalidade ou checkbox mudar
+
+    document.getElementById('edit_genero_jogos').addEventListener('change', atualizarAssociadosEdicao);
+    document.getElementById('edit_modalidade_jogos').addEventListener('change', atualizarAssociadosEdicao);
+    document.getElementById('filtrar_por_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+
+    // Forçar a atualização dos associados ao abrir o modal de edição
+    document.getElementById('editarEvento_jogos').addEventListener('show.bs.modal', function () {
+        atualizarAssociadosEdicao();
+    });
+
 
 
     const eventCardsContainer = document.getElementById('jogos-cards-container');
@@ -134,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
 
-    
+
     function loadEvents() {
         fetch('listar_jogos.php')
             .then(response => response.json())
@@ -173,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById("visualizar_title_jogos").innerText = eventDetails.title + " de " + eventDetails.modalidade;
                                 document.getElementById("visualizar_adversario_jogos").innerText = eventDetails.adversario;
 
-                                
+
 
                                 var adversarioElement = document.getElementById('visualizar_adversario_jogos');
                                 var logoAdversarioElement = document.getElementById('visualizar_logo_adversario_jogos');
@@ -257,6 +312,34 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById('visualizar_start_jogos').innerText = formatDate(eventDetails.start);
                                 document.getElementById('visualizar_end_jogos').innerText = formatDate(eventDetails.end);
 
+
+                                const btnShowDetails = document.getElementById('btnShowDetails');
+                                const eventDetails1 = document.getElementById('eventDetails1');
+                                const eventDetailsContent = document.getElementById('eventDetailsContent');
+                                const associados = (eventDetails.associados) || 'Nenhum associado relacionado';
+
+                                if (btnShowDetails && eventDetails1 && eventDetailsContent) {
+                                    btnShowDetails.addEventListener('click', function () {
+                                        const isHidden = getComputedStyle(eventDetails1).display === 'none';
+
+                                        if (isHidden) {
+                                            // Mostrar detalhes
+                                            eventDetails1.style.display = 'block';
+                                            eventDetailsContent.innerText = associados;
+                                            btnShowDetails.textContent = "Ocultar convocação";
+                                            // Scroll para o elemento
+                                            eventDetails1.scrollIntoView({
+                                                behavior: 'smooth', // Faz o scroll suave
+                                                block: 'start' // Alinha o elemento ao topo da tela
+                                            });
+                                        } else {
+                                            // Ocultar detalhes
+                                            eventDetails1.style.display = 'none';
+                                            btnShowDetails.textContent = "Mostrar detalhes";
+                                        }
+                                    });
+                                }
+
                                 const btnEditEvento = document.getElementById('btnViewEditEvento_jogos');
                                 btnEditEvento.style.display = 'block';
 
@@ -300,6 +383,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                         document.querySelector('#modalContent_jogos').style.padding = '';
                                     });
 
+                                    function removerMsg() {
+                                        setTimeout(() => {
+                                            document.getElementById('msgEditEvento_jogos').innerHTML = "";
+                                        }, 3000)
+                                    }
+
                                     document.getElementById('formEditEvento_jogos').addEventListener('submit', function (e) {
                                         e.preventDefault();
 
@@ -309,14 +398,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                             method: 'POST',
                                             body: formData
                                         })
+
+
                                             .then(response => response.json())
                                             .then(data => {
                                                 if (data.status) {
-                                                    alert(data.msg);
-                                                    visualizarModal.hide();
+                                                    msgEditEvento_jogos.innerHTML = `<div class="alert alert-success" role="alert">${data.msg}</div>`;
                                                     loadEvents();
+                                                    removerMsg();
                                                 } else {
-                                                    alert(data.msg);
+                                                    msgEditEvento_jogos.innerHTML = `<div class="alert alert-danger" role="alert">${data.msg}</div>`;
+                                                    removerMsg();
                                                 }
                                             })
                                             .catch(error => console.error('Erro ao salvar a edição:', error));

@@ -142,7 +142,7 @@ $header = gerarHeader($_SESSION['nome']);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
+                    <span id="msgPlacarEvento"></span>
                     <span id="msgViewEvento"></span>
 
                     <div id="visualizarEvento">
@@ -174,18 +174,23 @@ $header = gerarHeader($_SESSION['nome']);
                                     <span id="visualizar_adversario"></span>
                                 </div>
                             </div>
-                            <div id="modalPlacar" class="d-flex align-items-center justify-content-center">
-                                <div id="inputPlacar" style="display: none;">
-                                    <label for="placar_casa">Placar Casa:</label>
-                                    <input type="number" id="placar_casa">
-                                    <br>
-                                    <label for="placar_adversario">Placar Adversário:</label>
-                                    <input type="number" id="placar_adversario">
-                                    <br>
-                                    <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
-                                    <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                            <div class="row mb-3"></div>
+                            <div id="modalPlacar" class="d-flex flex-column align-items-center justify-content-center">
+                                <div id="inputPlacar" class="p-3 border rounded" style="display: none; width: 100%; max-width: 400px;">
+                                    <div class="form-group mb-3">
+                                        <label for="placar_casa" class="form-label">Placar Casa:</label>
+                                        <input type="number" class="form-control" id="placar_casa" min="0" placeholder="Digite o placar da casa">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="placar_adversario" class="form-label">Placar Adversário:</label>
+                                        <input type="number" class="form-control" id="placar_adversario" min="0" placeholder="Digite o placar do adversário">
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
+                                        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                                    </div>
                                 </div>
-                                <button class="btn btn-primary" id="btnPlacar">Adicionar Placar</button>
+                                <button class="btn btn-primary mt-3" id="btnPlacar">Adicionar Placar</button>
                             </div>
 
                             <div class="row mb-3"></div>
@@ -235,7 +240,12 @@ $header = gerarHeader($_SESSION['nome']);
                             <div class="row mb-3">
                                 <label for="edit_title" class="col-sm-2 col-form-label">Título</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="edit_title" class="form-control" id="edit_title" placeholder="Título do Jogo">
+                                    <select name="edit_title" class="form-control" id="edit_title">
+                                        <option value="">Selecione</option>
+                                        <option value="Amistoso">Amistoso</option>
+                                        <option value="Jogo-treino">Jogo-treino</option>
+                                        <option value="Jogo Oficial">Jogo Oficial</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -574,6 +584,11 @@ $header = gerarHeader($_SESSION['nome']);
             if (associadosDiv.style.display === 'none') {
                 associadosDiv.style.display = 'block';
                 button.textContent = 'Mostrar menos';
+                // Scroll para o elemento
+                associadosDiv.scrollIntoView({
+                    behavior: 'smooth', // Faz o scroll suave
+                    block: 'start' // Alinha o elemento ao topo da tela
+                });
             } else {
                 associadosDiv.style.display = 'none';
                 button.textContent = 'Convocar Associados';
@@ -649,7 +664,6 @@ $header = gerarHeader($_SESSION['nome']);
                 lastScrollTop = scrollTop;
             });
 
-            // Função para atualizar a lista de associados no cadastro
             // Função para atualizar a lista de associados no cadastro
             function atualizarAssociados() {
                 const genero = document.getElementById('cad_genero').value;

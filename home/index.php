@@ -288,7 +288,7 @@ $header = gerarHeader($_SESSION['nome']);
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_gen_jogos"></dd>
 
                             <!--<dt class="col-sm-3">Associados: </dt>
-<dd class="col-sm-9" id="visualizar_associados"></dd>-->
+                            <dd class="col-sm-9" id="visualizar_associados"></dd>-->
 
                         </dl>
                         <div class="d-flex mt-3">
@@ -296,10 +296,20 @@ $header = gerarHeader($_SESSION['nome']);
                             <button type="button" class="btn btn-danger me-2" id="btnApagarEvento_jogos">Apagar</button>
                             <button type="button" class="btn btn-info" id="btnShowDetails">Mostrar convocação</button>
                         </div>
+                        <!-- Área de detalhes oculta -->
+                        <div id="eventDetails1" style="display: none;">
+                            <div class="row mb-2"></div>
+                            <h5>
+                                <dt>Atletas Convocados</dt>
+                            </h5>
+                            <p id="eventDetailsContent"></p>
+                        </div>
                     </div>
+
 
                     <div id="editarEvento_jogos" style="display: none;">
                         <span id="msgEditEvento_jogos"></span>
+                        <div class="row mb-3"></div>
 
 
                         <form method="POST" id="formEditEvento_jogos">
@@ -309,7 +319,12 @@ $header = gerarHeader($_SESSION['nome']);
                             <div class="row mb-3">
                                 <label for="edit_title_jogos" class="col-sm-2 col-form-label">Título</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="edit_title_jogos" class="form-control" id="edit_title_jogos" placeholder="Título do evento">
+                                    <select name="edit_title_jogos" class="form-control" id="edit_title_jogos">
+                                        <option value="">Selecione</option>
+                                        <option value="Amistoso">Amistoso</option>
+                                        <option value="Jogo-treino">Jogo-treino</option>
+                                        <option value="Jogo Oficial">Jogo Oficial</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -373,10 +388,24 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
+
+
+                            <div class="row mb-3">
+                                <label for="edit_genero_jogos" class="col-sm-2 col-form-label">Gênero</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_genero_jogos" class="form-control" id="edit_genero_jogos">
+                                        <option value="">Selecione</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Feminino">Feminino</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Adicionar Modalidade -->
                             <div class="row mb-3">
-                                <label for="edit_modalidade_jogos" class="col-sm-2 col-form-label">Modalidade</label>
-                                <div class="col-sm-10">
+                                <label for="edit_modalidade_jogos" class="col-sm-3 col-form-label">Modalidade</label>
+                                <div class="col-sm-9">
                                     <select name="edit_modalidade_jogos" class="form-control" id="edit_modalidade_jogos">
                                         <option value="">Selecione</option>
                                         <option value="1">Atletismo</option>
@@ -396,13 +425,24 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
+
+
                             <!-- Adicionar Seleção de Associados -->
-                            <div class="row mb-3">
-                                <label for="edit_associados_jogos" class="col-sm-2 col-form-label">Associados</label>
-                                <div class="col-sm-10">
+                            <div class="row mb-1">
+                                <label for="edit_associados_jogos" class="col-sm-3 col-form-label">Associados</label>
+                                <div class="col-sm-9">
                                     <select name="associados[]" class="form-control" id="edit_associados_jogos" multiple>
                                         <!-- As opções serão preenchidas dinamicamente -->
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="form-check" style="padding-left: 160px;">
+                                    <input class="form-check-input" type="checkbox" id="filtrar_por_modalidade">
+                                    <label class="form-check-label" for="filtrar_por_modalidade">
+                                        Filtrar por modalidade
+                                    </label>
                                 </div>
                             </div>
 
@@ -426,6 +466,8 @@ $header = gerarHeader($_SESSION['nome']);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalBody_historico">
+                        <span id="msgPlacarEvento_historico"></span>
+
                         <dl class="row">
 
                             <dt class="col-sm-3" style="display: none;">ID: </dt>
@@ -453,19 +495,23 @@ $header = gerarHeader($_SESSION['nome']);
                                     <span id="visualizar_adversario_historico"></span>
                                 </div>
                             </div>
-
-                            <div id="modalPlacar" class="d-flex align-items-center justify-content-center">
-                                <div id="inputPlacar" style="display: none;">
-                                    <label for="placar_casa">Placar Casa:</label>
-                                    <input type="number" id="placar_casa">
-                                    <br>
-                                    <label for="placar_adversario">Placar Adversário:</label>
-                                    <input type="number" id="placar_adversario">
-                                    <br>
-                                    <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
-                                    <button type="button" class="btn btn-primary" id="btnCancelar">Cancelar</button>
+                            <div class="row mb-3"></div>
+                            <div id="modalPlacar" class="d-flex flex-column align-items-center justify-content-center">
+                                <div id="inputPlacar" class="p-3 border rounded" style="display: none; width: 100%; max-width: 400px;">
+                                    <div class="form-group mb-3">
+                                        <label for="placar_casa" class="form-label">Placar Casa:</label>
+                                        <input type="number" class="form-control" id="placar_casa" min="0" placeholder="Digite o placar da casa">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="placar_adversario" class="form-label">Placar Adversário:</label>
+                                        <input type="number" class="form-control" id="placar_adversario" min="0" placeholder="Digite o placar do adversário">
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
+                                        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                                    </div>
                                 </div>
-                                <button class="btn btn-primary" id="btnPlacar">Adicionar Placar</button>
+                                <button class="btn btn-primary mt-3" id="btnPlacar">Adicionar Placar</button>
                             </div>
 
                             <div class="row mb-3"></div>
@@ -490,12 +536,21 @@ $header = gerarHeader($_SESSION['nome']);
                         <div class="d-flex mt-3">
                             <button type="button" class="btn btn-warning me-2" id="btnViewEditEvento_historico">Editar</button>
                             <button type="button" class="btn btn-danger me-2" id="btnApagarEvento_historico">Apagar</button>
-                            <button type="button" class="btn btn-info" id="btnShowDetails">Mostrar convocação</button>
+                            <button type="button" class="btn btn-info" id="btnShowDetails2">Mostrar convocação</button>
+                        </div>
+                        <!-- Área de detalhes oculta -->
+                        <div id="eventDetails2" style="display: none;">
+                            <div class="row mb-2"></div>
+                            <h5>
+                                <dt>Atletas Convocados</dt>
+                            </h5>
+                            <p id="eventDetailsContent2"></p>
                         </div>
                     </div>
 
                     <div id="editarEvento_historico" style="display: none;">
                         <span id="msgEditEvento_historico"></span>
+                        <div class="row mb-3"></div>
 
 
                         <form method="POST" id="formEditEvento_historico">
@@ -505,7 +560,12 @@ $header = gerarHeader($_SESSION['nome']);
                             <div class="row mb-3">
                                 <label for="edit_title_historico" class="col-sm-2 col-form-label">Título</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="edit_title_historico" class="form-control" id="edit_title_historico" placeholder="Título do evento">
+                                    <select name="edit_title_historico" class="form-control" id="edit_title_historico">
+                                        <option value="">Selecione</option>
+                                        <option value="Amistoso">Amistoso</option>
+                                        <option value="Jogo-treino">Jogo-treino</option>
+                                        <option value="Jogo Oficial">Jogo Oficial</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -569,10 +629,22 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="edit_genero_historico" class="col-sm-2 col-form-label">Gênero</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_genero_historico" class="form-control" id="edit_genero_historico">
+                                        <option value="">Selecione</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Feminino">Feminino</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Adicionar Modalidade -->
                             <div class="row mb-3">
-                                <label for="edit_modalidade_historico" class="col-sm-2 col-form-label">Modalidade</label>
-                                <div class="col-sm-10">
+                                <label for="edit_modalidade_historico" class="col-sm-3 col-form-label">Modalidade</label>
+                                <div class="col-sm-9">
                                     <select name="edit_modalidade_historico" class="form-control" id="edit_modalidade_historico">
                                         <option value="">Selecione</option>
                                         <option value="1">Atletismo</option>
@@ -593,12 +665,21 @@ $header = gerarHeader($_SESSION['nome']);
                             </div>
 
                             <!-- Adicionar Seleção de Associados -->
-                            <div class="row mb-3">
-                                <label for="edit_associados_historico" class="col-sm-2 col-form-label">Associados</label>
-                                <div class="col-sm-10">
+                            <div class="row mb-1">
+                                <label for="edit_associados_historico" class="col-sm-3 col-form-label">Associados</label>
+                                <div class="col-sm-9">
                                     <select name="associados[]" class="form-control" id="edit_associados_historico" multiple>
                                         <!-- As opções serão preenchidas dinamicamente -->
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="form-check" style="padding-left: 160px;">
+                                    <input class="form-check-input" type="checkbox" id="filtrar_por_modalidade_historico">
+                                    <label class="form-check-label" for="filtrar_por_modalidade_historico">
+                                        Filtrar por modalidade
+                                    </label>
                                 </div>
                             </div>
 
@@ -668,6 +749,17 @@ $header = gerarHeader($_SESSION['nome']);
                 // Inicialização do Select2 no modal de edição
             });
 
+
+            $(document).ready(function() {
+                $('#edit_associados_historico').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: "Selecione os associados",
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+
+                // Inicialização do Select2 no modal de edição
+            });
 
             document.addEventListener("DOMContentLoaded", function() {
                 var lastScrollTop = 0;

@@ -103,6 +103,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                         document.querySelector('#modalContent').style.padding = ''; // Reseta o padding
                                     });
 
+                                    function removerMsgEdit() {
+                                        setTimeout(() => {
+                                            document.getElementById('msgEditEvento').innerHTML = "";
+                                        }, 3000)
+                                    }
+
                                     document.getElementById('formEditEvento').addEventListener('submit', function (e) {
                                         e.preventDefault();
 
@@ -115,11 +121,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                             .then(response => response.json())
                                             .then(data => {
                                                 if (data.status) {
-                                                    alert(data.msg);
-                                                    visualizarModal.hide();
+                                        msgEditEvento.innerHTML = `<div class="alert alert-success" role="alert">Evento Editado com Sucesso.</div>`;
+                                        removerMsgEdit();
                                                     loadEvents();  // Recarregar os eventos para refletir as mudanças
                                                 } else {
-                                                    alert(data.msg);
+                                                    msgEditEvento.innerHTML = `<div class="alert alert-danger" role="alert">Erro ao Editar Evento.</div>`;
+                                                    removerMsgEdit();
                                                 }
                                             })
                                             .catch(error => console.error('Erro ao salvar a edição:', error));
