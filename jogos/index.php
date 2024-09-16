@@ -20,7 +20,7 @@ function gerarHeader($nomeUsuario)
                 <img src='https://losbravosuepg.com.br/assets/logolb.png' height='100' alt='Los Bravos' title='Página Inicial.'>
             </a>
         </div>
-        <h1 id='header-title'></h1>
+        <h1 id='header-title'>Página de Jogos</h1>
     </header>";
 }
 
@@ -41,7 +41,8 @@ $header = gerarHeader($_SESSION['nome']);
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
     <script src="https://kit.fontawesome.com/5414af6fb5.js" crossorigin="anonymous"></script>
     <link href="css/custom.css" rel="stylesheet">
-    <title>Página Inicial</title>
+    <link rel="icon" href="../assets/imagemLosBravos.png" type="image/png">
+    <title>Jogos</title>
     <style>
         .header {
             width: 100%;
@@ -173,8 +174,15 @@ $header = gerarHeader($_SESSION['nome']);
                                     <img id="visualizar_logo_adversario" src="" alt="Logo do adversário" style="height: 130px;">
                                     <span id="visualizar_adversario"></span>
                                 </div>
+
                             </div>
                             <div class="row mb-3"></div>
+                            <div id="placar-container" class="placar-display">
+                                <div id="placar-casa" class="digito"></div>
+                                <div class="digito-separador">-</div>
+                                <div id="placar-adversario" class="digito"></div>
+                            </div>
+
                             <div id="modalPlacar" class="d-flex flex-column align-items-center justify-content-center">
                                 <div id="inputPlacar" class="p-3 border rounded" style="display: none; width: 100%; max-width: 400px;">
                                     <div class="form-group mb-3">
@@ -193,6 +201,7 @@ $header = gerarHeader($_SESSION['nome']);
                                 <button class="btn btn-primary mt-3" id="btnPlacar">Adicionar Placar</button>
                             </div>
 
+
                             <div class="row mb-3"></div>
                             <dt class="d-flex align-items-center justify-content-center">Início: </dt>
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_start"></dd>
@@ -205,7 +214,18 @@ $header = gerarHeader($_SESSION['nome']);
 
                             <!--<dt class="col-sm-3">Gênero: </dt>-->
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_genero"></dd>
-                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_placar"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_cidade"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_local"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_cep"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_bairro"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_rua"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_complemento"></dd>
 
                             <!--<dt class="col-sm-3">Associados: </dt>
                             <dd class="col-sm-9" id="visualizar_associados"></dd>-->
@@ -223,7 +243,7 @@ $header = gerarHeader($_SESSION['nome']);
                         <div id="eventDetails" style="display: none;">
                             <div class="row mb-2"></div>
                             <h5>
-                                <dt>Atletas Convocados</dt>
+                                <dt>Associados Convocados</dt>
                             </h5>
                             <p id="eventDetailsContent"></p>
                         </div>
@@ -238,7 +258,7 @@ $header = gerarHeader($_SESSION['nome']);
                             <input type="hidden" name="edit_id" id="edit_id">
 
                             <div class="row mb-3">
-                                <label for="edit_title" class="col-sm-2 col-form-label">Título</label>
+                                <label for="edit_title" class="col-sm-2 col-form-label">Categoria:</label>
                                 <div class="col-sm-10">
                                     <select name="edit_title" class="form-control" id="edit_title">
                                         <option value="">Selecione</option>
@@ -317,7 +337,7 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option value="">Selecione</option>
                                         <option value="Masculino">Masculino</option>
                                         <option value="Feminino">Feminino</option>
-                                        <option value="Outro">Outro</option>
+                                        <option value="Não Binário">Não Binário</option>
                                     </select>
                                 </div>
                             </div>
@@ -344,26 +364,95 @@ $header = gerarHeader($_SESSION['nome']);
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="filtrar_por_modalidade">
-                                <label class="form-check-label" for="filtrar_por_modalidade">
-                                    Filtrar por modalidade
-                                </label>
+
+                            <div class="row mb-3">
+                                <label for="edit_estado" class="col-sm-2 col-form-label">Estado:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_estado" class="form-control" id="edit_estado">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cidade" class="col-sm-2 col-form-label">Cidade:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_cidade" class="form-control" id="edit_cidade">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_local" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_local" name="edit_local" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cep" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_cep" name="edit_cep" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_bairro" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_bairro" name="edit_bairro" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_rua" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_rua" name="edit_rua" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_numero" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_numero" name="edit_numero" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_complemento" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="edit_complemento" name="edit_complemento" placeholder="Digite o complemento">
+                                </div>
                             </div>
 
                             <!-- Adicionar Seleção de Associados -->
+                            <div id="associadosDiv_edit" style="display: none;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="filtrar_por_modalidade">
+                                    <label class="form-check-label" for="filtrar_por_modalidade">
+                                        Filtrar por modalidade
+                                    </label>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="edit_associados" class="col-sm-2 col-form-label">Associados</label>
+                                    <div class="col-sm-10">
+                                        <select name="associados[]" class="form-control" id="edit_associados" multiple>
+                                            <!-- As opções serão preenchidas dinamicamente -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row mb-3">
-                                <label for="edit_associados" class="col-sm-2 col-form-label">Associados</label>
-                                <div class="col-sm-10">
-                                    <select name="associados[]" class="form-control" id="edit_associados" multiple>
-                                        <!-- As opções serão preenchidas dinamicamente -->
-                                    </select>
+                                <div class="col-sm-12 text-center">
+                                    <button type="button" id="convocarAssociadosBtn_edit" class="btn btn-link">Convocar Associados</button>
                                 </div>
                             </div>
 
                             <button type="button" name="btnViewEvento" class="btn btn-primary" id="btnViewEvento">Cancelar</button>
 
                             <button type="submit" name="btnEditEvento" class="btn btn-warning" id="btnEditEvento">Salvar</button>
+
 
                         </form>
 
@@ -390,7 +479,7 @@ $header = gerarHeader($_SESSION['nome']);
 
 
                         <div class="row mb-3">
-                            <label for="cad_title" class="col-sm-2 col-form-label">Título</label>
+                            <label for="cad_title" class="col-sm-2 col-form-label">Categoria:</label>
                             <div class="col-sm-10">
                                 <select name="cad_title" class="form-control" id="cad_title">
                                     <option value="">Selecione</option>
@@ -481,7 +570,7 @@ $header = gerarHeader($_SESSION['nome']);
                                     <option value="">Selecione</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
-                                    <option value="Outro">Outro</option>
+                                    <option value="Não Binário">Não Binário</option>
                                 </select>
                             </div>
                         </div>
@@ -508,6 +597,68 @@ $header = gerarHeader($_SESSION['nome']);
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="cad_estado" class="col-sm-2 col-form-label">Estado:</label>
+                            <div class="col-sm-10">
+                                <select name="cad_estado" class="form-control" id="cad_estado">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="cad_cidade" class="col-sm-2 col-form-label">Cidade:</label>
+                            <div class="col-sm-10">
+                                <select name="cad_cidade" class="form-control" id="cad_cidade">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                                <label for="cad_local" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_local" name="cad_local" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_cep" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_cep" name="cad_cep" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_bairro" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_bairro" name="cad_bairro" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_rua" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_rua" name="cad_rua" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_numero" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_numero" name="cad_numero" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_complemento" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="cad_complemento" name="cad_complemento" placeholder="Digite o complemento">
+                                </div>
+                            </div>
+
+
+
 
                         <!-- Div Oculta para Seleção de Associados -->
                         <div id="associadosDiv" style="display: none;">
@@ -530,11 +681,11 @@ $header = gerarHeader($_SESSION['nome']);
                         <!-- Botão para Exibir Seleção de Associados -->
                         <div class="row mb-3">
                             <div class="col-sm-12 text-center">
-                                <button type="button" id="convocarAssociadosBtn" class="btn btn-link">Convocar Aletas</button>
+                                <button type="button" id="convocarAssociadosBtn" class="btn btn-link">Convocar Associados</button>
                             </div>
                         </div>
 
-                        <button type="submit" name="btnCadEvento" class="btn btn-success" id="btnCadEvento">Cadastrar</button>
+                        <button type="submit" name="btnCadEvento" class="btn btn-success" id="btnCadEvento">Salvar</button>
 
                     </form>
 
@@ -577,6 +728,39 @@ $header = gerarHeader($_SESSION['nome']);
         });
 
         // JavaScript para alternar a visibilidade da div de associados e o texto do botão
+        document.getElementById('convocarAssociadosBtn_edit').addEventListener('click', function() {
+            var associadosDiv_edit = document.getElementById('associadosDiv_edit');
+            var button_edit = document.getElementById('convocarAssociadosBtn_edit');
+
+            if (associadosDiv_edit.style.display === 'none') {
+                associadosDiv_edit.style.display = 'block';
+                button_edit.textContent = 'Mostrar menos';
+
+                // Scroll para o elemento
+                associadosDiv_edit.scrollIntoView({
+                    behavior: 'smooth', // Faz o scroll suave
+                    block: 'start' // Alinha o elemento ao topo da tela
+                });
+            } else {
+                associadosDiv_edit.style.display = 'none';
+                button_edit.textContent = 'Convocar Associados';
+            }
+        });
+        var visualizarModal = document.getElementById('visualizarModal');
+        visualizarModal.addEventListener('hidden.bs.modal', function() {
+            document.getElementById('filtrar_por_modalidade').checked = false;
+        });
+        // Ocultar a seleção de associados e redefinir o texto do botão quando o modal for fechado
+        var cadastrarModal = document.getElementById('cadastrarModal');
+        cadastrarModal.addEventListener('hidden.bs.modal', function() {
+            var associadosDiv = document.getElementById('associadosDiv');
+            var button = document.getElementById('convocarAssociadosBtn');
+
+            // Ocultar a div e redefinir o texto do botão
+            associadosDiv.style.display = 'none';
+            button.textContent = 'Convocar Associados';
+        });
+
         document.getElementById('convocarAssociadosBtn').addEventListener('click', function() {
             var associadosDiv = document.getElementById('associadosDiv');
             var button = document.getElementById('convocarAssociadosBtn');
@@ -617,7 +801,101 @@ $header = gerarHeader($_SESSION['nome']);
             document.getElementById('adversario_logo').src = logoUrl ? logoUrl : '../assets/logo_default.png';
         });
 
+
         document.addEventListener('DOMContentLoaded', function() {
+            var cep = document.getElementById("cad_cep");
+            if (cep) {
+                cep.addEventListener("input", () => {
+                    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                    var limparValor = cep.value.replace(/\D/g, '').substring(0, 8);
+                    // Adiciona o hífen e os 3 dígitos finais, se existirem
+                    var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                    // Atualiza o valor no campo de entrada
+                    cep.value = numeroFormatado;
+                });
+            }
+
+            var edit_cep = document.getElementById("edit_cep");
+            if (edit_cep) {
+                edit_cep.addEventListener("input", () => {
+                    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                    var limparValor = edit_cep.value.replace(/\D/g, '').substring(0, 8);
+                    // Adiciona o hífen e os 3 dígitos finais, se existirem
+                    var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                    // Atualiza o valor no campo de entrada
+                    edit_cep.value = numeroFormatado;
+                });
+            }
+
+            // Carregar estados
+            fetch('get_estados.php')
+                .then(response => response.json())
+                .then(data => {
+                    var selectEstado = document.getElementById('cad_estado');
+                    data.estados.forEach(function(estado) {
+                        var option = document.createElement('option');
+                        option.value = estado.id;
+                        option.textContent = estado.uf;
+                        selectEstado.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar estados:', error));
+
+            // Atualizar cidades quando um estado é selecionado
+            document.getElementById('cad_estado').addEventListener('change', function() {
+                var estadoId = this.value;
+                var selectCidade = document.getElementById('cad_cidade');
+                selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                if (estadoId) {
+                    fetch('get_cidades.php?estado_id=' + estadoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.cidades.forEach(function(cidade) {
+                                var option = document.createElement('option');
+                                option.value = cidade.id;
+                                option.textContent = cidade.nome;
+                                selectCidade.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao carregar cidades:', error));
+                }
+            });
+
+            // Carregar estados
+            fetch('get_estados.php')
+                .then(response => response.json())
+                .then(data => {
+                    var selectEstado = document.getElementById('edit_estado');
+                    data.estados.forEach(function(estado) {
+                        var option = document.createElement('option');
+                        option.value = estado.id;
+                        option.textContent = estado.uf;
+                        selectEstado.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar estados:', error));
+
+            // Atualizar cidades quando um estado é selecionado
+            document.getElementById('edit_estado').addEventListener('change', function() {
+                var estadoId = this.value;
+                var selectCidade = document.getElementById('edit_cidade');
+                selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                if (estadoId) {
+                    fetch('get_cidades.php?estado_id=' + estadoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.cidades.forEach(function(cidade) {
+                                var option = document.createElement('option');
+                                option.value = cidade.id;
+                                option.textContent = cidade.nome;
+                                selectCidade.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao carregar cidades:', error));
+                }
+            });
 
             $(document).ready(function() {
                 // Inicialização do Select2 no modal de cadastro
@@ -738,72 +1016,6 @@ $header = gerarHeader($_SESSION['nome']);
 
 
             // Função para atualizar a lista de associados no modal de edição
-            function atualizarAssociadosEdicao() {
-                const genero = document.getElementById('edit_genero').value;
-                const modalidade = document.getElementById('edit_modalidade').value;
-                const filtrarPorModalidade = document.getElementById('filtrar_por_modalidade').checked; // Verificar se o checkbox está marcado
-                const select = document.getElementById('edit_associados');
-
-                // Capturar os IDs e nomes dos associados que já estão selecionados
-                const selecionados = Array.from(select.options)
-                    .filter(option => option.selected)
-                    .map(option => ({
-                        id: option.value,
-                        nome: option.textContent
-                    }));
-
-                // Construir a URL da requisição dependendo se o filtro de modalidade está ativado
-                let url = `get_associados.php?genero=${encodeURIComponent(genero)}`;
-                if (filtrarPorModalidade) {
-                    url += `&modalidade=${encodeURIComponent(modalidade)}`;
-                }
-
-                // Enviar requisição ao PHP com os parâmetros de gênero e modalidade (se aplicável)
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        select.innerHTML = ''; // Limpar as opções existentes
-
-                        // Manter as opções previamente selecionadas
-                        selecionados.forEach(associado => {
-                            const option = document.createElement('option');
-                            option.value = associado.id;
-                            option.textContent = associado.nome; // Manter o nome original
-                            option.selected = true;
-                            select.appendChild(option);
-                        });
-
-                        // Adicionar as novas opções de associados filtrados
-                        data.forEach(associado => {
-                            if (!selecionados.some(sel => sel.id === associado.id)) {
-                                const option = document.createElement('option');
-                                option.value = associado.id;
-                                option.textContent = associado.nome;
-                                select.appendChild(option);
-                            }
-                        });
-
-                        // Reinicializar o Select2 para refletir as mudanças
-                        $('#edit_associados').select2({
-                            theme: 'bootstrap-5',
-                            placeholder: "Selecione os associados",
-                            closeOnSelect: false,
-                            width: '100%'
-                        });
-                    })
-                    .catch(error => console.error('Erro ao buscar associados:', error));
-            }
-
-            // Adicionar eventos para chamar atualizarAssociados quando o gênero, modalidade ou checkbox mudar
-
-            document.getElementById('edit_genero').addEventListener('change', atualizarAssociadosEdicao);
-            document.getElementById('edit_modalidade').addEventListener('change', atualizarAssociadosEdicao);
-            document.getElementById('filtrar_por_modalidade').addEventListener('change', atualizarAssociadosEdicao);
-
-            // Forçar a atualização dos associados ao abrir o modal de edição
-            document.getElementById('editModal').addEventListener('show.bs.modal', function() {
-                atualizarAssociadosEdicao();
-            });
 
 
             // Função para definir o título e a mensagem de boas-vindas
@@ -822,7 +1034,8 @@ $header = gerarHeader($_SESSION['nome']);
             }
 
             // Exemplo de uso:
-            setHeaderContent("Calendário de Jogos");
+            setHeaderContent("Página de Jogos");
+
         });
     </script>
 

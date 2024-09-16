@@ -4,6 +4,7 @@ body {
   font-size: 14px;
 }
 
+
 #calendar {
   max-width: 1320px;
   margin: 0 auto;
@@ -12,6 +13,7 @@ body {
 .select2-container--default .select2-selection--multiple .select2-selection__placeholder {
   color: #6c757d; /* Cor do placeholder */
 }
+
 
 .offcanvas-title {
   color: aliceblue;
@@ -25,6 +27,42 @@ body {
   object-fit: contain;
 }
 
+/* Estiliza o container do placar para centralização */
+.placar-display {
+  display: flex;
+  align-items: center; /* Alinha verticalmente os dígitos */
+  justify-content: center; /* Alinha horizontalmente o placar */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2.5rem; /* Ajuste o tamanho conforme necessário */
+  color: #ff0000; /* Cor do texto (cor dos dígitos) */
+  background-color: #000; /* Fundo do placar */
+  padding: 10px; /* Espaçamento interno */
+  border-radius: 10px; /* Borda arredondada para um design mais suave */
+  width: fit-content; /* Ajusta a largura ao conteúdo */
+  margin: 0 auto; /* Centraliza o contêiner no meio da página */
+}
+
+/* Estiliza o separador (-) */
+.digito-separador {
+  font-size: 2.5rem;
+  color: #ff0000;
+  margin: 0 15px; /* Espaçamento entre os números e o separador */
+}
+
+/* Estiliza os dígitos individuais */
+.digito {
+  display: inline-block;
+  text-align: center; /* Centraliza o texto dentro de cada dígito */
+  width: 3rem; /* Largura dos dígitos - ajustado para mais espaço */
+  height: 4.5rem; /* Altura dos dígitos - ajustado para mais espaço */
+  background-color: #333; /* Cor de fundo dos dígitos */
+  color: #ff0000; /* Cor dos dígitos */
+  border-radius: 5px; /* Bordas arredondadas para os dígitos */
+  line-height: 4.5rem; /* Alinha verticalmente o texto dentro dos dígitos */
+  margin: 0 5px; /* Espaçamento entre os dígitos */
+  font-weight: 900; /* Aumenta a grossura dos números */
+  text-shadow: 1px 1px 2px #000000; /* Sombra para dar mais destaque */
+}
 
 #eventDetails {
   display: none; /* Inicialmente oculto */

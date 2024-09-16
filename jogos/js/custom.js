@@ -51,8 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Chamar o arquivo PHP para recuperar os eventos
         events: 'listar_evento.php',
 
+
         // Identificar o clique do usuário sobre o evento
         eventClick: function (info) {
+
 
 
             console.log("Evento:", info.event); // Para depuração
@@ -69,9 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Enviar para a janela modal os dados do evento
             document.getElementById("visualizar_id").innerText = info.event.id;
-            document.getElementById("visualizar_title").innerText = info.event.title + " de " + info.event.extendedProps.modalidade;
+            document.getElementById("visualizar_title").innerText = info.event.title + " de " + info.event.extendedProps.modalidade + " " + info.event.extendedProps.genero;
             document.getElementById("visualizar_adversario").innerText = info.event.extendedProps.adversario;
-            document.getElementById("visualizar_genero").innerText = info.event.extendedProps.genero;
 
             var adversarioElement = document.getElementById('visualizar_adversario');
             var logoAdversarioElement = document.getElementById('visualizar_logo_adversario');
@@ -147,14 +148,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 adversarioElement.style.display = "none"; // Oculta o nome
             }
 
-            if (info.event.extendedProps.placar_casa !== null && info.event.extendedProps.placar_adversario !== null) {
-                document.getElementById("visualizar_placar").innerText = info.event.extendedProps.placar_casa + " - " + info.event.extendedProps.placar_adversario;
+            function atualizaPlacar(placarCasa, placarAdversario) {
+                const placarCasaElem = document.getElementById("placar-casa");
+                const placarAdversarioElem = document.getElementById("placar-adversario");
+
+                if (placarCasaElem && placarAdversarioElem) {
+                    placarCasaElem.innerText = placarCasa !== null && placarCasa !== undefined ? placarCasa : "";
+                    placarAdversarioElem.innerText = placarAdversario !== null && placarAdversario !== undefined ? placarAdversario : "";
+                }
+            }
+
+            if (info.event.extendedProps.placar_casa !== null && info.event.extendedProps.placar_casa !== undefined &&
+                info.event.extendedProps.placar_adversario !== null && info.event.extendedProps.placar_adversario !== undefined) {
+                atualizaPlacar(info.event.extendedProps.placar_casa, info.event.extendedProps.placar_adversario);
             } else {
-                document.getElementById("visualizar_placar").innerText = ""; // Limpa o campo se o placar não estiver disponível
+                atualizaPlacar("", "");
             }
 
             document.getElementById("visualizar_start").innerText = info.event.start.toLocaleString();
             document.getElementById("visualizar_end").innerText = info.event.end !== null ? info.event.end.toLocaleString() : info.event.start.toLocaleString();
+
+            //document.getElementById("visualizar_estado").innerText = info.event.extendedProps.estado_uf;
+            document.getElementById("visualizar_cidade").innerText = info.event.extendedProps.cidade_nome + " - " + info.event.extendedProps.estado_uf;
+            document.getElementById("visualizar_local").innerText = info.event.extendedProps.local;
+            document.getElementById("visualizar_cep").innerText = info.event.extendedProps.cep ? info.event.extendedProps.cep : '';
+            document.getElementById("visualizar_rua").innerText = info.event.extendedProps.bairro + ", " + info.event.extendedProps.rua + ", " + info.event.extendedProps.numero;
+            document.getElementById("visualizar_complemento").innerText = info.event.extendedProps.complemento ? info.event.extendedProps.complemento : '';
+
 
             const btnPlacar = document.getElementById("btnPlacar");
             const endDate = info.event.end ? new Date(info.event.end) : new Date(info.event.start);
@@ -262,12 +282,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(data => {
                             if (data.status === 'success') {
                                 msgPlacarEvento.innerHTML = `<div class="alert alert-success" role="alert">Placar Salvo com Sucesso!</div>`;
-                                document.getElementById("visualizar_placar").innerText = placarCasa + " - " + placarAdversario;
+                                atualizaPlacar(placarCasa, placarAdversario); // Use a função atualizaPlacar aqui
                                 resetModal(); // Esconde os inputs após salvar
-                                removerMsgPlacar()
+                                removerMsgPlacar();
                             } else {
                                 msgPlacarEvento.innerHTML = `<div class="alert alert-danger" role="alert">Erro ao Salvar Placar!</div>`;
-                                removerMsgPlacar()
+                                removerMsgPlacar();
                             }
                         })
                         .catch(error => console.error("Erro:", error));
@@ -283,6 +303,9 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             $('#visualizarModal').on('hidden.bs.modal', function () {
+                eventDetails.style.display = 'none';
+                btnShowDetails.textContent = "Mostrar convocação";
+                detalhesVisiveis = false; // Resetar a flag
                 resetModal(); // Reseta os inputs sempre que o modal for fechado
             });
 
@@ -296,49 +319,161 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("edit_start").value = converterData(info.event.start);
             document.getElementById("edit_end").value = info.event.end !== null ? converterData(info.event.end) : converterData(info.event.start);
             document.getElementById("edit_color").value = info.event.backgroundColor;
+            document.getElementById("edit_estado").value = info.event.extendedProps.id_estado;
+            document.getElementById("edit_cep").value = info.event.extendedProps.cep;
+            document.getElementById("edit_rua").value = info.event.extendedProps.rua;
+            document.getElementById("edit_bairro").value = info.event.extendedProps.bairro;
+            document.getElementById("edit_numero").value = info.event.extendedProps.numero;
+            document.getElementById("edit_complemento").value = info.event.extendedProps.complemento;
+            document.getElementById("edit_local").value = info.event.extendedProps.local;
+
+            // Carregar as cidades com base no estado selecionado
+            var estadoId = info.event.extendedProps.id_estado;
+            var selectCidade = document.getElementById('edit_cidade');
+            selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+            if (estadoId) {
+                fetch('get_cidades.php?estado_id=' + estadoId)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.cidades.forEach(function (cidade) {
+                            var option = document.createElement('option');
+                            option.value = cidade.id;
+                            option.textContent = cidade.nome;
+                            selectCidade.appendChild(option);
+                        });
+
+                        // Definir o valor da cidade após o carregamento das opções
+                        document.getElementById("edit_cidade").value = info.event.extendedProps.id_cidade;
+                    })
+                    .catch(error => console.error('Erro ao carregar cidades:', error));
+            }
+
+            atualizarAssociadosEdicao(info.event.id);
+            const associados_id = info.event.extendedProps.associados_id ?
+                info.event.extendedProps.associados_id.split(',').map(id => id.trim()) : [];
+
+
+            // Atualiza os dados do modal de edição com os associados filtrados
+            function atualizarAssociadosEdicao(eventId) {
+                const select = document.getElementById('edit_associados');
+
+                // Capturar os IDs dos associados que já estão selecionados
+                const selecionados = Array.from(select.options)
+                    .filter(option => option.selected)
+                    .map(option => option.value);
+
+                // Capturar o gênero e modalidade do formulário
+                const genero = document.getElementById('edit_genero').value;
+                const modalidade = document.getElementById('edit_modalidade').value;
+                const filtrarPorModalidade = document.getElementById('filtrar_por_modalidade').checked; // Adapte o ID do checkbox se necessário
+
+                console.log('Gênero:', genero);
+                console.log('Modalidade:', modalidade);
+                console.log('Filtrar por Modalidade:', filtrarPorModalidade);
+
+                // Construir a URL da requisição com os parâmetros
+                let url = `get_associados.php?evento_id=${eventId}&genero=${encodeURIComponent(genero)}`;
+                if (filtrarPorModalidade) {
+                    url += `&modalidade=${encodeURIComponent(modalidade)}`;
+                }
+
+                console.log('URL:', url); // Adicione esta linha para verificar a URL da requisição
+
+                // Enviar requisição ao PHP com os parâmetros de gênero e modalidade
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Dados recebidos:', data);
+
+                        select.innerHTML = ''; // Limpar as opções existentes
+
+                        // Manter as opções previamente selecionadas
+                        selecionados.forEach(associadoId => {
+                            const option = document.createElement('option');
+                            option.value = associadoId;
+                            option.textContent = data.find(associado => associado.id === associadoId)?.nome || '';
+                            option.selected = true;
+                            select.appendChild(option);
+                        });
+
+                        // Adicionar as novas opções de associados filtrados
+                        data.forEach(associado => {
+                            if (!selecionados.includes(associado.id)) {
+                                const option = document.createElement('option');
+                                option.value = associado.id;
+                                option.textContent = associado.nome;
+                                select.appendChild(option);
+                            }
+                        });
+
+                        // Reinicializar o Select2 para refletir as mudanças
+                        $('#edit_associados').select2({
+                            theme: 'bootstrap-5',
+                            placeholder: "Selecione os associados",
+                            closeOnSelect: false,
+                            width: '100%'
+                        });
+
+                        $('#edit_associados').val(associados_id).trigger('change');
+                    })
+                    .catch(error => console.error('Erro ao buscar associados:', error));
+            }
+            // Adicionar eventos para chamar atualizarAssociados quando o gênero, modalidade ou checkbox mudar
+            document.getElementById('edit_genero').addEventListener('change', atualizarAssociadosEdicao);
+            document.getElementById('edit_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+            document.getElementById('filtrar_por_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+
+
 
             const btnShowDetails = document.getElementById('btnShowDetails');
             const eventDetails = document.getElementById('eventDetails');
             const eventDetailsContent = document.getElementById('eventDetailsContent');
             const associados = (info && info.event && info.event.extendedProps && info.event.extendedProps.associados) || 'Nenhum associado relacionado';
 
-            if (btnShowDetails && eventDetails && eventDetailsContent) {
-                btnShowDetails.addEventListener('click', function () {
-                    const isHidden = getComputedStyle(eventDetails).display === 'none';
+            // Variável de controle para saber se os detalhes estão visíveis ou ocultos
+            let detalhesVisiveis = false;
 
-                    if (isHidden) {
-                        // Mostrar detalhes
-                        eventDetails.style.display = 'block';
-                        eventDetailsContent.innerText = associados;
-                        btnShowDetails.textContent = "Ocultar convocação";
-                        // Scroll para o elemento
-                        eventDetails.scrollIntoView({
-                            behavior: 'smooth', // Faz o scroll suave
-                            block: 'start' // Alinha o elemento ao topo da tela
-                        });
-                    } else {
-                        // Ocultar detalhes
-                        eventDetails.style.display = 'none';
-                        btnShowDetails.textContent = "Mostrar detalhes";
-                    }
-                });
+            function toggleDetails() {
+                if (!detalhesVisiveis) {
+                    // Mostrar detalhes
+                    eventDetails.style.display = 'block';
+                    eventDetailsContent.innerText = associados;
+                    btnShowDetails.textContent = "Ocultar convocação";
+                    eventDetails.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                } else {
+                    // Ocultar detalhes
+                    eventDetails.style.display = 'none';
+                    btnShowDetails.textContent = "Mostrar convocação";
+                }
+                // Inverter o estado de visibilidade
+                detalhesVisiveis = !detalhesVisiveis;
+            }
+
+            // Adicionar o evento ao botão
+            if (btnShowDetails && eventDetails && eventDetailsContent) {
+                btnShowDetails.addEventListener('click', toggleDetails);
             }
 
 
             // Divida as modalidades em um array
-            const associados_id = info.event.extendedProps.associados_id ?
-                info.event.extendedProps.associados_id.split(',').map(id => id.trim()) : [];
 
             console.log(associados_id); // Verifica o array de IDs de associados_id
 
             // Defina os valores selecionados no Select2
-            $('#edit_associados').val(associados_id).trigger('change');
+            //$('#edit_associados').val(associados_id).trigger('change');
 
 
             var visualizarModal = new bootstrap.Modal(document.getElementById('visualizarModal'));
             // Abrir a janela modal visualizar
             visualizarModal.show();
+            
         },
+        
+        
         // Abrir a janela modal cadastrar quando clicar sobre o dia no calendário
         select: function (info) {
 
@@ -423,6 +558,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Enviar a mensagem para o HTML
                 msgCadEvento.innerHTML = `<div class="alert alert-danger" role="alert">${resposta['msg']}</div>`;
+                // Rolar o modal para o topo para que o usuário veja a mensagem de erro
+                const modal = document.querySelector('#cadastrarModal');
+                modal.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
 
             } else {
 
@@ -448,7 +589,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         genero: resposta['genero'],
                         associados: resposta['associados'],
                         modalidade_id: resposta['modalidade_id'], // Se disponível
-                        associados_id: resposta['associados_id']  // Se disponível
+                        associados_id: resposta['associados_id'],  // Se disponível
+                        cidade_id: resposta['cidade_id'],
+                        cidade_nome: resposta['cidade_nome'],
+                        estado_nome: resposta['estado_nome'],
+                        estado_uf: resposta['estado_uf'],
+                        rua: resposta['rua'],
+                        cep: resposta['cep'],
+                        bairro: resposta['bairro'],
+                        numero: resposta['numero'],
+                        complemento: resposta['complemento'],
+                        local: resposta['local'],
                     }
                 };
 
@@ -557,6 +708,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Enviar a mensagem para o HTML
                 msgEditEvento.innerHTML = `<div class="alert alert-danger" role="alert">${resposta['msg']}</div>`;
 
+                const modal = document.querySelector('#visualizarModal');
+                modal.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
             } else {
 
                 // Enviar a mensagem para o HTML
@@ -583,7 +740,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 calendar.refetchEvents();
                 $('#visualizarModal').modal('hide');
                 // Fechar a janela modal
-                visualizarModal.hide();
             }
 
             // Apresentar no botão o texto Editar
@@ -647,5 +803,76 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
+
     }
+    // Função para atualizar a lista de associados no modal de edição
+    /*function atualizarAssociadosEdicao() {
+
+        const genero = document.getElementById('edit_genero').value;
+        const modalidade = document.getElementById('edit_modalidade').value;
+        const filtrarPorModalidade = document.getElementById('filtrar_por_modalidade').checked; // Verificar se o checkbox está marcado
+        const select = document.getElementById('edit_associados');
+
+        // Capturar os IDs dos associados que já estão selecionados
+        const selecionadosIds = Array.from(select.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+
+        // Construir a URL da requisição dependendo se o filtro de modalidade está ativado
+        let url = `get_associados.php?genero=${encodeURIComponent(genero)}`;
+        if (filtrarPorModalidade) {
+            url += `&modalidade=${encodeURIComponent(modalidade)}`;
+        }
+
+        // Enviar requisição ao PHP com os parâmetros de gênero e modalidade (se aplicável)
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                select.innerHTML = ''; // Limpar as opções existentes
+
+                // Manter as opções previamente selecionadas
+                selecionadosIds.forEach(id => {
+                    const optionExistente = Array.from(select.options).find(option => option.value === id);
+                    if (!optionExistente) {
+                        const associadoPreviamenteSelecionado = data.find(associado => associado.id === id);
+                        if (associadoPreviamenteSelecionado) {
+                            const option = document.createElement('option');
+                            option.value = associadoPreviamenteSelecionado.id;
+                            option.textContent = associadoPreviamenteSelecionado.nome;
+                            option.selected = true;
+                            select.appendChild(option);
+                        }
+                    }
+                });
+
+                // Adicionar as novas opções de associados filtrados
+                data.forEach(associado => {
+                    if (!selecionadosIds.includes(associado.id)) {
+                        const option = document.createElement('option');
+                        option.value = associado.id;
+                        option.textContent = associado.nome;
+                        select.appendChild(option);
+                    }
+                });
+
+                // Reinicializar o Select2 para refletir as mudanças
+                $('#edit_associados').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: "Selecione os associados",
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+            })
+            .catch(error => console.error('Erro ao buscar associados:', error));
+    }
+
+    // Adicionar eventos para chamar atualizarAssociados quando o gênero, modalidade ou checkbox mudar
+    document.getElementById('edit_genero').addEventListener('change', atualizarAssociadosEdicao);
+    document.getElementById('edit_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+    document.getElementById('filtrar_por_modalidade').addEventListener('change', atualizarAssociadosEdicao);
+
+    // Forçar a atualização dos associados ao abrir o modal de edição
+    document.getElementById('visualizarModal').addEventListener('show.bs.modal', function () {
+        atualizarAssociadosEdicao();
+    });*/
 });

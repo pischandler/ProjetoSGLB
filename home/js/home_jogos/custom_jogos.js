@@ -87,7 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function createEventCard(event) {
         const startDate = formatDate(event.start);
-        const endDate = formatDate(event.end);
+        let endDate = formatDate(event.end);
+
+        // Se a data de fim for nula ou anterior à data de início, ajusta para que seja igual à de início
+        if (!event.end || endDate < startDate) {
+            endDate = startDate;
+        }
 
         let logoSrc = '';
         let displayAdversario = true;
@@ -309,8 +314,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                     adversarioElement.style.display = "none"; // Oculta o nome
                                 }
 
-                                document.getElementById('visualizar_start_jogos').innerText = formatDate(eventDetails.start);
-                                document.getElementById('visualizar_end_jogos').innerText = formatDate(eventDetails.end);
+                                const startDate = new Date(eventDetails.start);
+                                let endDateDate = eventDetails.end ? new Date(eventDetails.end) : null;
+
+                                // Ajusta a data de fim se for nula ou anterior à data de início
+                                if (!endDateDate || endDateDate < startDate) {
+                                    endDateDate = startDate; // Atribui a data de início à data de fim
+                                }
+
+                                // Atualiza os elementos com as datas formatadas
+                                document.getElementById('visualizar_start_jogos').innerText = formatDate(startDate);
+                                document.getElementById('visualizar_end_jogos').innerText = formatDate(endDateDate);
 
 
                                 const btnShowDetails = document.getElementById('btnShowDetails');
@@ -318,27 +332,38 @@ document.addEventListener("DOMContentLoaded", function () {
                                 const eventDetailsContent = document.getElementById('eventDetailsContent');
                                 const associados = (eventDetails.associados) || 'Nenhum associado relacionado';
 
-                                if (btnShowDetails && eventDetails1 && eventDetailsContent) {
-                                    btnShowDetails.addEventListener('click', function () {
-                                        const isHidden = getComputedStyle(eventDetails1).display === 'none';
+                                // Variável de controle para saber se os detalhes estão visíveis ou ocultos
+                                let detalhesVisiveis = false;
 
-                                        if (isHidden) {
-                                            // Mostrar detalhes
-                                            eventDetails1.style.display = 'block';
-                                            eventDetailsContent.innerText = associados;
-                                            btnShowDetails.textContent = "Ocultar convocação";
-                                            // Scroll para o elemento
-                                            eventDetails1.scrollIntoView({
-                                                behavior: 'smooth', // Faz o scroll suave
-                                                block: 'start' // Alinha o elemento ao topo da tela
-                                            });
-                                        } else {
-                                            // Ocultar detalhes
-                                            eventDetails1.style.display = 'none';
-                                            btnShowDetails.textContent = "Mostrar detalhes";
-                                        }
-                                    });
+                                function toggleDetails() {
+                                    if (!detalhesVisiveis) {
+                                        // Mostrar detalhes
+                                        eventDetails1.style.display = 'block';
+                                        eventDetailsContent.innerText = associados;
+                                        btnShowDetails.textContent = "Ocultar convocação";
+                                        eventDetails1.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'start'
+                                        });
+                                    } else {
+                                        // Ocultar detalhes
+                                        eventDetails1.style.display = 'none';
+                                        btnShowDetails.textContent = "Mostrar convocação";
+                                    }
+                                    // Inverter o estado de visibilidade
+                                    detalhesVisiveis = !detalhesVisiveis;
                                 }
+
+                                // Adicionar o evento ao botão
+                                if (btnShowDetails && eventDetails1 && eventDetailsContent) {
+                                    btnShowDetails.addEventListener('click', toggleDetails);
+                                }
+
+                                $('#visualizarModal_jogos').on('hidden.bs.modal', function () {
+                                    eventDetails1.style.display = 'none';
+                                    btnShowDetails.textContent = "Mostrar convocação";
+                                    detalhesVisiveis = false; // Resetar a flag
+                                });
 
                                 const btnEditEvento = document.getElementById('btnViewEditEvento_jogos');
                                 btnEditEvento.style.display = 'block';
@@ -361,9 +386,16 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById('edit_id_jogos').value = eventDetails.id;
                                     document.getElementById('edit_title_jogos').value = eventDetails.title;
                                     document.getElementById('edit_adversario_jogos').value = eventDetails.adversario;
+                                    document.getElementById('edit_genero_jogos').value = eventDetails.genero;
                                     document.getElementById('edit_modalidade_jogos').value = eventDetails.modalidade_id;
                                     document.getElementById('edit_start_jogos').value = adjustTimeForModal(eventDetails.start);
-                                    document.getElementById('edit_end_jogos').value = adjustTimeForModal(eventDetails.end);
+                                    // Verifica se a data de fim é nula ou anterior à data de início
+                                    let startDate = new Date(eventDetails.start);
+                                    let endDate = new Date(eventDetails.end);
+                                    if (!eventDetails.end || endDate < startDate) {
+                                        endDate = startDate;  // Atribui a data de início à data de fim
+                                    }
+                                    document.getElementById('edit_end_jogos').value = adjustTimeForModal(endDate);
                                     document.getElementById('edit_color_jogos').value = eventDetails.color;
 
                                     const modalidade_id = eventDetails.modalidade_id;

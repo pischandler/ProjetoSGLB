@@ -85,7 +85,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function createEventCard(event) {
         const startDate = formatDate(event.start);
-        const endDate = formatDate(event.end);
+        let endDate = formatDate(event.end);
+
+        // Se a data de fim for nula ou anterior à data de início, ajusta para que seja igual à de início
+        if (!event.end || endDate < startDate) {
+            endDate = startDate;
+        }
         let logoSrc = '';
         let displayAdversario = true;
         let backgroundColor = ''; // Cor padrão
@@ -333,34 +338,46 @@ document.addEventListener("DOMContentLoaded", function () {
                                 //document.getElementById('visualizar_associados').innerText = eventDetails.associados || 'Nenhum associado relacionado';
                                 //document.getElementById("visualizar_modalidade").innerText = eventDetails.modalidade
 
-                                document.getElementById('visualizar_start_historico').innerText = formatDate(eventDetails.start);
-                                document.getElementById('visualizar_end_historico').innerText = formatDate(eventDetails.end);
+                                const startDate = new Date(eventDetails.start);
+                                let endDateDate = eventDetails.end ? new Date(eventDetails.end) : null;
 
+                                // Ajusta a data de fim se for nula ou anterior à data de início
+                                if (!endDateDate || endDateDate < startDate) {
+                                    endDateDate = startDate; // Atribui a data de início à data de fim
+                                }
+
+                                // Atualiza os elementos com as datas formatadas
+                                document.getElementById('visualizar_start_historico').innerText = formatDate(startDate);
+                                document.getElementById('visualizar_end_historico').innerText = formatDate(endDateDate);
                                 const btnShowDetails2 = document.getElementById('btnShowDetails2');
                                 const eventDetails2 = document.getElementById('eventDetails2');
                                 const eventDetailsContent2 = document.getElementById('eventDetailsContent2');
                                 const associados = (eventDetails.associados) || 'Nenhum associado relacionado';
 
-                                if (btnShowDetails2 && eventDetails2 && eventDetailsContent2) {
-                                    btnShowDetails2.addEventListener('click', function () {
-                                        const isHidden = getComputedStyle(eventDetails2).display === 'none';
+                                let detalhesVisiveis = false;
 
-                                        if (isHidden) {
-                                            // Mostrar detalhes
-                                            eventDetails2.style.display = 'block';
-                                            eventDetailsContent2.innerText = associados;
-                                            btnShowDetails2.textContent = "Ocultar convocação";
-                                            // Scroll para o elemento
-                                            eventDetails2.scrollIntoView({
-                                                behavior: 'smooth', // Faz o scroll suave
-                                                block: 'start' // Alinha o elemento ao topo da tela
-                                            });
-                                        } else {
-                                            // Ocultar detalhes
-                                            eventDetails2.style.display = 'none';
-                                            btnShowDetails2.textContent = "Mostrar detalhes";
-                                        }
-                                    });
+                                function toggleDetails2() {
+                                    if (!detalhesVisiveis) {
+                                        // Mostrar detalhes
+                                        eventDetails2.style.display = 'block';
+                                        eventDetailsContent2.innerText = associados;
+                                        btnShowDetails2.textContent = "Ocultar convocação";
+                                        eventDetails2.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'start'
+                                        });
+                                    } else {
+                                        // Ocultar detalhes
+                                        eventDetails2.style.display = 'none';
+                                        btnShowDetails2.textContent = "Mostrar convocação";
+                                    }
+                                    // Inverter o estado de visibilidade
+                                    detalhesVisiveis = !detalhesVisiveis;
+                                }
+
+                                // Adicionar o evento ao botão
+                                if (btnShowDetails2 && eventDetails2 && eventDetailsContent2) {
+                                    btnShowDetails2.addEventListener('click', toggleDetails2);
                                 }
 
                                 const btnPlacar = document.getElementById("btnPlacar");
@@ -503,7 +520,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                     console.log(eventDetails.placar_casa);
                                 });
 
-                                $('#visualizarModal').on('hidden.bs.modal', function () {
+                                $('#visualizarModal_historico').on('hidden.bs.modal', function () {
+                                    eventDetails2.style.display = 'none';
+                                    btnShowDetails2.textContent = "Mostrar convocação";
+                                    detalhesVisiveis = false; // Resetar a flag
                                     resetModal(); // Reseta os inputs sempre que o modal for fechado
                                 });
 
@@ -529,10 +549,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById('editarEvento_historico').style.display = 'block';
                                     document.getElementById('edit_id_historico').value = eventDetails.id;
                                     document.getElementById('edit_title_historico').value = eventDetails.title;
+                                    document.getElementById('edit_genero_historico').value = eventDetails.genero;
                                     document.getElementById('edit_adversario_historico').value = eventDetails.adversario;
                                     document.getElementById('edit_modalidade_historico').value = eventDetails.modalidade_id;
                                     document.getElementById('edit_start_historico').value = adjustTimeForModal(eventDetails.start);
-                                    document.getElementById('edit_end_historico').value = adjustTimeForModal(eventDetails.end);
+                                    // Verifica se a data de fim é nula ou anterior à data de início
+                                    let startDate = new Date(eventDetails.start);
+                                    let endDate = new Date(eventDetails.end);
+                                    if (!eventDetails.end || endDate < startDate) {
+                                        endDate = startDate;  // Atribui a data de início à data de fim
+                                    }
+                                    document.getElementById('edit_end_historico').value = adjustTimeForModal(endDate);
                                     document.getElementById('edit_color_historico').value = eventDetails.color;
 
                                     // Divida as modalidades em um array

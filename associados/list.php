@@ -12,10 +12,10 @@ if (!empty($pagina)) {
 
     // Adicionar o termo de pesquisa na consulta
     $searchCondition = !empty($searchTerm) ? "WHERE a.nome LIKE :searchTerm OR a.email LIKE :searchTerm" : "";
-    
+
     // Consulta SQL ajustada para incluir as modalidades
     $query_associados = "
-        SELECT a.id, a.nome, a.email, GROUP_CONCAT(m.nome SEPARATOR ', ') AS modalidades
+        SELECT a.id, a.nome, a.email, a.curso, GROUP_CONCAT(m.nome SEPARATOR ', ') AS modalidades
         FROM associados a
         LEFT JOIN associado_modalidade am ON a.id = am.associado_id
         LEFT JOIN modalidade m ON am.modalidade_id = m.id
@@ -25,13 +25,13 @@ if (!empty($pagina)) {
         LIMIT $inicio, $qnt_result_pg";
 
     $result_associados = $conn->prepare($query_associados);
-    
+
     // Bind do termo de pesquisa se ele estiver definido
     if (!empty($searchTerm)) {
         $searchTerm = "%$searchTerm%";
         $result_associados->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
     }
-    
+
     $result_associados->execute();
 
     $dados = "<div class='table-responsive'>
@@ -39,6 +39,7 @@ if (!empty($pagina)) {
             <thead>
                 <tr>
                     <th>Nome</th>
+                    <th>Curso</th>
                     <th>E-mail</th>
                     <th>Modalidades</th>
                     <th>Ações</th>
@@ -50,6 +51,7 @@ if (!empty($pagina)) {
         extract($row_associado);
         $dados .= "<tr>
                     <td>$nome</td>
+                    <td>$curso</td>
                     <td>$email</td>
                     <td>$modalidades</td>
                     <td>
@@ -72,7 +74,7 @@ if (!empty($pagina)) {
     if (!empty($searchTerm)) {
         $result_pg->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
     }
-    
+
     $result_pg->execute();
     $row_pg = $result_pg->fetch(PDO::FETCH_ASSOC);
 
@@ -106,4 +108,3 @@ if (!empty($pagina)) {
 } else {
     echo "<div class='alert alert-danger' role='alert'>Erro: Nenhum associado encontrado!</div>";
 }
-?>

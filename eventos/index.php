@@ -37,40 +37,44 @@ $header = gerarHeader($_SESSION['nome']);
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
     <script src="https://kit.fontawesome.com/5414af6fb5.js" crossorigin="anonymous"></script>
     <link href="css/custom.css" rel="stylesheet">
-    <title>Página Inicial</title>
+    <link rel="icon" href="../assets/imagemLosBravos.png" type="image/png">
+    <title>Eventos</title>
     <style>
-.header {
-    width: 100%;
-    height: 110px;
-    background-color: #d30909;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centraliza os itens do header */
-    padding: 0 20px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: top 0.3s ease-in-out;
-}
+        .header {
+            width: 100%;
+            height: 110px;
+            background-color: #d30909;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Centraliza os itens do header */
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: top 0.3s ease-in-out;
+        }
 
-.header-left {
-    position: absolute; /* Posiciona o logo à esquerda */
-    left: 20px; /* Ajusta a distância da margem esquerda */
-    display: flex;
-    align-items: center;
-}
+        .header-left {
+            position: absolute;
+            /* Posiciona o logo à esquerda */
+            left: 20px;
+            /* Ajusta a distância da margem esquerda */
+            display: flex;
+            align-items: center;
+        }
 
-.header-left img {
-    margin-left: 10px;
-}
+        .header-left img {
+            margin-left: 10px;
+        }
 
-#header-title {
-    margin: 0;
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-}
+        #header-title {
+            margin: 0;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
 
         .sidebar {
             background-color: #d30909;
@@ -141,9 +145,7 @@ $header = gerarHeader($_SESSION['nome']);
                     <div id="visualizarEvento">
 
                         <dl class="row">
-
-                            <dt class="col-sm-3">ID: </dt>
-                            <dd class="col-sm-9" id="visualizar_id"></dd>
+                            <dd class="col-sm-9" id="visualizar_id" style="display: none;"></dd>
 
                             <dt class="col-sm-3">Título: </dt>
                             <dd class="col-sm-9" id="visualizar_title"></dd>
@@ -153,6 +155,12 @@ $header = gerarHeader($_SESSION['nome']);
 
                             <dt class="col-sm-3">Fim: </dt>
                             <dd class="col-sm-9" id="visualizar_end"></dd>
+
+                            <dt class="col-sm-3">Estado: </dt>
+                            <dd class="col-sm-9" id="visualizar_estado"></dd>
+
+                            <dt class="col-sm-3">Cidade: </dt>
+                            <dd class="col-sm-9" id="visualizar_cidade"></dd>
 
                         </dl>
 
@@ -206,6 +214,25 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
                                         <option style="color:#228B22;" value="#228B22">Verde</option>
                                         <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <label for="edit_estado" class="col-sm-2 col-form-label">Estado:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_estado" class="form-control" id="edit_estado">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cidade" class="col-sm-2 col-form-label">Cidade:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_cidade" class="form-control" id="edit_cidade">
+                                        <option value="">Selecione</option>
                                     </select>
                                 </div>
                             </div>
@@ -277,6 +304,66 @@ $header = gerarHeader($_SESSION['nome']);
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="cad_estado" class="col-sm-2 col-form-label">Estado:</label>
+                            <div class="col-sm-10">
+                                <select name="cad_estado" class="form-control" id="cad_estado">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="cad_cidade" class="col-sm-2 col-form-label">Cidade:</label>
+                            <div class="col-sm-10">
+                                <select name="cad_cidade" class="form-control" id="cad_cidade">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                                <label for="cad_local" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_local" name="cad_local" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_cep" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_cep" name="cad_cep" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_bairro" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_bairro" name="cad_bairro" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_rua" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_rua" name="cad_rua" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_numero" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cad_numero" name="cad_numero" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="cad_complemento" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="cad_complemento" name="cad_complemento" placeholder="Digite o complemento">
+                                </div>
+                            </div>
+
                         <button type="submit" name="btnCadEvento" class="btn btn-success" id="btnCadEvento">Cadastrar</button>
 
                     </form>
@@ -294,6 +381,76 @@ $header = gerarHeader($_SESSION['nome']);
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+            // Carregar estados
+            fetch('get_estados.php')
+                .then(response => response.json())
+                .then(data => {
+                    var selectEstado = document.getElementById('cad_estado');
+                    data.estados.forEach(function(estado) {
+                        var option = document.createElement('option');
+                        option.value = estado.id;
+                        option.textContent = estado.uf;
+                        selectEstado.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar estados:', error));
+
+            // Atualizar cidades quando um estado é selecionado
+            document.getElementById('cad_estado').addEventListener('change', function() {
+                var estadoId = this.value;
+                var selectCidade = document.getElementById('cad_cidade');
+                selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                if (estadoId) {
+                    fetch('get_cidades.php?estado_id=' + estadoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.cidades.forEach(function(cidade) {
+                                var option = document.createElement('option');
+                                option.value = cidade.id;
+                                option.textContent = cidade.nome;
+                                selectCidade.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao carregar cidades:', error));
+                }
+            });
+
+            // Carregar estados
+            fetch('get_estados.php')
+                .then(response => response.json())
+                .then(data => {
+                    var selectEstado = document.getElementById('edit_estado');
+                    data.estados.forEach(function(estado) {
+                        var option = document.createElement('option');
+                        option.value = estado.id;
+                        option.textContent = estado.uf;
+                        selectEstado.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar estados:', error));
+
+            // Atualizar cidades quando um estado é selecionado
+            document.getElementById('edit_estado').addEventListener('change', function() {
+                var estadoId = this.value;
+                var selectCidade = document.getElementById('edit_cidade');
+                selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                if (estadoId) {
+                    fetch('get_cidades.php?estado_id=' + estadoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.cidades.forEach(function(cidade) {
+                                var option = document.createElement('option');
+                                option.value = cidade.id;
+                                option.textContent = cidade.nome;
+                                selectCidade.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao carregar cidades:', error));
+                }
+            });
             var lastScrollTop = 0;
             var header = document.querySelector(".header");
 
@@ -328,7 +485,7 @@ $header = gerarHeader($_SESSION['nome']);
         }
 
         // Exemplo de uso:
-        setHeaderContent("Eventos Sociais");
+        setHeaderContent("Página de Eventos");
     </script>
 
 </body>

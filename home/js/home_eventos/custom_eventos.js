@@ -4,18 +4,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const visualizarModal = new bootstrap.Modal(visualizarModalElement);
 
     function createEventCard(event) {
-        const startDate = new Date(event.start).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
-        const endDate = new Date(event.end).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+        const startDate = new Date(event.start);
+        let endDate = new Date(event.end);
+
+        // Se a data de fim for nula ou anterior à data de início, ajusta para que seja igual à de início
+        if (!event.end || endDate < startDate) {
+            endDate = startDate;
+        }
+
+        const formattedStartDate = startDate.toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+        const formattedEndDate = endDate.toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
 
         return `
             <div class="event-card-events" data-id="${event.id}" style="background-color: ${event.color}; cursor: pointer;">
                 <h3>${event.title}</h3>
                 <div class="event-dates">
                     <div class="start-time">
-                        <strong>Início:</br></strong> ${startDate}
+                        <strong>Início:</br></strong> ${formattedStartDate}
                     </div>
                     <div class="end-time">
-                        <strong>Fim:</br></strong> ${endDate}
+                        <strong>Fim:</br></strong> ${formattedEndDate}
                     </div>
                 </div>
             </div>
@@ -40,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
                 
-                // Adiciona o manipulador de eventos ao botão
                 document.getElementById('goToEventsPage').addEventListener('click', function() {
                     window.location.href = '/SGLB/eventos';
                 });
@@ -57,21 +64,31 @@ document.addEventListener("DOMContentLoaded", function () {
                             const eventDetails = events.find(e => e.id === parseInt(eventId));
 
                             if (eventDetails) {
+                                const startDate = new Date(eventDetails.start);
+                                let endDate = new Date(eventDetails.end);
+
+                                // Verifica se a data de fim é nula ou anterior à de início
+                                if (!eventDetails.end || endDate < startDate) {
+                                    endDate = startDate;  // Atribui a data de início à data de fim
+                                }
+
+                                const formattedStartDate = startDate.toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+                                const formattedEndDate = endDate.toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+
                                 document.getElementById('visualizar_id').innerText = eventDetails.id;
                                 document.getElementById('visualizar_title').innerText = eventDetails.title;
-                                document.getElementById('visualizar_start').innerText = new Date(eventDetails.start).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
-                                document.getElementById('visualizar_end').innerText = new Date(eventDetails.end).toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+                                document.getElementById('visualizar_start').innerText = formattedStartDate;
+                                document.getElementById('visualizar_end').innerText = formattedEndDate;
 
                                 const btnEditEvento = document.getElementById('btnViewEditEvento');
                                 btnEditEvento.style.display = 'block';
 
                                 visualizarModal.show();
 
-                                // Resetar modal ao fechar
                                 visualizarModalElement.addEventListener('hidden.bs.modal', function () {
                                     document.querySelector('#modalBody').style.display = 'block';
                                     document.getElementById('editarEvento').style.display = 'none';
-                                    document.querySelector('#modalDialog').style.maxWidth = ''; // Reseta o tamanho do modal
+                                    document.querySelector('#modalDialog').style.maxWidth = '';
                                 });
 
                                 btnEditEvento.addEventListener('click', function () {
@@ -79,34 +96,40 @@ document.addEventListener("DOMContentLoaded", function () {
                                         const date = new Date(time);
                                         const userTimezoneOffset = date.getTimezoneOffset() * 60000;
                                         const adjustedDate = new Date(date.getTime() - userTimezoneOffset);
-                                        return adjustedDate.toISOString().slice(0, 16); // Retorna no formato YYYY-MM-DDTHH:MM
+                                        return adjustedDate.toISOString().slice(0, 16);
                                     };
 
                                     document.getElementById('editarEvento').style.display = 'block';
                                     document.getElementById('edit_id').value = eventDetails.id;
                                     document.getElementById('edit_title').value = eventDetails.title;
                                     document.getElementById('edit_start').value = adjustTimeForModal(eventDetails.start);
-                                    document.getElementById('edit_end').value = adjustTimeForModal(eventDetails.end);
+
+                                    // Verifica se a data de fim é nula ou anterior à data de início
+                                    let startDate = new Date(eventDetails.start);
+                                    let endDate = new Date(eventDetails.end);
+                                    if (!eventDetails.end || endDate < startDate) {
+                                        endDate = startDate;  // Atribui a data de início à data de fim
+                                    }
+                                    document.getElementById('edit_end').value = adjustTimeForModal(endDate);
+
                                     document.getElementById('edit_color').value = eventDetails.color;
 
                                     document.querySelector('#modalBody').style.display = 'none';
 
-                                    // Aumentar o tamanho do modal ao editar
-                                    document.querySelector('#modalContent').style.padding = '20px'; // Adiciona padding ao conteúdo
+                                    document.querySelector('#modalContent').style.padding = '20px';
 
                                     document.getElementById('btnViewEvento').addEventListener('click', function () {
                                         document.querySelector('#modalBody').style.display = 'block';
                                         document.getElementById('editarEvento').style.display = 'none';
 
-                                        // Resetar o tamanho do modal
-                                        document.querySelector('#modalDialog').style.maxWidth = ''; // Reseta o tamanho do modal
-                                        document.querySelector('#modalContent').style.padding = ''; // Reseta o padding
+                                        document.querySelector('#modalDialog').style.maxWidth = '';
+                                        document.querySelector('#modalContent').style.padding = '';
                                     });
 
                                     function removerMsgEdit() {
                                         setTimeout(() => {
                                             document.getElementById('msgEditEvento').innerHTML = "";
-                                        }, 3000)
+                                        }, 3000);
                                     }
 
                                     document.getElementById('formEditEvento').addEventListener('submit', function (e) {
@@ -121,9 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                             .then(response => response.json())
                                             .then(data => {
                                                 if (data.status) {
-                                        msgEditEvento.innerHTML = `<div class="alert alert-success" role="alert">Evento Editado com Sucesso.</div>`;
-                                        removerMsgEdit();
-                                                    loadEvents();  // Recarregar os eventos para refletir as mudanças
+                                                    msgEditEvento.innerHTML = `<div class="alert alert-success" role="alert">Evento Editado com Sucesso.</div>`;
+                                                    removerMsgEdit();
+                                                    loadEvents();
                                                 } else {
                                                     msgEditEvento.innerHTML = `<div class="alert alert-danger" role="alert">Erro ao Editar Evento.</div>`;
                                                     removerMsgEdit();
@@ -143,11 +166,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Receber o SELETOR apagar evento
     const btnApagarEvento = document.getElementById("btnApagarEvento");
 
     if (btnApagarEvento) {
-
         btnApagarEvento.addEventListener("click", async () => {
             const confirmacao = window.confirm("Tem certeza de que deseja apagar este evento?");
 
@@ -169,7 +190,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             msg.innerHTML = `<div class="alert alert-success" role="alert">${resposta.msg}</div>`;
                         }
 
-                        // Chama loadEvents para atualizar a lista
                         loadEvents();
 
                         const visualizarModal = bootstrap.Modal.getInstance(visualizarModalElement);
@@ -178,7 +198,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }
 
-                    // Chamar a função para remover a mensagem após 3 segundos
                     setTimeout(() => {
                         const msg = document.getElementById('msg');
                         if (msg) {
@@ -192,5 +211,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    loadEvents(); // Inicializa a lista de eventos ao carregar a página
+    loadEvents();
 });

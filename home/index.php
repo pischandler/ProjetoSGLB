@@ -41,6 +41,7 @@ $header = gerarHeader($_SESSION['nome']);
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
     <script src="https://kit.fontawesome.com/5414af6fb5.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="../assets/imagemLosBravos.png" type="image/png">
     <title>Página Inicial</title>
     <link rel="stylesheet" href="style.css">
     <style>
@@ -165,8 +166,7 @@ $header = gerarHeader($_SESSION['nome']);
                     </div>
                     <div class="modal-body" id="modalBody">
                         <dl class="row">
-                            <dt class="col-sm-3">ID: </dt>
-                            <dd class="col-sm-9" id="visualizar_id"></dd>
+                            <span class="col-sm-9" id="visualizar_id" style="display: none;"></span>
 
                             <dt class="col-sm-3">Título: </dt>
                             <dd class="col-sm-9" id="visualizar_title"></dd>

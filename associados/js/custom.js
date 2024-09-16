@@ -9,6 +9,108 @@ const cadModal = new bootstrap.Modal(document.getElementById("cadAssociadoModal"
 const searchInput = document.getElementById("searchTerm");
 
 
+var cep = document.getElementById("cep");
+cep.addEventListener("input", () => {
+
+    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+    var limparValor = cep.value.replace(/\D/g, '').substring(0, 8);
+
+    // Converte o valor limpo em um array de números
+    var numerosArray = limparValor.split("");
+
+    var numeroFormatado = "";
+
+    // Adiciona os primeiros 5 dígitos
+    if (numerosArray.length > 0) {
+        numeroFormatado += numerosArray.slice(0, 5).join("");
+    }
+
+    // Adiciona o hífen e os 3 dígitos finais, se existirem
+    if (numerosArray.length > 5) {
+        numeroFormatado += `-${numerosArray.slice(5, 8).join("")}`;
+    }
+
+    // Atualiza o valor no campo de entrada
+    cep.value = numeroFormatado;
+
+});
+
+var edit_cep = document.getElementById("edit_cep");
+edit_cep.addEventListener("input", () => {
+
+    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+    var limparValor = edit_cep.value.replace(/\D/g, '').substring(0, 8);
+
+    // Converte o valor limpo em um array de números
+    var numerosArray = limparValor.split("");
+
+    var numeroFormatado = "";
+
+    // Adiciona os primeiros 5 dígitos
+    if (numerosArray.length > 0) {
+        numeroFormatado += numerosArray.slice(0, 5).join("");
+    }
+
+    // Adiciona o hífen e os 3 dígitos finais, se existirem
+    if (numerosArray.length > 5) {
+        numeroFormatado += `-${numerosArray.slice(5, 8).join("")}`;
+    }
+
+    // Atualiza o valor no campo de entrada
+    edit_cep.value = numeroFormatado;
+
+});
+
+var celular = document.getElementById("celular");
+celular.addEventListener("input", () => {
+
+    var limparValor = celular.value.replace(/\D/g, '').substring(0, 11);
+
+    var numerosArray = limparValor.split("");
+
+    var numeroFormatado = "";
+
+    if (numerosArray.length > 0) {
+        numeroFormatado += `(${numerosArray.slice(0, 2).join("")})`;
+    }
+
+    if (numerosArray.length > 2) {
+        numeroFormatado += ` ${numerosArray.slice(2, 7).join("")}`;
+    }
+
+    if (numerosArray.length > 7) {
+        numeroFormatado += `-${numerosArray.slice(7, 11).join("")}`;
+    }
+
+    celular.value = numeroFormatado;
+
+});
+
+var edit_celular = document.getElementById("edit_celular");
+edit_celular.addEventListener("input", () => {
+
+    var limparValor = edit_celular.value.replace(/\D/g, '').substring(0, 11);
+
+    var numerosArray = limparValor.split("");
+
+    var numeroFormatado = "";
+
+    if (numerosArray.length > 0) {
+        numeroFormatado += `(${numerosArray.slice(0, 2).join("")})`;
+    }
+
+    if (numerosArray.length > 2) {
+        numeroFormatado += ` ${numerosArray.slice(2, 7).join("")}`;
+    }
+
+    if (numerosArray.length > 7) {
+        numeroFormatado += `-${numerosArray.slice(7, 11).join("")}`;
+    }
+
+    edit_celular.value = numeroFormatado;
+
+});
+
 // Função para formatar CPF
 function formatarCPF(cpf) {
     cpf = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos
@@ -106,12 +208,89 @@ async function visAssociado(id) {
         document.getElementById("visualizar_id").innerHTML = resposta['dados'].id;
         document.getElementById("visualizar_nome").innerHTML = resposta['dados'].nome;
         document.getElementById("visualizar_email").innerHTML = resposta['dados'].email;
+        document.getElementById("visualizar_celular").innerHTML = resposta['dados'].celular;
+        document.getElementById("visualizar_ativo").innerHTML = resposta['dados'].ativo;
         document.getElementById("visualizar_cpf").innerHTML = formatarCPF(resposta['dados'].cpf); // Aplica a formatação
         document.getElementById("visualizar_genero").innerHTML = resposta['dados'].genero;
         document.getElementById("visualizar_modalidade").innerHTML = resposta['dados'].modalidades; // Adiciona as modalidades
+        document.getElementById("visualizar_curso").innerHTML = resposta['dados'].curso;
+        document.getElementById("visualizar_cep").innerHTML = resposta['dados'].cep;
+        document.getElementById("visualizar_bairro").innerHTML = resposta['dados'].bairro;
+        document.getElementById("visualizar_rua").innerHTML = resposta['dados'].rua;
+        // Inserção dos dados do local
+        document.getElementById("visualizar_estado").innerHTML = resposta.dados.estado_nome || 'Estado não informado';
+        document.getElementById("visualizar_cidade").innerHTML = resposta.dados.cidade_nome || 'Cidade não informada';
+        document.getElementById("visualizar_cep").innerHTML = resposta['dados'].cep || 'CEP não informado';
+        document.getElementById("visualizar_bairro").innerHTML = resposta['dados'].bairro || 'Bairro não informado';
+        document.getElementById("visualizar_rua").innerHTML = resposta['dados'].rua || 'Rua não informada';
+        document.getElementById("visualizar_numero_resid").innerHTML = resposta['dados'].numero_resid || 'Número não informado';
+        document.getElementById("visualizar_complemento").innerHTML = resposta['dados'].complemento || 'Complemento não informado';
+
+        // Seleciona o botão e a div de detalhes do local
+        const btnDetalhesLocal = document.getElementById('btnDetalhesLocal');
+        const detalhesLocal = document.getElementById('detalhes_local');
+
+        // Variável de controle para saber se os detalhes estão visíveis ou ocultos
+        let detalhesLocalVisiveis = false;
+
+        // Função para alternar a visibilidade da div de local
+        function toggleLocalDetails() {
+            if (!detalhesLocalVisiveis) {
+                // Mostrar detalhes do local
+                detalhesLocal.style.display = 'block';
+                btnDetalhesLocal.textContent = "Ocultar Informações do Local";
+                detalhesLocal.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                // Ocultar detalhes do local
+                detalhesLocal.style.display = 'none';
+                btnDetalhesLocal.textContent = "Mostrar Informações do Local";
+            }
+            // Inverter o estado de visibilidade
+            detalhesLocalVisiveis = !detalhesLocalVisiveis;
+        }
+
+        // Adicionar o evento ao botão de local
+        btnDetalhesLocal.addEventListener('click', toggleLocalDetails);
+
+        // Verifica se os dados do responsável estão disponíveis antes de inseri-los
+        document.getElementById("visualizar_nome_responsavel").innerHTML = resposta['dados'].nome_responsavel || 'Nenhum responsável relacionado';
+        document.getElementById("visualizar_telefone_responsavel").innerHTML = resposta['dados'].telefone_responsavel || 'Nenhum telefone cadastrado';
+
+        // Seleciona o botão e a div de detalhes do responsável
+        const btnDetalhesResponsavel = document.getElementById('btnDetalhesResponsavel');
+        const detalhesResponsavel = document.getElementById('detalhes_responsavel');
+
+        // Variável de controle para saber se os detalhes estão visíveis ou ocultos
+        let detalhesVisiveis = false;
+
+        // Função para alternar a visibilidade da div
+        function toggleDetails() {
+            if (!detalhesVisiveis) {
+                // Mostrar detalhes
+                detalhesResponsavel.style.display = 'block';
+                btnDetalhesResponsavel.textContent = "Ocultar Informações do Responsável";
+                detalhesResponsavel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                // Ocultar detalhes
+                detalhesResponsavel.style.display = 'none';
+                btnDetalhesResponsavel.textContent = "Mostrar Informações do Responsável";
+            }
+            // Inverter o estado de visibilidade
+            detalhesVisiveis = !detalhesVisiveis;
+        }
+
+        // Adicionar o evento ao botão
+        btnDetalhesResponsavel.addEventListener('click', toggleDetails);
 
     }
 }
+
 
 // Função para carregar os dados do associado no formulário de edição
 async function editAssociadoDados(id) {
@@ -127,9 +306,66 @@ async function editAssociadoDados(id) {
         editModal.show();
         document.getElementById("edit_id").value = resposta['dados'].id;
         document.getElementById("edit_nome").value = resposta['dados'].nome;
+        document.getElementById("edit_celular").value = resposta['dados'].celular;
         document.getElementById("edit_email").value = resposta['dados'].email;
-        document.getElementById("edit_cpf").value = formatarCPF(resposta['dados'].cpf); // Aplica a formatação
+        document.getElementById("edit_cpf").value = formatarCPF(resposta['dados'].cpf);
         document.getElementById("edit_genero").value = resposta['dados'].genero;
+        document.getElementById("edit_curso").value = resposta['dados'].curso;
+        document.getElementById("edit_cep").value = resposta['dados'].cep;
+        document.getElementById("edit_bairro").value = resposta['dados'].bairro;
+        document.getElementById("edit_rua").value = resposta['dados'].rua;
+        document.getElementById("edit_numero_resid").value = resposta['dados'].numero_resid;
+        document.getElementById("edit_complemento").value = resposta['dados'].complemento;
+        document.getElementById("edit_nome_responsavel").value = resposta['dados'].nome_responsavel;
+        document.getElementById("edit_telefone_responsavel").value = resposta['dados'].telefone_responsavel;
+        document.getElementById("edit_estado").value = resposta.dados.estado_id_rec;
+
+        // Carregar estados
+        fetch('get_estados.php')
+            .then(response => response.json())
+            .then(data => {
+                const selectEstado = document.getElementById('edit_estado');
+                data.estados.forEach(function (estado) {
+                    const option = document.createElement('option');
+                    option.value = estado.id;
+                    option.textContent = estado.uf;
+                    selectEstado.appendChild(option);
+                });
+
+                // Selecionar o estado atual
+                selectEstado.value = resposta.dados.estado_id_rec;
+
+                // Após selecionar o estado, carregar as cidades automaticamente
+                carregarCidades(resposta.dados.estado_id_rec, resposta.dados.cidade_id_rec);
+            })
+            .catch(error => console.error('Erro ao carregar estados:', error));
+    }
+}
+
+// Função para carregar cidades e selecionar a cidade correspondente
+function carregarCidades(estadoId, cidadeId) {
+    const selectCidade = document.getElementById('edit_cidade');
+    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+    if (estadoId) {
+        fetch('get_cidades.php?estado_id=' + estadoId)
+            .then(response => response.json())
+            .then(data => {
+                data.cidades.forEach(function (cidade) {
+                    const option = document.createElement('option');
+                    option.value = cidade.id;
+                    option.textContent = cidade.nome;
+                    selectCidade.appendChild(option);
+                });
+
+                // Selecionar a cidade se estiver definida
+                if (cidadeId) {
+                    selectCidade.value = cidadeId;
+                }
+            })
+            .catch(error => console.error('Erro ao carregar cidades:', error));
+
+
 
         // Divida as modalidades em um array
         const modalidades_id = resposta['dados'].modalidades_id.split(',').map(id => id.trim());
@@ -140,6 +376,11 @@ async function editAssociadoDados(id) {
         $('#edit_modalidades').val(modalidades_id).trigger('change');
     }
 }
+// Atualizar cidades quando um estado é selecionado manualmente
+document.getElementById('edit_estado').addEventListener('change', function () {
+    const estadoId = this.value;
+    carregarCidades(estadoId, null); // Carregar cidades sem uma cidade pré-selecionada
+});
 
 // Evento de submissão do formulário de edição
 editForm.addEventListener("submit", async (e) => {

@@ -5,7 +5,7 @@ include_once './conexao.php';
 
 // QUERY para recuperar os eventos, os associados e a modalidade relacionada
 $query_events = "
-    SELECT j.id, j.title, j.color, j.start, j.end, j.adversario, 
+    SELECT j.id, j.title, j.color, j.start, j.end, j.adversario, j.genero, 
            j.placar_casa, j.placar_adversario, -- Adicionar placar
            m.nome AS modalidade,
            m.id AS modalidade_id,
@@ -42,6 +42,7 @@ while ($row_events = $result_events->fetch(PDO::FETCH_ASSOC)) {
         'color' => $color,
         'start' => $start,
         'end' => $end,
+        'genero' => $genero,
         'modalidade' => $modalidade,
         'modalidade_id' => $modalidade_id,
         'associados' => $associados,

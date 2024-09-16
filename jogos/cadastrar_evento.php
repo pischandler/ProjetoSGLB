@@ -10,9 +10,69 @@ include_once './conexao.php';
 // Receber os dados enviados pelo JavaScript
 $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+// Validação dos campos existentes
+if (empty($dados['cad_title'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Categoria.']);
+    exit;
+}
+
+if (empty($dados['cad_adversario'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Adversário']);
+    exit;
+}
+if (empty($dados['cad_genero'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Gênero']);
+    exit;
+}
+if (empty($dados['cad_modalidade'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário selecionar a Modalidade']);
+    exit;
+}
+if (empty($dados['cad_cidade'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário selecionar a Cidade']);
+    exit;
+}
+
+// Validação dos novos campos
+
+// Verificar se o campo Local está preenchido
+if (empty($dados['cad_local'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Local']);
+    exit;
+}
+
+// Verificar se o campo Rua está preenchido
+if (empty($dados['cad_rua'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Rua']);
+    exit;
+}
+
+// Verificar se o campo Bairro está preenchido
+if (empty($dados['cad_bairro'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Bairro']);
+    exit;
+}
+
+// Verificar se o campo Número está preenchido
+if (empty($dados['cad_numero'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Número']);
+    exit;
+}
+
+// Verificar se o CEP está preenchido e se tem o formato correto
+if (empty($dados['cad_cep'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo CEP']);
+    exit;
+}if (!preg_match('/^\d{5}-?\d{3}$/', $dados['cad_cep'])) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: O CEP deve conter 8 dígitos numéricos, com ou sem hífen.']);
+    exit;
+}
+
 try {
-    // Criar a QUERY para cadastrar evento no banco de dados
-    $query_cad_event = "INSERT INTO jogos (title, color, start, end, adversario, placar_casa, placar_adversario, genero) VALUES (:title, :color, :start, :end, :adversario, :placar_casa, :placar_adversario, :genero)";
+    // Criar a QUERY para cadastrar evento no banco de dados, agora incluindo os novos campos
+    $query_cad_event = "INSERT INTO jogos (title, color, start, end, adversario, placar_casa, placar_adversario, genero, cidade_id, rua, local, cep, bairro, numero, complemento) 
+                        VALUES (:title, :color, :start, :end, :adversario, :placar_casa, :placar_adversario, :genero, :cidade_id, :rua, :local, :cep, :bairro, :numero, :complemento)";
+    
     $cad_event = $conn->prepare($query_cad_event);
 
     // Substituir o link pelo valor
@@ -24,6 +84,15 @@ try {
     $cad_event->bindParam(':adversario', $dados['cad_adversario']);
     $cad_event->bindParam(':placar_casa', $dados['cad_placar_casa']);
     $cad_event->bindParam(':placar_adversario', $dados['cad_placar_adversario']);
+    $cad_event->bindParam(':cidade_id', $dados['cad_cidade']);
+
+    // Bind dos novos campos
+    $cad_event->bindParam(':rua', $dados['cad_rua']);
+    $cad_event->bindParam(':local', $dados['cad_local']);
+    $cad_event->bindParam(':cep', $dados['cad_cep']);
+    $cad_event->bindParam(':bairro', $dados['cad_bairro']);
+    $cad_event->bindParam(':numero', $dados['cad_numero']);
+    $cad_event->bindParam(':complemento', $dados['cad_complemento']);
 
     // Executar a query
     if ($cad_event->execute()) {
@@ -37,8 +106,8 @@ try {
         $cad_modalidade_jogo->execute();
 
         // Inserir associados relacionados ao evento
-        $associados = []; // Cria um array vazio para armazenar os nomes dos associados
-        $associados_ids = []; // Cria um array para armazenar os IDs dos associados
+        $associados = [];
+        $associados_ids = [];
         if (!empty($dados['associados'])) {
             foreach ($dados['associados'] as $associado_id) {
                 $query_associado_jogo = "INSERT INTO associado_jogo (associado_id, jogo_id) VALUES (:associado_id, :jogo_id)";
@@ -54,7 +123,7 @@ try {
                 $stmt_associado_nome->execute();
                 $nome_associado = $stmt_associado_nome->fetchColumn();
                 $associados[] = $nome_associado;
-                $associados_ids[] = $associado_id; // Armazena o ID do associado
+                $associados_ids[] = $associado_id;
             }
         }
 
@@ -64,7 +133,17 @@ try {
         $stmt_modalidade_nome->bindParam(':modalidade_id', $dados['cad_modalidade']);
         $stmt_modalidade_nome->execute();
         $modalidade = $stmt_modalidade_nome->fetchColumn();
-        
+
+        // Consulta para obter os nomes da cidade e do estado
+        $query_info_local = "SELECT c.nome AS cidade_nome, es.nome AS estado_nome, es.uf AS estado_uf
+                             FROM cidades c
+                             LEFT JOIN estados es ON c.id_estado = es.id
+                             WHERE c.id = :cidade_id";
+        $info_local = $conn->prepare($query_info_local);
+        $info_local->bindParam(':cidade_id', $dados['cad_cidade']);
+        $info_local->execute();
+        $local = $info_local->fetch(PDO::FETCH_ASSOC);
+
         // Preparar a resposta
         $retorna = [
             'status' => true,
@@ -77,11 +156,21 @@ try {
             'end' => $dados['cad_end'],
             'genero' => $dados['cad_genero'],
             'placar_adversario' => $dados['cad_placar_adversario'],
-            'placar_adversario' => $dados['cad_placar_adversario'],
-            'modalidade' => $modalidade, // Inclui o nome da modalidade
-            'modalidade_id' => strval($dados['cad_modalidade']), // Inclui o ID da modalidade como string
-            'associados' => implode("\n", $associados), // Inclui o nome dos associados com quebras de linha
-            'associados_id' => implode(',', $associados_ids) // Inclui os IDs dos associados separados por vírgulas
+            'placar_casa' => $dados['cad_placar_casa'],
+            'modalidade' => $modalidade,
+            'modalidade_id' => strval($dados['cad_modalidade']),
+            'associados' => implode("\n", $associados),
+            'associados_id' => implode(',', $associados_ids),
+            'cidade_nome' => $local['cidade_nome'] ?? '',
+            'estado_nome' => $local['estado_nome'] ?? '',
+            'estado_uf' => $local['estado_uf'] ?? '',
+            // Incluindo os novos campos na resposta
+            'rua' => $dados['cad_rua'],
+            'local' => $dados['cad_local'],
+            'cep' => $dados['cad_cep'],
+            'bairro' => $dados['cad_bairro'],
+            'numero' => $dados['cad_numero'],
+            'complemento' => $dados['cad_complemento']
         ];
     } else {
         $retorna = ['status' => false, 'msg' => 'Erro: Evento não cadastrado!'];

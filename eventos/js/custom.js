@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
     // Receber o SELETOR da janela modal cadastrar
-    const cadastrarModal = new bootstrap.Modal(document.getElementById("cadastrarModal")); 
+    const cadastrarModal = new bootstrap.Modal(document.getElementById("cadastrarModal"));
 
     // Receber o SELETOR da janela modal visualizar
     const visualizarModal = new bootstrap.Modal(document.getElementById("visualizarModal"));
@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("visualizar_title").innerText = info.event.title;
             document.getElementById("visualizar_start").innerText = info.event.start.toLocaleString();
             document.getElementById("visualizar_end").innerText = info.event.end !== null ? info.event.end.toLocaleString() : info.event.start.toLocaleString();
+            document.getElementById("visualizar_estado").innerText = info.event.extendedProps.estado_nome;
+            document.getElementById("visualizar_cidade").innerText = info.event.extendedProps.cidade_nome;
+            console.log(info.event.cidade_nome);
 
             // Enviar os dados do evento para o formulário editar
             document.getElementById("edit_id").value = info.event.id;
@@ -74,10 +77,39 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("edit_start").value = converterData(info.event.start);
             document.getElementById("edit_end").value = info.event.end !== null ? converterData(info.event.end) : converterData(info.event.start);
             document.getElementById("edit_color").value = info.event.backgroundColor;
+            document.getElementById("edit_estado").value = info.event.extendedProps.id_estado;
+
+            // Carregar as cidades com base no estado selecionado
+            var estadoId = info.event.extendedProps.id_estado;
+            var selectCidade = document.getElementById('edit_cidade');
+            selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+            if (estadoId) {
+                fetch('get_cidades.php?estado_id=' + estadoId)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.cidades.forEach(function (cidade) {
+                            var option = document.createElement('option');
+                            option.value = cidade.id;
+                            option.textContent = cidade.nome;
+                            selectCidade.appendChild(option);
+                        });
+
+                        // Definir o valor da cidade após o carregamento das opções
+                        document.getElementById("edit_cidade").value = info.event.extendedProps.id_cidade;
+                    })
+                    .catch(error => console.error('Erro ao carregar cidades:', error));
+            }
 
             // Abrir a janela modal visualizar
             visualizarModal.show();
         },
+
+
+
+
+
+
         // Abrir a janela modal cadastrar quando clicar sobre o dia no calendário
         select: function (info) {
 
@@ -178,8 +210,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     color: resposta['color'],
                     start: resposta['start'],
                     end: resposta['end'],
+                    extendedProps: {
+                        cidade_id: resposta['cidade_id'],
+                        cidade_nome: resposta['cidade_nome'],
+                        estado_nome: resposta['estado_nome'],
+                    }
                 }
-
+                console.log(novoEvento); // Verifique o conteúdo do objeto
                 // Adicionar o evento ao calendário
                 calendar.addEvent(novoEvento);
 
@@ -295,12 +332,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Verificar se encontrou o evento no FullCalendar pelo id
                 if (eventoExiste) {
-
                     // Atualizar os atributos do evento com os novos valores do banco de dados
                     eventoExiste.setProp('title', resposta['title']);
                     eventoExiste.setProp('color', resposta['color']);
                     eventoExiste.setStart(resposta['start']);
                     eventoExiste.setEnd(resposta['end']);
+
+                    // Atualizar as propriedades estendidas (se estiver usando)
+                    eventoExiste.setExtendedProp('cidade_id', resposta['cidade_id']);
+                    eventoExiste.setExtendedProp('cidade_nome', resposta['cidade_nome']);
+                    eventoExiste.setExtendedProp('estado_nome', resposta['estado_nome']);
+                    eventoExiste.setExtendedProp('estado_uf', resposta['estado_uf']);
                 }
 
                 // Chamar a função para remover a mensagem após 3 segundo
@@ -340,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const resposta = await dados.json();
 
                 // Acessa o IF quando não cadastrar com sucesso
-                if(!resposta['status']){
+                if (!resposta['status']) {
 
                     // Enviar a mensagem para o HTML
                     msgViewEvento.innerHTML = `<div class="alert alert-danger" role="alert">${resposta['msg']}</div>`;
@@ -356,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const eventoExisteRemover = calendar.getEventById(idEvento);
 
                     // Verificar se encontrou o evento no FullCalendar
-                    if(eventoExisteRemover){
+                    if (eventoExisteRemover) {
 
                         // Remover o evento do calendário
                         eventoExisteRemover.remove();
