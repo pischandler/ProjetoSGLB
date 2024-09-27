@@ -162,6 +162,24 @@ $header = gerarHeader($_SESSION['nome']);
                             <dt class="col-sm-3">Cidade: </dt>
                             <dd class="col-sm-9" id="visualizar_cidade"></dd>
 
+                            <dt class="col-sm-3">Local: </dt>
+                            <dd class="col-sm-9" id="visualizar_local"></dd>
+
+                            <dt class="col-sm-3">Cep: </dt>
+                            <dd class="col-sm-9" id="visualizar_cep"></dd>
+
+                            <dt class="col-sm-3">Bairro: </dt>
+                            <dd class="col-sm-9" id="visualizar_bairro"></dd>
+
+                            <dt class="col-sm-3">Rua: </dt>
+                            <dd class="col-sm-9" id="visualizar_rua"></dd>
+
+                            <dt class="col-sm-3">Número: </dt>
+                            <dd class="col-sm-9" id="visualizar_numero"></dd>
+
+                            <dt class="col-sm-3">Complemento: </dt>
+                            <dd class="col-sm-9" id="visualizar_complemento"></dd>
+
                         </dl>
 
                         <button type="button" class="btn btn-warning" id="btnViewEditEvento">Editar</button>
@@ -204,7 +222,6 @@ $header = gerarHeader($_SESSION['nome']);
                                 <div class="col-sm-10">
                                     <select name="edit_color" class="form-control" id="edit_color">
                                         <option value="">Selecione</option>
-                                        <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
                                         <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
                                         <option style="color:#FF4500;" value="#FF4500">Laranja</option>
                                         <option style="color:#8B4513;" value="#8B4513">Marrom</option>
@@ -234,6 +251,48 @@ $header = gerarHeader($_SESSION['nome']);
                                     <select name="edit_cidade" class="form-control" id="edit_cidade">
                                         <option value="">Selecione</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_local" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_local" name="edit_local" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cep" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_cep" name="edit_cep" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_bairro" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_bairro" name="edit_bairro" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_rua" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_rua" name="edit_rua" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_numero" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_numero" name="edit_numero" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_complemento" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="edit_complemento" name="edit_complemento" placeholder="Digite o complemento">
                                 </div>
                             </div>
 
@@ -290,7 +349,6 @@ $header = gerarHeader($_SESSION['nome']);
                             <div class="col-sm-10">
                                 <select name="cad_color" class="form-control" id="cad_color">
                                     <option value="">Selecione</option>
-                                    <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
                                     <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
                                     <option style="color:#FF4500;" value="#FF4500">Laranja</option>
                                     <option style="color:#8B4513;" value="#8B4513">Marrom</option>
@@ -364,7 +422,7 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
 
-                        <button type="submit" name="btnCadEvento" class="btn btn-success" id="btnCadEvento">Cadastrar</button>
+                        <button type="submit" name="btnCadEvento" class="btn btn-success" id="btnCadEvento">Salvar</button>
 
                     </form>
 
@@ -381,6 +439,29 @@ $header = gerarHeader($_SESSION['nome']);
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            var cep = document.getElementById("cad_cep");
+            if (cep) {
+                cep.addEventListener("input", () => {
+                    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                    var limparValor = cep.value.replace(/\D/g, '').substring(0, 8);
+                    // Adiciona o hífen e os 3 dígitos finais, se existirem
+                    var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                    // Atualiza o valor no campo de entrada
+                    cep.value = numeroFormatado;
+                });
+            }
+
+            var edit_cep = document.getElementById("edit_cep");
+            if (edit_cep) {
+                edit_cep.addEventListener("input", () => {
+                    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                    var limparValor = edit_cep.value.replace(/\D/g, '').substring(0, 8);
+                    // Adiciona o hífen e os 3 dígitos finais, se existirem
+                    var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                    // Atualiza o valor no campo de entrada
+                    edit_cep.value = numeroFormatado;
+                });
+            }
 
             // Carregar estados
             fetch('get_estados.php')

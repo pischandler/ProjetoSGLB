@@ -69,6 +69,13 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("visualizar_end").innerText = info.event.end !== null ? info.event.end.toLocaleString() : info.event.start.toLocaleString();
             document.getElementById("visualizar_estado").innerText = info.event.extendedProps.estado_nome;
             document.getElementById("visualizar_cidade").innerText = info.event.extendedProps.cidade_nome;
+            document.getElementById("visualizar_cep").innerText = info.event.extendedProps.cep;
+            document.getElementById("visualizar_local").innerText = info.event.extendedProps.local;
+            document.getElementById("visualizar_bairro").innerText = info.event.extendedProps.bairro;
+            document.getElementById("visualizar_rua").innerText = info.event.extendedProps.rua;
+            document.getElementById("visualizar_numero").innerText = info.event.extendedProps.numero;
+            document.getElementById("visualizar_complemento").innerText = info.event.extendedProps.complemento;
+
             console.log(info.event.cidade_nome);
 
             // Enviar os dados do evento para o formulário editar
@@ -78,6 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("edit_end").value = info.event.end !== null ? converterData(info.event.end) : converterData(info.event.start);
             document.getElementById("edit_color").value = info.event.backgroundColor;
             document.getElementById("edit_estado").value = info.event.extendedProps.id_estado;
+            document.getElementById("edit_cep").value = info.event.extendedProps.cep;
+            document.getElementById("edit_local").value = info.event.extendedProps.local;
+            document.getElementById("edit_bairro").value = info.event.extendedProps.bairro;
+            document.getElementById("edit_rua").value = info.event.extendedProps.rua;
+            document.getElementById("edit_numero").value = info.event.extendedProps.numero;
+            document.getElementById("edit_complemento").value = info.event.extendedProps.complemento;
 
             // Carregar as cidades com base no estado selecionado
             var estadoId = info.event.extendedProps.id_estado;
@@ -214,6 +227,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         cidade_id: resposta['cidade_id'],
                         cidade_nome: resposta['cidade_nome'],
                         estado_nome: resposta['estado_nome'],
+                        rua: resposta['rua'],
+                        bairro: resposta['bairro'],
+                        local: resposta['local'],
+                        cep: resposta['cep'],
+                        complemento: resposta['complemento'],
+                        numero: resposta['numero'],
                     }
                 }
                 console.log(novoEvento); // Verifique o conteúdo do objeto
@@ -343,6 +362,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     eventoExiste.setExtendedProp('cidade_nome', resposta['cidade_nome']);
                     eventoExiste.setExtendedProp('estado_nome', resposta['estado_nome']);
                     eventoExiste.setExtendedProp('estado_uf', resposta['estado_uf']);
+                    eventoExiste.setExtendedProp('cep', resposta['cep']);
+                    eventoExiste.setExtendedProp('rua', resposta['rua']);
+                    eventoExiste.setExtendedProp('bairro', resposta['bairro']);
+                    eventoExiste.setExtendedProp('numero', resposta['numero']);
+                    eventoExiste.setExtendedProp('complemento', resposta['complemento']);
+                    eventoExiste.setExtendedProp('local', resposta['local']);
                 }
 
                 // Chamar a função para remover a mensagem após 3 segundo

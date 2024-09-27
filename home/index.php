@@ -176,12 +176,38 @@ $header = gerarHeader($_SESSION['nome']);
 
                             <dt class="col-sm-3">Fim: </dt>
                             <dd class="col-sm-9" id="visualizar_end"></dd>
+
+                            <dt class="col-sm-3">Estado: </dt>
+                            <dd class="col-sm-9" id="visualizar_estado"></dd>
+
+                            <dt class="col-sm-3">Cidade: </dt>
+                            <dd class="col-sm-9" id="visualizar_cidade"></dd>
+
+                            <dt class="col-sm-3">Local: </dt>
+                            <dd class="col-sm-9" id="visualizar_local"></dd>
+
+                            <dt class="col-sm-3">Cep: </dt>
+                            <dd class="col-sm-9" id="visualizar_cep"></dd>
+
+                            <dt class="col-sm-3">Bairro: </dt>
+                            <dd class="col-sm-9" id="visualizar_bairro"></dd>
+
+                            <dt class="col-sm-3">Rua: </dt>
+                            <dd class="col-sm-9" id="visualizar_rua"></dd>
+
+                            <dt class="col-sm-3">Número: </dt>
+                            <dd class="col-sm-9" id="visualizar_numero"></dd>
+
+                            <dt class="col-sm-3">Complemento: </dt>
+                            <dd class="col-sm-9" id="visualizar_complemento"></dd>
                         </dl>
                         <div class="d-flex mt-3">
                             <button type="button" class="btn btn-warning me-2" id="btnViewEditEvento">Editar</button>
                             <button type="button" class="btn btn-danger" id="btnApagarEvento">Apagar</button>
                         </div>
                     </div>
+
+
                     <div id="editarEvento" style="display: none;">
                         <span id="msgEditEvento"></span>
                         <form method="POST" id="formEditEvento">
@@ -213,7 +239,6 @@ $header = gerarHeader($_SESSION['nome']);
                                 <div class="col-sm-10">
                                     <select name="edit_color" class="form-control" id="edit_color">
                                         <option value="">Selecione</option>
-                                        <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
                                         <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
                                         <option style="color:#FF4500;" value="#FF4500">Laranja</option>
                                         <option style="color:#8B4513;" value="#8B4513">Marrom</option>
@@ -224,6 +249,66 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option style="color:#228B22;" value="#228B22">Verde</option>
                                         <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_estado" class="col-sm-2 col-form-label">Estado:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_estado" class="form-control" id="edit_estado">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cidade" class="col-sm-2 col-form-label">Cidade:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_cidade" class="form-control" id="edit_cidade">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_local" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_local" name="edit_local" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cep" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_cep" name="edit_cep" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_bairro" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_bairro" name="edit_bairro" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_rua" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_rua" name="edit_rua" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_numero" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_numero" name="edit_numero" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_complemento" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="edit_complemento" name="edit_complemento" placeholder="Digite o complemento">
                                 </div>
                             </div>
 
@@ -280,12 +365,20 @@ $header = gerarHeader($_SESSION['nome']);
 
                             <dt class="d-flex align-items-center justify-content-center">Fim: </dt>
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_end_jogos"></dd>
+                            
 
-                            <!--<dt class="col-sm-3">Modalidade: </dt>-->
-                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_modalidade_jogos"></dd>
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_cidade_jogos"></dd>
 
-                            <!--<dt class="col-sm-3">Gênero: </dt>-->
-                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_gen_jogos"></dd>
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_local_jogos"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_cep_jogos"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_bairro_jogos"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_rua_jogos"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_complemento_jogos"></dd>
+
 
                             <!--<dt class="col-sm-3">Associados: </dt>
                             <dd class="col-sm-9" id="visualizar_associados"></dd>-->
@@ -397,7 +490,7 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option value="">Selecione</option>
                                         <option value="Masculino">Masculino</option>
                                         <option value="Feminino">Feminino</option>
-                                        <option value="Outro">Outro</option>
+                                        <option value="Misto">Misto</option>
                                     </select>
                                 </div>
                             </div>
@@ -422,6 +515,66 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option value="12">Xadrez</option>
                                         <!-- Adicione mais modalidades conforme necessário -->
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_estado_jogos" class="col-sm-2 col-form-label">Estado:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_estado_jogos" class="form-control" id="edit_estado_jogos">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cidade_jogos" class="col-sm-2 col-form-label">Cidade:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_cidade_jogos" class="form-control" id="edit_cidade_jogos">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_local_jogos" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_local_jogos" name="edit_local_jogos" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cep_jogos" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_cep_jogos" name="edit_cep_jogos" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_bairro_jogos" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_bairro_jogos" name="edit_bairro_jogos" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_rua_jogos" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_rua_jogos" name="edit_rua_jogos" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_numero_jogos" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_numero_jogos" name="edit_numero_jogos" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_complemento_jogos" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="edit_complemento_jogos" name="edit_complemento_jogos" placeholder="Digite o complemento">
                                 </div>
                             </div>
 
@@ -496,16 +649,42 @@ $header = gerarHeader($_SESSION['nome']);
                                 </div>
                             </div>
                             <div class="row mb-3"></div>
+                            <div class="row mb-3"></div>
+
+                            <div class="row mb-3"></div>
+                            <div id="placar-container" class="placar-display">
+                                <div id="placar-casa" class="digito"></div>
+                                <div class="digito-separador">-</div>
+                                <div id="placar-adversario" class="digito"></div>
+                            </div>
+
                             <div id="modalPlacar" class="d-flex flex-column align-items-center justify-content-center">
+                                
                                 <div id="inputPlacar" class="p-3 border rounded" style="display: none; width: 100%; max-width: 400px;">
                                     <div class="form-group mb-3">
                                         <label for="placar_casa" class="form-label">Placar Casa:</label>
-                                        <input type="number" class="form-control" id="placar_casa" min="0" placeholder="Digite o placar da casa">
+                                        <input type="number" class="form-control" id="placar_casa" min="0" max="999" placeholder="Digite o placar da casa">
                                     </div>
+
                                     <div class="form-group mb-3">
                                         <label for="placar_adversario" class="form-label">Placar Adversário:</label>
-                                        <input type="number" class="form-control" id="placar_adversario" min="0" placeholder="Digite o placar do adversário">
+                                        <input type="number" class="form-control" id="placar_adversario" min="0" max="999" placeholder="Digite o placar do adversário">
                                     </div>
+
+                                    <script>
+                                        document.querySelectorAll('input[type="number"]').forEach(function(input) {
+                                            input.addEventListener('input', function(e) {
+                                                // Remove caracteres não numéricos
+                                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                                                // Limita a 3 caracteres
+                                                if (e.target.value.length > 3) {
+                                                    e.target.value = e.target.value.slice(0, 3);
+                                                }
+                                            });
+                                        });
+                                    </script>
+
                                     <div class="d-flex justify-content-between">
                                         <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
                                         <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
@@ -514,12 +693,23 @@ $header = gerarHeader($_SESSION['nome']);
                                 <button class="btn btn-primary mt-3" id="btnPlacar">Adicionar Placar</button>
                             </div>
 
-                            <div class="row mb-3"></div>
                             <dt class="d-flex align-items-center justify-content-center">Início: </dt>
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_start_historico"></dd>
 
                             <dt class="d-flex align-items-center justify-content-center">Fim: </dt>
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_end_historico"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_cidade_historico"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_local_historico"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_cep_historico"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_bairro_historico"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_rua_historico"></dd>
+
+                            <dd class="col-sm-9 text-center mx-auto" id="visualizar_complemento_historico"></dd>
 
                             <!--<dt class="col-sm-3">Modalidade: </dt>-->
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_modalidade_historico"></dd>
@@ -636,7 +826,7 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option value="">Selecione</option>
                                         <option value="Masculino">Masculino</option>
                                         <option value="Feminino">Feminino</option>
-                                        <option value="Outro">Outro</option>
+                                        <option value="Misto">Misto</option>
                                     </select>
                                 </div>
                             </div>
@@ -661,6 +851,66 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option value="12">Xadrez</option>
                                         <!-- Adicione mais modalidades conforme necessário -->
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_estado_historico" class="col-sm-2 col-form-label">Estado:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_estado_historico" class="form-control" id="edit_estado_historico">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cidade_historico" class="col-sm-2 col-form-label">Cidade:</label>
+                                <div class="col-sm-10">
+                                    <select name="edit_cidade_historico" class="form-control" id="edit_cidade_historico">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_local_historico" class="col-sm-2 col-form-label">Local:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_local_historico" name="edit_local_historico" placeholder="Digite o local">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_cep_historico" class="col-sm-2 col-form-label">CEP:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_cep_historico" name="edit_cep_historico" placeholder="Digite o CEP">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_bairro_historico" class="col-sm-2 col-form-label">Bairro:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_bairro_historico" name="edit_bairro_historico" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_rua_historico" class="col-sm-2 col-form-label">Rua:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_rua_historico" name="edit_rua_historico" placeholder="Digite o nome da rua">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_numero_historico" class="col-sm-2 col-form-label">Número:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="edit_numero_historico" name="edit_numero_historico" placeholder="Digite o número">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="edit_complemento_historico" class="col-sm-3 col-form-label">Complemento:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="edit_complemento_historico" name="edit_complemento_historico" placeholder="Digite o complemento">
                                 </div>
                             </div>
 
@@ -762,6 +1012,152 @@ $header = gerarHeader($_SESSION['nome']);
             });
 
             document.addEventListener("DOMContentLoaded", function() {
+                var edit_cep = document.getElementById("edit_cep");
+                if (edit_cep) {
+                    edit_cep.addEventListener("input", () => {
+                        // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                        var limparValor = edit_cep.value.replace(/\D/g, '').substring(0, 8);
+                        // Adiciona o hífen e os 3 dígitos finais, se existirem
+                        var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                        // Atualiza o valor no campo de entrada
+                        edit_cep.value = numeroFormatado;
+                    });
+                }
+
+                fetch('get_estados.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        var selectEstado = document.getElementById('edit_estado');
+                        data.estados.forEach(function(estado) {
+                            var option = document.createElement('option');
+                            option.value = estado.id;
+                            option.textContent = estado.uf;
+                            selectEstado.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar estados:', error));
+
+                // Atualizar cidades quando um estado é selecionado
+                document.getElementById('edit_estado').addEventListener('change', function() {
+                    var estadoId = this.value;
+                    var selectCidade = document.getElementById('edit_cidade');
+                    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                    if (estadoId) {
+                        fetch('get_cidades.php?estado_id=' + estadoId)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.cidades.forEach(function(cidade) {
+                                    var option = document.createElement('option');
+                                    option.value = cidade.id;
+                                    option.textContent = cidade.nome;
+                                    selectCidade.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar cidades:', error));
+                    }
+                });
+
+
+                //edit_cidade_jogos
+
+                var edit_cep = document.getElementById("edit_cep_jogos");
+                if (edit_cep) {
+                    edit_cep.addEventListener("input", () => {
+                        // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                        var limparValor = edit_cep.value.replace(/\D/g, '').substring(0, 8);
+                        // Adiciona o hífen e os 3 dígitos finais, se existirem
+                        var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                        // Atualiza o valor no campo de entrada
+                        edit_cep.value = numeroFormatado;
+                    });
+                }
+
+                fetch('get_estados.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        var selectEstado = document.getElementById('edit_estado_jogos');
+                        data.estados.forEach(function(estado) {
+                            var option = document.createElement('option');
+                            option.value = estado.id;
+                            option.textContent = estado.uf;
+                            selectEstado.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar estados:', error));
+
+                // Atualizar cidades quando um estado é selecionado
+                document.getElementById('edit_estado_jogos').addEventListener('change', function() {
+                    var estadoId = this.value;
+                    var selectCidade = document.getElementById('edit_cidade_jogos');
+                    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                    if (estadoId) {
+                        fetch('get_cidades.php?estado_id=' + estadoId)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.cidades.forEach(function(cidade) {
+                                    var option = document.createElement('option');
+                                    option.value = cidade.id;
+                                    option.textContent = cidade.nome;
+                                    selectCidade.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar cidades:', error));
+                    }
+                });
+
+
+
+                //edit cidade historico
+
+                var edit_cep = document.getElementById("edit_cep_historico");
+                if (edit_cep) {
+                    edit_cep.addEventListener("input", () => {
+                        // Remove todos os caracteres não numéricos e limita a 8 dígitos
+                        var limparValor = edit_cep.value.replace(/\D/g, '').substring(0, 8);
+                        // Adiciona o hífen e os 3 dígitos finais, se existirem
+                        var numeroFormatado = limparValor.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                        // Atualiza o valor no campo de entrada
+                        edit_cep.value = numeroFormatado;
+                    });
+                }
+
+                fetch('get_estados.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        var selectEstado = document.getElementById('edit_estado_historico');
+                        data.estados.forEach(function(estado) {
+                            var option = document.createElement('option');
+                            option.value = estado.id;
+                            option.textContent = estado.uf;
+                            selectEstado.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar estados:', error));
+
+                // Atualizar cidades quando um estado é selecionado
+                document.getElementById('edit_estado_historico').addEventListener('change', function() {
+                    var estadoId = this.value;
+                    var selectCidade = document.getElementById('edit_cidade_historico');
+                    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                    if (estadoId) {
+                        fetch('get_cidades.php?estado_id=' + estadoId)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.cidades.forEach(function(cidade) {
+                                    var option = document.createElement('option');
+                                    option.value = cidade.id;
+                                    option.textContent = cidade.nome;
+                                    selectCidade.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar cidades:', error));
+                    }
+                });
+
+
                 var lastScrollTop = 0;
                 var header = document.querySelector(".header");
 

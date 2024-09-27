@@ -7,7 +7,7 @@ if (!empty($id)) {
 
     // Consulta para obter informações do associado, cidade e estado
     $query_associados = "
-        SELECT a.id, a.nome, a.email, a.cpf, a.genero, a.celular, a.ddi, a.cep, a.bairro, a.rua, a.complemento, a.numero_resid, a.ddi_responsavel, a.telefone_responsavel,
+        SELECT a.id, a.nome, a.email, a.cpf, a.genero, a.celular, a.ddi, a.cep, a.bairro, a.ra, a.rua, a.complemento, a.numero_resid, a.ddi_responsavel, a.telefone_responsavel,
                a.nome_responsavel, a.curso, a.formado, a.ativo, a.cidade_id,
                c.nome AS cidade_nome, e.nome AS estado_nome, e.uf AS estado_uf, c.id AS cidade_id_rec, e.id AS estado_id_rec,
                GROUP_CONCAT(m.nome SEPARATOR ', ') AS modalidades,

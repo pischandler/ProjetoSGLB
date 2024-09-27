@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap'); /* Fonte que simula dígitos de 7 segmentos */
+
 body {
   padding: 0;
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
@@ -27,42 +29,41 @@ body {
   object-fit: contain;
 }
 
-/* Estiliza o container do placar para centralização */
 .placar-display {
   display: flex;
-  align-items: center; /* Alinha verticalmente os dígitos */
-  justify-content: center; /* Alinha horizontalmente o placar */
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 2.5rem; /* Ajuste o tamanho conforme necessário */
-  color: #ff0000; /* Cor do texto (cor dos dígitos) */
-  background-color: #000; /* Fundo do placar */
-  padding: 10px; /* Espaçamento interno */
-  border-radius: 10px; /* Borda arredondada para um design mais suave */
-  width: fit-content; /* Ajusta a largura ao conteúdo */
-  margin: 0 auto; /* Centraliza o contêiner no meio da página */
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace; /* Fonte estilo 7 segmentos */
+  font-size: 4rem; /* Tamanho do texto do placar */
+  color: #ff0000; /* Cor dos números */
+  background-color: #000000; /* Fundo do placar */
+  padding: 10px 20px;
+  border-radius: 15px; /* Bordas arredondadas */
+  width: fit-content;
+  margin: 0 auto;
 }
 
-/* Estiliza o separador (-) */
 .digito-separador {
-  font-size: 2.5rem;
+  font-size: 4rem; /* Aumenta o tamanho do separador para dar mais destaque */
   color: #ff0000;
-  margin: 0 15px; /* Espaçamento entre os números e o separador */
+  margin: 0 10px; /* Aumenta o espaçamento do separador (-) */
 }
 
-/* Estiliza os dígitos individuais */
 .digito {
   display: inline-block;
-  text-align: center; /* Centraliza o texto dentro de cada dígito */
-  width: 3rem; /* Largura dos dígitos - ajustado para mais espaço */
-  height: 4.5rem; /* Altura dos dígitos - ajustado para mais espaço */
-  background-color: #333; /* Cor de fundo dos dígitos */
+  width: 5rem; /* Ajusta a largura dos dígitos para comportar 3 números */
+  height: 6rem; /* Ajusta a altura dos dígitos */
+  background-color: #333; /* Fundo dos dígitos */
   color: #ff0000; /* Cor dos dígitos */
-  border-radius: 5px; /* Bordas arredondadas para os dígitos */
-  line-height: 4.5rem; /* Alinha verticalmente o texto dentro dos dígitos */
-  margin: 0 5px; /* Espaçamento entre os dígitos */
-  font-weight: 900; /* Aumenta a grossura dos números */
-  text-shadow: 1px 1px 2px #000000; /* Sombra para dar mais destaque */
+  border-radius: 8px; /* Bordas arredondadas dos dígitos */
+  line-height: 6rem; /* Centraliza verticalmente o texto dentro dos dígitos */
+  text-align: center; /* Centraliza o texto dentro dos dígitos */
+  font-weight: bold; /* Destaca os dígitos */
+  margin: 0 5px; /* Espaçamento ajustado entre os dígitos */
+  text-shadow: 2px 2px 3px #000000; /* Sombra para destacar mais os números */
 }
+
+
 
 #eventDetails {
   display: none; /* Inicialmente oculto */

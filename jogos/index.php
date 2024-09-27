@@ -184,15 +184,32 @@ $header = gerarHeader($_SESSION['nome']);
                             </div>
 
                             <div id="modalPlacar" class="d-flex flex-column align-items-center justify-content-center">
+                                
                                 <div id="inputPlacar" class="p-3 border rounded" style="display: none; width: 100%; max-width: 400px;">
                                     <div class="form-group mb-3">
                                         <label for="placar_casa" class="form-label">Placar Casa:</label>
-                                        <input type="number" class="form-control" id="placar_casa" min="0" placeholder="Digite o placar da casa">
+                                        <input type="number" class="form-control" id="placar_casa" min="0" max="999" placeholder="Digite o placar da casa">
                                     </div>
+
                                     <div class="form-group mb-3">
                                         <label for="placar_adversario" class="form-label">Placar Adversário:</label>
-                                        <input type="number" class="form-control" id="placar_adversario" min="0" placeholder="Digite o placar do adversário">
+                                        <input type="number" class="form-control" id="placar_adversario" min="0" max="999" placeholder="Digite o placar do adversário">
                                     </div>
+
+                                    <script>
+                                        document.querySelectorAll('input[type="number"]').forEach(function(input) {
+                                            input.addEventListener('input', function(e) {
+                                                // Remove caracteres não numéricos
+                                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                                                // Limita a 3 caracteres
+                                                if (e.target.value.length > 3) {
+                                                    e.target.value = e.target.value.slice(0, 3);
+                                                }
+                                            });
+                                        });
+                                    </script>
+
                                     <div class="d-flex justify-content-between">
                                         <button class="btn btn-success" id="btnSalvarPlacar">Salvar Placar</button>
                                         <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
@@ -337,7 +354,7 @@ $header = gerarHeader($_SESSION['nome']);
                                         <option value="">Selecione</option>
                                         <option value="Masculino">Masculino</option>
                                         <option value="Feminino">Feminino</option>
-                                        <option value="Não Binário">Não Binário</option>
+                                        <option value="Misto">Misto</option>
                                     </select>
                                 </div>
                             </div>
@@ -570,7 +587,7 @@ $header = gerarHeader($_SESSION['nome']);
                                     <option value="">Selecione</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
-                                    <option value="Não Binário">Não Binário</option>
+                                    <option value="Misto">Misto</option>
                                 </select>
                             </div>
                         </div>
@@ -616,46 +633,46 @@ $header = gerarHeader($_SESSION['nome']);
                         </div>
 
                         <div class="row mb-3">
-                                <label for="cad_local" class="col-sm-2 col-form-label">Local:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="cad_local" name="cad_local" placeholder="Digite o local">
-                                </div>
+                            <label for="cad_local" class="col-sm-2 col-form-label">Local:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="cad_local" name="cad_local" placeholder="Digite o local">
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="cad_cep" class="col-sm-2 col-form-label">CEP:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="cad_cep" name="cad_cep" placeholder="Digite o CEP">
-                                </div>
+                        <div class="row mb-3">
+                            <label for="cad_cep" class="col-sm-2 col-form-label">CEP:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="cad_cep" name="cad_cep" placeholder="Digite o CEP">
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="cad_bairro" class="col-sm-2 col-form-label">Bairro:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="cad_bairro" name="cad_bairro" placeholder="Digite o bairro">
-                                </div>
+                        <div class="row mb-3">
+                            <label for="cad_bairro" class="col-sm-2 col-form-label">Bairro:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="cad_bairro" name="cad_bairro" placeholder="Digite o bairro">
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="cad_rua" class="col-sm-2 col-form-label">Rua:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="cad_rua" name="cad_rua" placeholder="Digite o nome da rua">
-                                </div>
+                        <div class="row mb-3">
+                            <label for="cad_rua" class="col-sm-2 col-form-label">Rua:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="cad_rua" name="cad_rua" placeholder="Digite o nome da rua">
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="cad_numero" class="col-sm-2 col-form-label">Número:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="cad_numero" name="cad_numero" placeholder="Digite o número">
-                                </div>
+                        <div class="row mb-3">
+                            <label for="cad_numero" class="col-sm-2 col-form-label">Número:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="cad_numero" name="cad_numero" placeholder="Digite o número">
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="cad_complemento" class="col-sm-3 col-form-label">Complemento:</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="cad_complemento" name="cad_complemento" placeholder="Digite o complemento">
-                                </div>
+                        <div class="row mb-3">
+                            <label for="cad_complemento" class="col-sm-3 col-form-label">Complemento:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="cad_complemento" name="cad_complemento" placeholder="Digite o complemento">
                             </div>
+                        </div>
 
 
 

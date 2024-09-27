@@ -173,7 +173,7 @@ $header = gerarHeader($_SESSION['nome']);
               <label for="curso" class="col-form-label">Curso:<span class="required">*</span></label>
               <select name="curso" class="form-control" id="curso">
                 <option value="">Selecione</option>
-                <option value="Agronomia">Agronomia</option>
+                <option value="Engeharia Agronômica">Engeharia Agronômica</option>
                 <option value="Engenharia Civil">Engenharia Civil</option>
                 <option value="Engenharia de Alimentos">Engenharia de Alimentos</option>
                 <option value="Engenharia de Computação">Engenharia de Computação</option>
@@ -189,6 +189,11 @@ $header = gerarHeader($_SESSION['nome']);
             <div class="mb-3">
               <label for="cpf" class="col-form-label">CPF:<span class="required">*</span></label>
               <input type="text" name="cpf" class="form-control" id="cpf" placeholder="Digite o seu CPF (apenas números)">
+            </div>
+
+            <div class="mb-3">
+              <label for="ra" class="col-form-label">RA:<span class="required">*</span></label>
+              <input type="text" name="ra" class="form-control" id="ra" placeholder="Digite o seu RA (apenas números)">
             </div>
             <div class="mb-3">
               <label for="celular" class="col-form-label">Celular:<span class="required">*</span></label>
@@ -218,8 +223,25 @@ $header = gerarHeader($_SESSION['nome']);
                 <option value="">Selecione</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
-                <option value="Não Binário">Não Binário</option>
               </select>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3 mb-3">
+                <label for="estado" class="col-form-label">UF:<span class="required">*</span></label>
+                <select name="estado" class="form-control" id="estado">
+                  <option value="">Selecione</option>
+                  <!-- Adicione as opções aqui -->
+                </select>
+              </div>
+
+              <div class="col-sm-9 mb-3">
+                <label for="cidade" class="col-form-label">Cidade:<span class="required">*</span></label>
+                <select name="cidade" class="form-control" id="cidade">
+                  <option value="">Selecione</option>
+                  <!-- Adicione as opções aqui -->
+                </select>
+              </div>
             </div>
 
             <!-- Botão para alternar a visibilidade -->
@@ -229,27 +251,6 @@ $header = gerarHeader($_SESSION['nome']);
 
             <!-- Div que será alternada -->
             <div id="residence-info" style="display: none;">
-
-
-              <div class="row">
-                <div class="col-sm-3 mb-3">
-                  <label for="estado" class="col-form-label">UF:</label>
-                  <select name="estado" class="form-control" id="estado">
-                    <option value="">Selecione</option>
-                    <!-- Adicione as opções aqui -->
-                  </select>
-                </div>
-
-                <div class="col-sm-9 mb-3">
-                  <label for="cidade" class="col-form-label">Cidade:</label>
-                  <select name="cidade" class="form-control" id="cidade">
-                    <option value="">Selecione</option>
-                    <!-- Adicione as opções aqui -->
-                  </select>
-                </div>
-              </div>
-
-
               <div class="mb-3">
                 <label for="cep" class="col-form-label">Cep:</label>
                 <input type="cep" name="cep" class="form-control" id="cep" placeholder="Digite o seu CEP">
@@ -316,6 +317,9 @@ $header = gerarHeader($_SESSION['nome']);
 
             <dt class="col-sm-3">Nome:</dt>
             <dd class="col-sm-9" id="visualizar_nome"></dd>
+
+            <dt class="col-sm-3">RA:</dt>
+            <dd class="col-sm-9" id="visualizar_ra"></dd>
 
             <dt class="col-sm-3">Curso:</dt>
             <dd class="col-sm-9" id="visualizar_curso"></dd>
@@ -407,7 +411,7 @@ $header = gerarHeader($_SESSION['nome']);
               <label for="edit_curso" class="col-form-label">Curso:<span class="required">*</span></label>
               <select name="curso" class="form-control" id="edit_curso">
                 <option value="">Selecione</option>
-                <option value="Agronomia">Agronomia</option>
+                <option value="Engeharia Agronômica">Engeharia Agronômica</option>
                 <option value="Engenharia Civil">Engenharia Civil</option>
                 <option value="Engenharia de Alimentos">Engenharia de Alimentos</option>
                 <option value="Engenharia de Computação">Engenharia de Computação</option>
@@ -422,6 +426,10 @@ $header = gerarHeader($_SESSION['nome']);
             <div class="mb-3">
               <label for="edit_cpf" class="col-form-label">CPF:<span class="required">*</span></label>
               <input type="text" name="cpf" class="form-control" id="edit_cpf" placeholder="Digite o seu CPF (apenas números)">
+            </div>
+            <div class="mb-3">
+              <label for="edit_ra" class="col-form-label">RA:<span class="required">*</span></label>
+              <input type="text" name="ra" class="form-control" id="edit_ra" placeholder="Digite o seu RA (apenas números)">
             </div>
             <div class="mb-3">
               <label for="edit_celular" class="col-form-label">Celular:<span class="required">*</span></label>
@@ -452,8 +460,25 @@ $header = gerarHeader($_SESSION['nome']);
                 <option value="">Selecione</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
-                <option value="Não Binário">Não Binário</option>
               </select>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3 mb-3">
+                <label for="edit_estado" class="col-form-label">UF:<span class="required">*</span></label>
+                <select name="estado" class="form-control" id="edit_estado">
+                  <option value="">Selecione</option>
+                  <!-- Adicione as opções aqui -->
+                </select>
+              </div>
+
+              <div class="col-sm-9 mb-3">
+                <label for="edit_cidade" class="col-form-label">Cidade:<span class="required">*</span></label>
+                <select name="cidade" class="form-control" id="edit_cidade">
+                  <option value="">Selecione</option>
+                  <!-- Adicione as opções aqui -->
+                </select>
+              </div>
             </div>
 
             <!-- Botão para alternar a visibilidade -->
@@ -464,24 +489,6 @@ $header = gerarHeader($_SESSION['nome']);
             <!-- Div que será alternada -->
             <div id="residence-info3" style="display: none;">
               <dl class="row">
-                <div class="row">
-                  <div class="col-sm-3 mb-3">
-                    <label for="edit_estado" class="col-form-label">UF:</label>
-                    <select name="estado" class="form-control" id="edit_estado">
-                      <option value="">Selecione</option>
-                      <!-- Adicione as opções aqui -->
-                    </select>
-                  </div>
-
-                  <div class="col-sm-9 mb-3">
-                    <label for="edit_cidade" class="col-form-label">Cidade:</label>
-                    <select name="cidade" class="form-control" id="edit_cidade">
-                      <option value="">Selecione</option>
-                      <!-- Adicione as opções aqui -->
-                    </select>
-                  </div>
-                </div>
-
                 <div class="mb-3">
                   <label for="edit_cep" class="col-form-label">Cep:</label>
                   <input type="text" name="cep" class="form-control" id="edit_cep" placeholder="Digite o seu cep">

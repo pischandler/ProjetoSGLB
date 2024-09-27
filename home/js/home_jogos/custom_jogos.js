@@ -165,8 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return `
             <div class="jogos-card-events" data-id="${event.id}" style="cursor: pointer;">
-                <h4>${event.title}</h4>
-                <h5>de ${event.modalidade}</h5>
+            <h5>${event.title} de</br>${event.modalidade}</br>${event.genero}</h5>
 
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="team">
@@ -202,7 +201,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 events.sort((b, a) => new Date(b.start) - new Date(a.start));
 
                 const currentDate = new Date();
-                const upcomingEvents = events.filter(event => new Date(event.end) > currentDate);
+                // Zeramos a hora, minuto, segundo e milissegundo para comparar apenas a data
+                currentDate.setHours(0, 0, 0, 0);
+
+                const upcomingEvents = events.filter(event => {
+                    const eventEndDate = new Date(event.end);
+                    eventEndDate.setHours(0, 0, 0, 0);
+                    return eventEndDate >= currentDate; // Inclui o evento do dia seguinte
+                });
 
                 if (upcomingEvents.length === 0) {
                     eventCardsContainer.innerHTML = `
@@ -230,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             if (eventDetails) {
                                 document.getElementById("visualizar_id_jogos").innerText = eventDetails.id;
-                                document.getElementById("visualizar_title_jogos").innerText = eventDetails.title + " de " + eventDetails.modalidade;
+                                document.getElementById("visualizar_title_jogos").innerText = eventDetails.title + " de " + eventDetails.modalidade + " " + eventDetails.genero;
                                 document.getElementById("visualizar_adversario_jogos").innerText = eventDetails.adversario;
 
 
@@ -325,6 +331,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 // Atualiza os elementos com as datas formatadas
                                 document.getElementById('visualizar_start_jogos').innerText = formatDate(startDate);
                                 document.getElementById('visualizar_end_jogos').innerText = formatDate(endDateDate);
+                                document.getElementById("visualizar_cidade_jogos").innerText = eventDetails.cidade_nome + " - " + eventDetails.estado_uf;
+                                document.getElementById("visualizar_local_jogos").innerText = eventDetails.local;
+                                document.getElementById("visualizar_cep_jogos").innerText = eventDetails.cep ? eventDetails.cep : '';
+                                document.getElementById("visualizar_rua_jogos").innerText = eventDetails.bairro + ", " + eventDetails.rua + ", " + eventDetails.numero;
+                                document.getElementById("visualizar_complemento_jogos").innerText = eventDetails.complemento ? eventDetails.complemento : '';
 
 
                                 const btnShowDetails = document.getElementById('btnShowDetails');
@@ -389,6 +400,38 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById('edit_genero_jogos').value = eventDetails.genero;
                                     document.getElementById('edit_modalidade_jogos').value = eventDetails.modalidade_id;
                                     document.getElementById('edit_start_jogos').value = adjustTimeForModal(eventDetails.start);
+
+                                    document.getElementById('edit_cep_jogos').value = eventDetails.cep;
+                                    document.getElementById('edit_rua_jogos').value = eventDetails.rua;
+                                    document.getElementById('edit_bairro_jogos').value = eventDetails.bairro;
+                                    document.getElementById('edit_complemento_jogos').value = eventDetails.complemento;
+                                    document.getElementById('edit_numero_jogos').value = eventDetails.numero;
+                                    document.getElementById('edit_local_jogos').value = eventDetails.local;
+                                    document.getElementById("edit_estado_jogos").value = eventDetails.id_estado;
+                                    // Carregar as cidades com base no estado selecionado
+                                    var estadoId = eventDetails.id_estado;
+                                    var selectCidade = document.getElementById('edit_cidade_jogos');
+                                    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                                    if (estadoId) {
+                                        fetch('get_cidades.php?estado_id=' + estadoId)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                data.cidades.forEach(function (cidade) {
+                                                    var option = document.createElement('option');
+                                                    option.value = cidade.id;
+                                                    option.textContent = cidade.nome;
+                                                    selectCidade.appendChild(option);
+                                                });
+
+                                                // Definir o valor da cidade após o carregamento das opções
+                                                document.getElementById("edit_cidade_jogos").value = eventDetails.id_cidade;
+                                            })
+                                            .catch(error => console.error('Erro ao carregar cidades:', error));
+                                    }
+
+
+
                                     // Verifica se a data de fim é nula ou anterior à data de início
                                     let startDate = new Date(eventDetails.start);
                                     let endDate = new Date(eventDetails.end);

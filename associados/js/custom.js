@@ -9,6 +9,50 @@ const cadModal = new bootstrap.Modal(document.getElementById("cadAssociadoModal"
 const searchInput = document.getElementById("searchTerm");
 
 
+var ra = document.getElementById("ra");
+ra.addEventListener("input", () => {
+
+    // Remove todos os caracteres não numéricos e limita a 8 dígitos
+    var limparValor = ra.value.replace(/\D/g, '').substring(0, 8);
+
+    // Converte o valor limpo em um array de números
+    var numerosArray = limparValor.split("");
+
+    var numeroFormatado = "";
+
+    // Adiciona os dígitos ao campo RA sem qualquer formatação
+    if (numerosArray.length > 0) {
+        numeroFormatado += numerosArray.join("");
+    }
+
+    // Atualiza o valor no campo de entrada
+    ra.value = numeroFormatado;
+
+});
+
+var edit_ra = document.getElementById("edit_ra");
+edit_ra.addEventListener("input", () => {
+
+    // Remove todos os caedit_racteres não numéricos e limita a 8 dígitos
+    var limparValor = edit_ra.value.replace(/\D/g, '').substring(0, 8);
+
+    // Converte o valor limpo em um aredit_ray de números
+    var numerosArray = limparValor.split("");
+
+    var numeroFormatado = "";
+
+    // Adiciona os dígitos ao campo RA sem qualquer formatação
+    if (numerosArray.length > 0) {
+        numeroFormatado += numerosArray.join("");
+    }
+
+    // Atualiza o valor no campo de entrada
+    edit_ra.value = numeroFormatado;
+
+});
+
+
+
 var cep = document.getElementById("cep");
 cep.addEventListener("input", () => {
 
@@ -217,6 +261,7 @@ async function visAssociado(id) {
         document.getElementById("visualizar_cep").innerHTML = resposta['dados'].cep;
         document.getElementById("visualizar_bairro").innerHTML = resposta['dados'].bairro;
         document.getElementById("visualizar_rua").innerHTML = resposta['dados'].rua;
+        document.getElementById("visualizar_ra").innerHTML = resposta['dados'].ra;
         // Inserção dos dados do local
         document.getElementById("visualizar_estado").innerHTML = resposta.dados.estado_nome || 'Estado não informado';
         document.getElementById("visualizar_cidade").innerHTML = resposta.dados.cidade_nome || 'Cidade não informada';
@@ -308,6 +353,7 @@ async function editAssociadoDados(id) {
         document.getElementById("edit_nome").value = resposta['dados'].nome;
         document.getElementById("edit_celular").value = resposta['dados'].celular;
         document.getElementById("edit_email").value = resposta['dados'].email;
+        document.getElementById("edit_ra").value = resposta['dados'].ra;
         document.getElementById("edit_cpf").value = formatarCPF(resposta['dados'].cpf);
         document.getElementById("edit_genero").value = resposta['dados'].genero;
         document.getElementById("edit_curso").value = resposta['dados'].curso;
@@ -320,6 +366,13 @@ async function editAssociadoDados(id) {
         document.getElementById("edit_telefone_responsavel").value = resposta['dados'].telefone_responsavel;
         document.getElementById("edit_estado").value = resposta.dados.estado_id_rec;
 
+        // Divida as modalidades em um array
+        const modalidades_id = resposta['dados'].modalidades_id.split(',').map(id => id.trim());
+
+        console.log(modalidades_id); // Verifica o array de IDs de modalidades
+
+        // Defina os valores selecionados no Select2
+        $('#edit_modalidades').val(modalidades_id).trigger('change');
         // Carregar estados
         fetch('get_estados.php')
             .then(response => response.json())
@@ -365,15 +418,6 @@ function carregarCidades(estadoId, cidadeId) {
             })
             .catch(error => console.error('Erro ao carregar cidades:', error));
 
-
-
-        // Divida as modalidades em um array
-        const modalidades_id = resposta['dados'].modalidades_id.split(',').map(id => id.trim());
-
-        console.log(modalidades_id); // Verifica o array de IDs de modalidades
-
-        // Defina os valores selecionados no Select2
-        $('#edit_modalidades').val(modalidades_id).trigger('change');
     }
 }
 // Atualizar cidades quando um estado é selecionado manualmente
@@ -403,6 +447,8 @@ editForm.addEventListener("submit", async (e) => {
 
     if (resposta['erro']) {
         msgAlertaErroEdit.innerHTML = resposta['msg'];
+        // Rolar suavemente para o topo
+        msgAlertaErroEdit.scrollIntoView({ behavior: 'smooth' });
     } else {
         msgAlertaErroEdit.innerHTML = resposta['msg'];
         atualizarListaComPesquisa();

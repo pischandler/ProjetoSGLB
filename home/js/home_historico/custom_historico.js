@@ -180,8 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return `
         <div class="historico-card-events" data-id="${event.id}" style="cursor: pointer; background-color: ${backgroundColor}; color: ${textColor};">
-            <h4>${event.title}</h4>
-            <h5>de ${event.modalidade}</h5>
+            <h5>${event.title} de</br>${event.modalidade}</br>${event.genero}</h5>
 
             <div class="d-flex align-items-center justify-content-center">
                 <div class="team">
@@ -218,12 +217,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 events.sort((a, b) => new Date(b.start) - new Date(a.start));
 
                 const currentDate = new Date();
-                const upcomingEvents = events.filter(event => new Date(event.end) < currentDate);
+                // Zeramos a hora, minuto, segundo e milissegundo para comparar apenas a data
+                currentDate.setHours(0, 0, 0, 0);
+
+                // Definimos a data limite para 30 dias atrás
+                const pastLimitDate = new Date();
+                pastLimitDate.setDate(currentDate.getDate() - 30);
+                pastLimitDate.setHours(0, 0, 0, 0);
+
+                const upcomingEvents = events.filter(event => {
+                    const eventEndDate = new Date(event.end);
+                    eventEndDate.setHours(0, 0, 0, 0);
+                    // Verifica se o evento terminou nos últimos 30 dias
+                    return eventEndDate < currentDate && eventEndDate >= pastLimitDate;
+                });
 
                 if (upcomingEvents.length === 0) {
                     eventCardsContainer.innerHTML = `
                     <div class="no-events-message">
-                        Nenhum evento próximo encontrado.
+                        Nenhum jogo nos últimos 30 dias.
                         </br>
                         <button type='button' id='goToJogosPage' class='btn btn-link no-events-button'>Ir até página de jogos.</button>
                     </div>
@@ -329,10 +341,21 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }
                                 console.log(eventDetails.placar_casa);
 
-                                if (eventDetails.placar_casa !== null && eventDetails.placar_adversario !== null) {
-                                    document.getElementById("visualizar_placar").innerText = eventDetails.placar_casa + " - " + eventDetails.placar_adversario;
+                                function atualizaPlacar(placarCasa, placarAdversario) {
+                                    const placarCasaElem = document.getElementById("placar-casa");
+                                    const placarAdversarioElem = document.getElementById("placar-adversario");
+
+                                    if (placarCasaElem && placarAdversarioElem) {
+                                        placarCasaElem.innerText = placarCasa !== null && placarCasa !== undefined ? placarCasa : "";
+                                        placarAdversarioElem.innerText = placarAdversario !== null && placarAdversario !== undefined ? placarAdversario : "";
+                                    }
+                                }
+
+                                if (eventDetails.placar_casa !== null && eventDetails.placar_casa !== undefined &&
+                                    eventDetails.placar_adversario !== null && eventDetails.placar_adversario !== undefined) {
+                                    atualizaPlacar(eventDetails.placar_casa, eventDetails.placar_adversario);
                                 } else {
-                                    document.getElementById("visualizar_placar").innerText = ""; // Limpa o campo se o placar não estiver disponível
+                                    atualizaPlacar("", "");
                                 }
 
                                 //document.getElementById('visualizar_associados').innerText = eventDetails.associados || 'Nenhum associado relacionado';
@@ -349,6 +372,15 @@ document.addEventListener("DOMContentLoaded", function () {
                                 // Atualiza os elementos com as datas formatadas
                                 document.getElementById('visualizar_start_historico').innerText = formatDate(startDate);
                                 document.getElementById('visualizar_end_historico').innerText = formatDate(endDateDate);
+
+
+                                document.getElementById("visualizar_cidade_historico").innerText = eventDetails.cidade_nome + " - " + eventDetails.estado_uf;
+                                document.getElementById("visualizar_local_historico").innerText = eventDetails.local;
+                                document.getElementById("visualizar_cep_historico").innerText = eventDetails.cep ? eventDetails.cep : '';
+                                document.getElementById("visualizar_rua_historico").innerText = eventDetails.bairro + ", " + eventDetails.rua + ", " + eventDetails.numero;
+                                document.getElementById("visualizar_complemento_historico").innerText = eventDetails.complemento ? eventDetails.complemento : '';
+
+
                                 const btnShowDetails2 = document.getElementById('btnShowDetails2');
                                 const eventDetails2 = document.getElementById('eventDetails2');
                                 const eventDetailsContent2 = document.getElementById('eventDetailsContent2');
@@ -398,7 +430,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }
 
                                 // Função para exibir os inputs de placar com valores existentes, se disponíveis
-                                // Função para exibir os inputs de placar com valores existentes, se disponíveis
                                 function exibirInputPlacar() {
                                     const inputPlacar = document.getElementById("inputPlacar");
                                     const btnPlacar = document.getElementById("btnPlacar");
@@ -428,7 +459,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                     const btnPlacar = document.getElementById("btnPlacar");
                                     const btnSalvarPlacar = document.getElementById("btnSalvarPlacar");
 
-
                                     if (inputPlacar) {
                                         inputPlacar.style.display = "none"; // Esconde os inputs
                                     }
@@ -447,8 +477,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                     if (placarAdversarioInput) placarAdversarioInput.value = '';
                                 }
 
-
-
                                 // Adicionar event listener para o botão "Adicionar Placar"
                                 document.getElementById("btnPlacar").addEventListener("click", exibirInputPlacar);
 
@@ -460,7 +488,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 function removerMsgPlacar() {
                                     setTimeout(() => {
                                         document.getElementById('msgPlacarEvento_historico').innerHTML = "";
-                                    }, 3000)
+                                    }, 3000);
                                 }
 
                                 function salvarPlacar() {
@@ -486,7 +514,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                             .then(data => {
                                                 if (data.status === 'success') {
                                                     msgPlacarEvento_historico.innerHTML = `<div class="alert alert-success" role="alert">Placar Salvo com Sucesso!</div>`;
-                                                    loadEvents();
+                                                    atualizaPlacar(placarCasa, placarAdversario);
+                                                    loadEvents(); // Atualiza os eventos
                                                     removerMsgPlacar();
 
                                                     // Atualizar os valores de eventDetails
@@ -497,7 +526,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                                     // Atualizar o gráfico de vitórias/derrotas
                                                     atualizarGrafico();
-                                                    loadEvents();
                                                     resetModal(); // Esconde os inputs após salvar
                                                 } else {
                                                     msgPlacarEvento_historico.innerHTML = `<div class="alert alert-danger" role="alert">Erro ao Salvar Placar.</div>`;
@@ -519,6 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     salvarPlacar();
                                     console.log(eventDetails.placar_casa);
                                 });
+
 
                                 $('#visualizarModal_historico').on('hidden.bs.modal', function () {
                                     eventDetails2.style.display = 'none';
@@ -553,6 +582,40 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById('edit_adversario_historico').value = eventDetails.adversario;
                                     document.getElementById('edit_modalidade_historico').value = eventDetails.modalidade_id;
                                     document.getElementById('edit_start_historico').value = adjustTimeForModal(eventDetails.start);
+
+
+                                    document.getElementById('edit_cep_historico').value = eventDetails.cep;
+                                    document.getElementById('edit_rua_historico').value = eventDetails.rua;
+                                    document.getElementById('edit_bairro_historico').value = eventDetails.bairro;
+                                    document.getElementById('edit_complemento_historico').value = eventDetails.complemento;
+                                    document.getElementById('edit_numero_historico').value = eventDetails.numero;
+                                    document.getElementById('edit_local_historico').value = eventDetails.local;
+                                    document.getElementById("edit_estado_historico").value = eventDetails.id_estado;
+                                    // Carregar as cidades com base no estado selecionado
+                                    var estadoId = eventDetails.id_estado;
+                                    var selectCidade = document.getElementById('edit_cidade_historico');
+                                    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                                    if (estadoId) {
+                                        fetch('get_cidades.php?estado_id=' + estadoId)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                data.cidades.forEach(function (cidade) {
+                                                    var option = document.createElement('option');
+                                                    option.value = cidade.id;
+                                                    option.textContent = cidade.nome;
+                                                    selectCidade.appendChild(option);
+                                                });
+
+                                                // Definir o valor da cidade após o carregamento das opções
+                                                document.getElementById("edit_cidade_historico").value = eventDetails.id_cidade;
+                                            })
+                                            .catch(error => console.error('Erro ao carregar cidades:', error));
+                                    }
+
+
+
+
                                     // Verifica se a data de fim é nula ou anterior à data de início
                                     let startDate = new Date(eventDetails.start);
                                     let endDate = new Date(eventDetails.end);
@@ -561,6 +624,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     }
                                     document.getElementById('edit_end_historico').value = adjustTimeForModal(endDate);
                                     document.getElementById('edit_color_historico').value = eventDetails.color;
+
+
+
 
                                     // Divida as modalidades em um array
                                     const modalidade_id = eventDetails.modalidade_id
@@ -643,7 +709,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const idEvento = document.getElementById("visualizar_id_historico").textContent;
 
                 try {
-                    const dados = await fetch(`apagar_jogos.php?id=${idEvento}`);
+                    const dados = await fetch(`apagar_jogos_historico.php?id=${idEvento}`);
                     const resposta = await dados.json();
 
                     if (!resposta.status) {
@@ -652,6 +718,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             msgViewEvento.innerHTML = `<div class="alert alert-danger" role="alert">${resposta.msg}</div>`;
                         }
                     } else {
+                        loadEvents();
                         const msg = document.getElementById('msg');
                         if (msg) {
                             msg.innerHTML = `<div class="alert alert-success" role="alert">${resposta.msg}</div>`;

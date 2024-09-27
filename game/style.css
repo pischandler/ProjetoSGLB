@@ -1,0 +1,131 @@
+* {
+  font-family: Helvetica;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+body {
+  height: 100vh;
+  background-color: #f7f7f7;
+  margin: 0;
+}
+
+
+.header {
+  font-family: Helvetica;
+  font-weight: bold;
+  width: 100%;
+  height: 110px;
+  background-color: #d30909;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: top 0.3s ease-in-out;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  height: calc(100vh - 110px); /* Subtrai a altura do cabeçalho */
+}
+
+.game {
+  border-bottom: 1px solid;
+  height: 350px;
+  width: 800px;
+  position: relative;
+  overflow: hidden;
+  background-color: #f7f7f7; /* Adicionei uma cor de fundo para destacar o jogo */
+}
+
+.message {
+  font-size: 24px;
+  color: #333;
+  position: absolute;
+  top: 0%;
+  left: 35px;
+  text-align: center;
+}
+
+.start-message {
+  font-size: 24px;
+  color: #333;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.score {
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.dino {
+  position: absolute;
+  bottom: 0;
+  background-image: url(../assets/touro.gif);
+  width: 280px;
+  height: 170px;
+  background-size: 280px;
+  background-repeat: no-repeat;
+}
+
+.cacto {
+  position: absolute;
+  bottom: 0;
+  background-image: url(../assets/cacto.png);
+  width: 35px;
+  height: 70px;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  animation: cacto 3s linear infinite;
+}
+
+@keyframes cacto {
+  0% {
+    right: -20px;
+  }
+  100% {
+    right: 850px;
+  }
+}
+
+.jump {
+  animation: jump 1.1s linear;
+}
+
+@keyframes jump {
+  0% {
+    bottom: 0;
+  }
+
+  30% {
+    bottom: 80px;
+  }
+
+  50% {
+    bottom: 100px;
+  }
+
+  80% {
+    bottom: 80px;
+  }
+
+  100% {
+    bottom: 0;
+  }
+}

@@ -16,16 +16,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const formattedEndDate = endDate.toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
 
         return `
-            <div class="event-card-events" data-id="${event.id}" style="background-color: ${event.color}; cursor: pointer;">
+            <div class="event-card-events" data-id="${event.id}" style="background-color: ${event.color}; color: #fff;cursor: pointer;">
                 <h3>${event.title}</h3>
                 <div class="event-dates">
                     <div class="start-time">
-                        <strong>Início:</br></strong> ${formattedStartDate}
+                        <strong>Início: </strong> ${formattedStartDate}
                     </div>
                     <div class="end-time">
-                        <strong>Fim:</br></strong> ${formattedEndDate}
+                        <strong>Fim: </strong> ${formattedEndDate}
                     </div>
                 </div>
+                <span class="local"><strong>${event.cidade_nome} - ${event.estado_uf}</strong></br><strong>${event.local}</strong></br>${event.rua}, ${event.numero}</span>
             </div>
         `;
     }
@@ -47,10 +48,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button type='button' id='goToEventsPage' class='btn btn-link no-events-button'>Ir até página de eventos.</button>
                     </div>
                 `;
-                
-                document.getElementById('goToEventsPage').addEventListener('click', function() {
-                    window.location.href = '/SGLB/eventos';
-                });
+
+                    document.getElementById('goToEventsPage').addEventListener('click', function () {
+                        window.location.href = '/SGLB/eventos';
+                    });
                 } else {
                     eventCardsContainer.innerHTML = '';
                     upcomingEvents.forEach(event => {
@@ -79,6 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                 document.getElementById('visualizar_title').innerText = eventDetails.title;
                                 document.getElementById('visualizar_start').innerText = formattedStartDate;
                                 document.getElementById('visualizar_end').innerText = formattedEndDate;
+                                document.getElementById("visualizar_estado").innerText = eventDetails.estado_nome;
+                                document.getElementById("visualizar_cidade").innerText = eventDetails.cidade_nome;
+                                document.getElementById('visualizar_cep').innerText = eventDetails.cep;
+                                document.getElementById('visualizar_rua').innerText = eventDetails.rua;
+                                document.getElementById('visualizar_bairro').innerText = eventDetails.bairro;
+                                document.getElementById('visualizar_complemento').innerText = eventDetails.complemento;
+                                document.getElementById('visualizar_numero').innerText = eventDetails.numero;
+                                document.getElementById('visualizar_local').innerText = eventDetails.local;
 
                                 const btnEditEvento = document.getElementById('btnViewEditEvento');
                                 btnEditEvento.style.display = 'block';
@@ -103,6 +112,35 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById('edit_id').value = eventDetails.id;
                                     document.getElementById('edit_title').value = eventDetails.title;
                                     document.getElementById('edit_start').value = adjustTimeForModal(eventDetails.start);
+                                    document.getElementById('edit_cep').value = eventDetails.cep;
+                                    document.getElementById('edit_rua').value = eventDetails.rua;
+                                    document.getElementById('edit_bairro').value = eventDetails.bairro;
+                                    document.getElementById('edit_complemento').value = eventDetails.complemento;
+                                    document.getElementById('edit_numero').value = eventDetails.numero;
+                                    document.getElementById('edit_local').value = eventDetails.local;
+                                    document.getElementById("edit_estado").value = eventDetails.id_estado;
+                                    // Carregar as cidades com base no estado selecionado
+                                    var estadoId = eventDetails.id_estado;
+                                    var selectCidade = document.getElementById('edit_cidade');
+                                    selectCidade.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpar opções existentes
+
+                                    if (estadoId) {
+                                        fetch('get_cidades.php?estado_id=' + estadoId)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                data.cidades.forEach(function (cidade) {
+                                                    var option = document.createElement('option');
+                                                    option.value = cidade.id;
+                                                    option.textContent = cidade.nome;
+                                                    selectCidade.appendChild(option);
+                                                });
+
+                                                // Definir o valor da cidade após o carregamento das opções
+                                                document.getElementById("edit_cidade").value = eventDetails.id_cidade;
+                                            })
+                                            .catch(error => console.error('Erro ao carregar cidades:', error));
+                                    }
+
 
                                     // Verifica se a data de fim é nula ou anterior à data de início
                                     let startDate = new Date(eventDetails.start);

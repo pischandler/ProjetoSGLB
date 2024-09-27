@@ -10,12 +10,18 @@ if (empty($dados['nome'])) {
     $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Necessário preencher o campo e-mail!</div>"];
 } elseif (strlen($dados['cpf']) != 11) {
     $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Campo CPF incorreto!</div>"];
+} elseif (strlen($dados['ra']) != 8) {
+    $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Campo RA incorreto!</div>"];
 } elseif (strlen($dados['celular']) != 15) {
     $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Campo celular incorreto!</div>"];
 } elseif (empty($dados['modalidades'])) {
     $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Necessário selecionar pelo menos uma modalidade!</div>"];
 } elseif (empty($dados['curso'])) {
     $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Necessário selecionar o curso!</div>"];
+} elseif (empty($dados['cidade'])) {
+    $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Necessário selecionar o cidade!</div>"];
+} elseif (empty($dados['estado'])) {
+    $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Necessário selecionar o UF!</div>"];
 } elseif (!empty($dados['cep']) && !preg_match("/^\d{5}-\d{3}$/", $dados['cep'])) {
     $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: Campo CEP inválido!</div>"];
 } else {
@@ -26,16 +32,25 @@ if (empty($dados['nome'])) {
         $stmt_cpf->bindParam(':cpf', $dados['cpf']);
         $stmt_cpf->execute();
 
+        // Verificar se o RA já está cadastrado
+        $query_ra = "SELECT id FROM associados WHERE ra = :ra";
+        $stmt_ra = $conn->prepare($query_ra);
+        $stmt_ra->bindParam(':ra', $dados['ra']);
+        $stmt_ra->execute();
+
         if ($stmt_cpf->rowCount() > 0) {
             $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: CPF já cadastrado!</div>"];
+        } elseif ($stmt_ra->rowCount() > 0) {
+            $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: RA já cadastrado!</div>"];
         } else {
-            // CPF não está cadastrado, pode continuar o cadastro
-            $query_associados = "INSERT INTO associados (nome, email, cpf, genero, celular, curso, cep, bairro, rua, numero_resid, complemento, nome_responsavel, telefone_responsavel, cidade_id) 
-                                 VALUES (:nome, :email, :cpf, :genero, :celular, :curso, :cep, :bairro, :rua, :numero_resid, :complemento, :nome_responsavel, :telefone_responsavel, :cidade_id)";
+            // CPF e RA não estão cadastrados, pode continuar o cadastro
+            $query_associados = "INSERT INTO associados (nome, email, cpf, ra, genero, celular, curso, cep, bairro, rua, numero_resid, complemento, nome_responsavel, telefone_responsavel, cidade_id) 
+                                 VALUES (:nome, :email, :cpf, :ra, :genero, :celular, :curso, :cep, :bairro, :rua, :numero_resid, :complemento, :nome_responsavel, :telefone_responsavel, :cidade_id)";
             $cad_associado = $conn->prepare($query_associados);
             $cad_associado->bindParam(':nome', $dados['nome']);
             $cad_associado->bindParam(':email', $dados['email']);
             $cad_associado->bindParam(':cpf', $dados['cpf']);
+            $cad_associado->bindParam(':ra', $dados['ra']);
             $cad_associado->bindParam(':genero', $dados['genero']);
             $cad_associado->bindParam(':celular', $dados['celular']);
             $cad_associado->bindParam(':cep', $dados['cep']);

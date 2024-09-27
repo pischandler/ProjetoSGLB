@@ -21,6 +21,10 @@ session_start();
         echo $_SESSION['msg'];
         unset($_SESSION['msg']);
       }
+      if (isset($_SESSION['msgcad'])) {
+        echo $_SESSION['msgcad'];
+        unset($_SESSION['msgcad']);
+      }
       ?>
       <div class="row mb-3"></div>
       <div class="imagem">
@@ -34,8 +38,8 @@ session_start();
       <form method="POST" action="valida.php">
         <div class="input-field">
           <input
-            type="email"
-            placeholder="E-mail"
+            type="text"
+            placeholder="Usuário"
             name="usuario" />
         </div>
         <div class="input-field">
@@ -55,6 +59,7 @@ session_start();
           <div>
             <label>
               <a href="#">Esqueceu sua senha?</a>
+              <a href="cadastrar.php"></br>Crie uma conta.</a>
             </label>
           </div>
         </div>
