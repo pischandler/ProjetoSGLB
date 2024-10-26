@@ -1,6 +1,15 @@
 <?php
+session_start();
 include_once "conexao.php";
 
+// Verifica se o usuário está logado e obtenha seu ID
+if (empty($_SESSION['id'])) {
+    $_SESSION['msg'] = "<div class='alert alert-danger' role='alert'>Erro: Necessário fazer login!</div>";
+    header("Location: ../login/");
+    exit();
+}
+
+$usuario_id = $_SESSION['id'];
 $pagina = filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT);
 
 if (!empty($pagina)) {
@@ -9,9 +18,16 @@ if (!empty($pagina)) {
     $qnt_result_pg = 40; // Quantidade de registros por página
     $inicio = ($pagina * $qnt_result_pg) - $qnt_result_pg;
 
-    // Modifique a consulta para filtrar apenas usuários com status "ativo"
-    $query_usuarios = "SELECT id, nome, email, sobrenome, tipo, status FROM usuarios WHERE status = 'ativo' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+    // Modifique a consulta para filtrar apenas usuários com status "ativo" e excluir o próprio usuário
+    $query_usuarios = "SELECT id, nome, email, sobrenome, tipo, status 
+                       FROM usuarios 
+                       WHERE status = 'ativo' AND id != :usuario_id 
+                        ORDER BY nome ASC
+                       LIMIT :inicio, :qnt_result_pg";
     $result_usuarios = $conn->prepare($query_usuarios);
+    $result_usuarios->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+    $result_usuarios->bindParam(':inicio', $inicio, PDO::PARAM_INT);
+    $result_usuarios->bindParam(':qnt_result_pg', $qnt_result_pg, PDO::PARAM_INT);
     $result_usuarios->execute();
 
     $dados = "<div class='table-responsive'>
@@ -47,9 +63,12 @@ if (!empty($pagina)) {
         </table>
     </div>";
 
-    // Paginação - Somar a quantidade de usuários ativos
-    $query_pg = "SELECT COUNT(id) AS num_result FROM usuarios WHERE status = 'ativo'";
+    // Paginação - Somar a quantidade de usuários ativos (excluindo o próprio usuário)
+    $query_pg = "SELECT COUNT(id) AS num_result 
+                 FROM usuarios 
+                 WHERE status = 'ativo' AND id != :usuario_id";
     $result_pg = $conn->prepare($query_pg);
+    $result_pg->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
     $result_pg->execute();
     $row_pg = $result_pg->fetch(PDO::FETCH_ASSOC);
 

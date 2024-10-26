@@ -21,7 +21,7 @@ if (!empty($pagina)) {
         LEFT JOIN modalidade m ON am.modalidade_id = m.id
         $searchCondition
         GROUP BY a.id
-        ORDER BY a.id DESC 
+        ORDER BY a.nome ASC 
         LIMIT $inicio, $qnt_result_pg";
 
     $result_associados = $conn->prepare($query_associados);
