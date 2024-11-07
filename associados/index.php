@@ -652,15 +652,19 @@ $header = gerarHeader($_SESSION['nome']);
     document.addEventListener("DOMContentLoaded", function() {
       // Carregar estados
       fetch('get_estados.php')
-        .then(response => response.json())
+        .then(response => response.json())  // Tenta converter a resposta para JSON
         .then(data => {
-          var selectEstado = document.getElementById('estado');
-          data.estados.forEach(function(estado) {
-            var option = document.createElement('option');
-            option.value = estado.id;
-            option.textContent = estado.uf;
-            selectEstado.appendChild(option);
-          });
+            var selectEstado = document.getElementById('estado');
+            if (data.estados) {
+                data.estados.forEach(function(estado) {
+                    var option = document.createElement('option');
+                    option.value = estado.id;
+                    option.textContent = estado.uf;
+                    selectEstado.appendChild(option);
+                });
+            } else {
+                console.error('Erro ao carregar estados:', data.error || 'Erro desconhecido');
+            }
         })
         .catch(error => console.error('Erro ao carregar estados:', error));
 
