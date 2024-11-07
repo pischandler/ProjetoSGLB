@@ -15,7 +15,7 @@ function gerarHeader($nomeUsuario)
             <button class='btn btn-primary' type='button' data-bs-toggle='offcanvas' data-bs-target='#offcanvasWithBothOptions' aria-controls='offcanvasWithBothOptions'>
                 <i class='fa-solid fa-bars'></i>
             </button>
-            <a href='/SGLB/home'>
+            <a href='/home'>
                 <img src='https://losbravosuepg.com.br/assets/logolb.png' height='100' alt='Los Bravos' title='Página Inicial.'>
             </a>
         </div>
