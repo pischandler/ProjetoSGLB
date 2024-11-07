@@ -20,6 +20,4 @@ if (!$conn) {
     die("Erro: Falha na conexão com o banco de dados. " . mysqli_connect_error());
 }
 
-// Se a conexão for bem-sucedida
-echo "Conexão com o banco de dados realizada com sucesso!";
 ?>
