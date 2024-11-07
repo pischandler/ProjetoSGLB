@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
 
                     document.getElementById('goToJogosPage').addEventListener('click', function () {
-                        window.location.href = '/SGLB/jogos';
+                        window.location.href = '/jogos';
                     });
                 } else {
                     eventCardsContainer.innerHTML = '';
