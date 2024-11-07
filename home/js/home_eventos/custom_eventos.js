@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
 
                     document.getElementById('goToEventsPage').addEventListener('click', function () {
-                        window.location.href = './eventos';
+                        window.location.href = '/eventos';
                     });
                 } else {
                     eventCardsContainer.innerHTML = '';
