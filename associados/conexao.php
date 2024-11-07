@@ -16,7 +16,6 @@ $dbname = ltrim($url['path'], '/');  // Exemplo: q31l3w9zkjcfyxa2 (remover a bar
 try {
     $conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $user, $pass);
     // Caso tenha sucesso na conexão, você pode deixar uma mensagem ou proceder com sua lógica
-    echo "Conexão com o banco de dados realizada com sucesso!";
 } catch (PDOException $err) {
     die("Erro: Conexão com banco de dados não realizada com sucesso. Erro gerado: " . $err->getMessage());
 }
