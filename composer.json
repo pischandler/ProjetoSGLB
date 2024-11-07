@@ -1,5 +1,19 @@
 {
-  "name": "meu-app-sglb",
-  "description": "Aplicação PHP no Heroku",
-  "require": {}
+  "name": "meu-usuario/sglb",
+  "description": "Sistema de Gerenciamento de Login e Biblioteca",
+  "type": "project",
+  "require": {
+      "php": ">=8.0.0"
+  },
+  "autoload": {
+      "psr-4": {
+          "SGLB\\": "src/"
+      }
+  },
+  "scripts": {
+      "post-install-cmd": [
+          "echo 'Dependências instaladas com sucesso!'"
+      ]
+  },
+  "minimum-stability": "stable"
 }
