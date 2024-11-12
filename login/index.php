@@ -2,14 +2,14 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <title>Index Page</title>
-  <link rel="stylesheet" href="css/custom.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css">
   <link rel="icon" href="../assets/imagemLosBravos.png" type="image/png">
 </head>
 
@@ -76,7 +76,7 @@ session_start();
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="helpModalLabel">Help</h5>
+          <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="helpContent">
@@ -85,10 +85,7 @@ session_start();
       </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src='js/custom.js'></script>
+    <script src='js/custom.js'></script>
 
 </body>
 
