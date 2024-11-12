@@ -32,6 +32,9 @@ $header = gerarHeader($_SESSION['nome']);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Custom CSS -->
+    <link href="./css/custom.css" rel="stylesheet">
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -157,6 +160,24 @@ $header = gerarHeader($_SESSION['nome']);
     </div>
 </div>
 
+<!-- Help Icon -->
+<div class="help-icon" id="helpIcon">
+    <i class="bi bi-question-circle-fill"></i>
+</div>
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="helpContent">
+                <!-- Help content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
 
   <!-- Scripts -->
   <!-- jQuery -->

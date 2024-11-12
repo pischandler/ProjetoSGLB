@@ -431,6 +431,25 @@ $header = gerarHeader($_SESSION['nome']);
         </div>
     </div>
 
+    <!-- Help Icon -->
+    <div class="help-icon" id="helpIcon">
+        <i class="bi bi-question-circle-fill"></i>
+    </div>
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="helpContent">
+                    <!-- Help content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src='js/index.global.min.js'></script>
     <script src="js/bootstrap5/index.global.min.js"></script>

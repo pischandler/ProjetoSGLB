@@ -132,6 +132,25 @@ $header = gerarHeader($_SESSION['nome']);
   <!-- Inserir o sidebar -->
   <?php include '../includes/sidebar.php'; ?>
 
+  <!-- Help Icon -->
+  <div class="help-icon" id="helpIcon">
+    <i class="bi bi-question-circle-fill"></i>
+  </div>
+  <!-- Help Modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="helpContent">
+          <!-- Help content will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Conteúdo principal -->
   <div class="container">
     <div class="row mt-4">
