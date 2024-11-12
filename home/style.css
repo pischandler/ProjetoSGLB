@@ -259,3 +259,15 @@ padding-left: 110px;
   }
 }
 
+.help-icon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 1050; /* Ensure it is above other elements */
+}
+
+.help-icon i {
+    font-size: 24px;
+    color: #007bff; /* Bootstrap primary color */
+}
