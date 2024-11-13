@@ -62,7 +62,7 @@ session_start();
           <input class="btn btn-primary row mb-2" type="submit" name="btnLogin" value="Acessar"></input>
           <div>
             <label>
-              <a href="#">Esqueceu sua senha?</a>
+              <a href="forget.php">Esqueceu sua senha?</a>
               <a href="cadastrar.php"></br>Crie uma conta.</a>
             </label>
           </div>

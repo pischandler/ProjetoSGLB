@@ -35,7 +35,7 @@ if (!empty($pagina)) {
                         <td>$nome $sobrenome</td>
                         <td>$email</td>
                         <td>   
-                        <button id='$id' class='btn btn-outline-warning btn-sm' onclick='aceitarUsuarioPendente($id)'><i class='fa-solid fa-check'></i></button>
+                        <button id='$id' class='btn btn-outline-success btn-sm' onclick='aceitarUsuarioPendente($id)'><i class='fa-solid fa-check'></i></button>
 
                         <button id='$id' class='btn btn-outline-danger btn-sm' onclick='apagarUsuarioDados($id)'><i class='fa-solid fa-x'></i></button>
                         </td>

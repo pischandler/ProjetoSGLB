@@ -896,7 +896,70 @@ document.addEventListener('DOMContentLoaded', function () {
                 return '<p>Instruções para editar...</p>';
             // Add more cases for other pages
             default:
-                return '<p>Instruções gerais...</p>';
+                return `
+                <h5>Página de Jogos - Instruções Detalhadas</h5>
+                <p>
+                    Bem-vindo à Página de Jogos! Aqui, você poderá agendar partidas, convocar associados para eventos esportivos e registrar resultados de jogos. Abaixo, estão as instruções para ajudá-lo a utilizar todas as funcionalidades disponíveis.
+                </p>
+                
+                <h6>1. Navegação pelo Calendário</h6>
+                <p>
+                    Utilize o <b>calendário</b> para organizar e visualizar os jogos planejados:
+                    <ul>
+                        <li>Alterne entre visualizações por <b>Mês</b>, <b>Semana</b> ou <b>Dia</b> para escolher a forma que melhor se adapta à sua necessidade.</li>
+                        <li>Use as <b>setas</b> para avançar ou retroceder nas datas e o botão "<b>Hoje</b>" para retornar à data atual rapidamente.</li>
+                    </ul>
+                </p>
+                
+                <h6>2. Marcar Novo Jogo</h6>
+                <p>
+                    Para agendar uma nova partida:
+                    <ul>
+                        <li>Clique na data desejada no calendário, o que abrirá um <b>modal de agendamento de jogo</b>.</li>
+                        <li>No modal, selecione a <b>atlética adversária</b> e a <b>modalidade</b> esportiva.</li>
+                        <li>Salve o evento, e o jogo será adicionado ao calendário, com o título exibido na data marcada.</li>
+                    </ul>
+                </p>
+                
+                <h6>3. Visualizar e Gerenciar Jogos</h6>
+                <p>
+                    Para visualizar os detalhes de um jogo já cadastrado, clique sobre ele no calendário. O modal exibirá as seguintes ações:
+                    <ul>
+                        <li><b>Editar:</b> Permite atualizar as informações do jogo, como adversário, modalidade, data e local.</li>
+                        <li><b>Excluir:</b> Remove o jogo permanentemente do calendário.</li>
+                    </ul>
+                </p>
+
+                <h6>4. Convocar Associados para o Jogo</h6>
+                <p>
+                    Para convocar associados a um jogo:
+                    <ul>
+                        <li>Após abrir o jogo no modal, clique no botão "<b>Convocar Associados</b>".</li>
+                        <li>Você poderá visualizar e selecionar associados registrados no sistema e <b>filtrar</b> por modalidade para facilitar a escolha dos atletas mais adequados.</li>
+                        <li>Ao concluir, os associados selecionados receberão a convocação para o jogo.</li>
+                    </ul>
+                </p>
+
+                <h6>5. Mostrar Convocação</h6>
+                <p>
+                    Se você deseja revisar ou atualizar os associados convocados para um jogo específico:
+                    <ul>
+                        <li>Clique no botão "<b>Mostrar Convocação</b>" dentro do modal do jogo.</li>
+                        <li>Isso permitirá visualizar a lista de associados que já foram convocados para aquela partida.</li>
+                    </ul>
+                </p>
+
+                <h6>6. Registrar o Placar do Jogo</h6>
+                <p>
+                    Após a realização de um jogo, você poderá adicionar o resultado:
+                    <ul>
+                        <li>Se o jogo já ocorreu, o botão "<b>Adicionar/Alterar Placar</b>" estará disponível no modal do jogo.</li>
+                        <li>Utilize este botão para registrar ou atualizar o placar da partida, o que permite manter um histórico preciso dos resultados.</li>
+                    </ul>
+                </p>
+                
+                <p>Essas funcionalidades garantem um gerenciamento completo dos eventos esportivos. Caso tenha alguma dúvida, entre em contato com o administrador do sistema.</p>
+            `;
         }
     }
 });

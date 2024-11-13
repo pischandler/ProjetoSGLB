@@ -462,7 +462,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 return '<p>Instruções para editar...</p>';
             // Add more cases for other pages
             default:
-                return '<p>Instruções gerais...</p>';
+                return `
+            <p>Bem-vindo à Página de Eventos! Aqui você pode gerenciar eventos usando o calendário interativo.</p>
+            <ul>
+                <li><strong>Visualização do Calendário:</strong> O calendário exibe eventos em formato mensal, semanal ou diário. Use os botões no topo para alternar entre as visualizações.</li>
+                <li><strong>Navegação:</strong> As setas permitem navegar entre datas futuras e passadas. O botão "Hoje" retorna para a data atual.</li>
+                <li><strong>Adicionar Evento:</strong> Clique em um dia no calendário para abrir o modal de cadastro de evento. Preencha as informações e salve para adicionar o evento.</li>
+                <li><strong>Visualizar Evento:</strong> Clique em um evento no calendário para ver seus detalhes. No modal de visualização, você pode ver informações como título, data e local.</li>
+                <li><strong>Editar Evento:</strong> No modal de visualização do evento, clique no botão "Editar" para modificar as informações do evento.</li>
+                <li><strong>Excluir Evento:</strong> No modal de visualização, clique em "Apagar" para remover o evento do calendário.</li>
+            </ul>
+            <p>Esses recursos facilitam a organização e o gerenciamento de eventos diretamente no calendário.</p>
+            `;
         }
     }
 });

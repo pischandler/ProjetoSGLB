@@ -503,9 +503,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 return '<p>Instruções para cadastrar...</p>';
             case 'editar.php':
                 return '<p>Instruções para editar...</p>';
-            // Add more cases for other pages
+            // Adicione mais cases para outras páginas, se necessário
             default:
-                return '<p>Instruções gerais...</p>';
+                return `
+                <p>Bem-vindo à Página de Associados! Aqui estão algumas instruções para ajudá-lo a navegar e utilizar os recursos:</p>
+                <ul>
+                    <li><strong>Lista de Associados:</strong> Visualize a lista completa de associados, com detalhes como Nome, Curso, E-mail e Modalidades.</li>
+                    <li><strong>Botões de Ação:</strong> Em cada linha, você encontra três botões:
+                        <ul>
+                            <li><i class="fa-regular fa-eye"></i> <strong>Visualizar:</strong> Ver detalhes completos do associado.</li>
+                            <li><i class="fa-regular fa-pen-to-square"></i> <strong>Editar:</strong> Modificar as informações do associado.</li>
+                            <li><i class="fa-solid fa-trash"></i> <strong>Excluir:</strong> Remover o associado da lista.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pesquisar:</strong> Use a barra de pesquisa para encontrar rapidamente um associado pelo nome ou e-mail.</li>
+                    <li><strong>Cadastrar Novo:</strong> Clique no botão "Cadastrar" para adicionar um novo associado.</li>
+                    <li><strong>Paginação:</strong> Navegue pelas páginas usando os botões na parte inferior da tela para visualizar mais associados.</li>
+                </ul>
+                <p>Utilize esses recursos para gerenciar seus associados de forma simples e eficiente!</p>
+                `;
         }
     }
+    
 });

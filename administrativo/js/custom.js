@@ -120,7 +120,24 @@ document.addEventListener("DOMContentLoaded", function() {
                 return '<p>Instruções para editar...</p>';
             // Add more cases for other pages
             default:
-                return '<p>Instruções gerais...</p>';
+                return `
+                <p>Bem-vindo ao Painel Administrativo! Esta seção é exclusiva para administradores e permite gerenciar o acesso de usuários ao sistema.</p>
+                <ul>
+                    <li><strong>Aba Usuários Ativos:</strong> Exibe uma lista de usuários que têm acesso ao sistema, com as informações de ID, Nome e E-mail. Na coluna Ações, o administrador pode:
+                        <ul>
+                            <li><i class="fa-solid fa-x"></i> <strong>Excluir:</strong> Revogar o acesso do usuário ao sistema.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Aba Pendentes:</strong> Exibe os usuários que solicitaram acesso ao sistema, mostrando ID, Nome e E-mail. Na coluna Ações, o administrador pode:
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> <strong>Aceitar:</strong> Aprovar a solicitação e conceder acesso ao sistema.</li>
+                            <li><i class="fa-solid fa-x"></i> <strong>Rejeitar:</strong> Recusar o pedido de acesso do usuário.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Paginação:</strong> Use a navegação na parte inferior da página para visualizar mais usuários em ambas as abas.</li>
+                </ul>
+                <p>Esses recursos permitem ao administrador controlar quem pode acessar o sistema de forma eficiente e segura.</p>
+                `;
         }
     }
 });
