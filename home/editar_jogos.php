@@ -34,6 +34,16 @@ if (empty($dados['edit_local_jogos'])) {
     exit;
 }
 
+// Converter strings de data para objetos DateTime para comparação
+$start_date = new DateTime($dados['edit_start_jogos']);
+$end_date = new DateTime($dados['edit_end_jogos']);
+
+// Verificar se a data final é menor que a inicial
+if ($end_date < $start_date) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: A data final não pode ser menor que a data inicial']);
+    exit;
+}
+
 if (empty($dados['edit_rua_jogos'])) {
     echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo Rua']);
     exit;

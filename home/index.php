@@ -717,7 +717,6 @@ $header = gerarHeader($_SESSION['nome']);
                             <!--<dt class="col-sm-3">Gênero: </dt>-->
                             <dd class="d-flex align-items-center justify-content-center" id="visualizar_gen_historico"></dd>
 
-                            <dd class="d-flex align-items-center justify-content-center" id="visualizar_placar"></dd>
 
                             <!--<dt class="col-sm-3">Associados: </dt>
 <dd class="col-sm-9" id="visualizar_associados"></dd>-->

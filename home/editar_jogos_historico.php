@@ -58,6 +58,16 @@ if (!preg_match('/^\d{5}-?\d{3}$/', $dados['edit_cep_historico'])) {
     exit;
 }
 
+// Converter strings de data para objetos DateTime para comparação
+$start_date = new DateTime($dados['edit_start_historico']);
+$end_date = new DateTime($dados['edit_end_historico']);
+
+// Verificar se a data final é menor que a inicial
+if ($end_date < $start_date) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: A data final não pode ser menor que a data inicial']);
+    exit;
+}
+
 try {
     // Iniciar a transação
     $conn->beginTransaction();

@@ -53,6 +53,16 @@ if (!preg_match('/^\d{5}-?\d{3}$/', $dados['edit_cep'])) {
     exit;
 }
 
+// Converter strings de data para objetos DateTime para comparação
+$start_date = new DateTime($dados['edit_start']);
+$end_date = new DateTime($dados['edit_end']);
+
+// Verificar se a data final é menor que a inicial
+if ($end_date < $start_date) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: A data final não pode ser menor que a data inicial']);
+    exit;
+}
+
 // Criar a QUERY para editar o evento no banco de dados, incluindo os novos campos
 $query_edit_event = "UPDATE events 
                      SET title=:title, color=:color, start=:start, end=:end, cidade_id=:cidade_id, 
