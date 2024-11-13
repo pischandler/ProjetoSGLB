@@ -56,12 +56,32 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Função para filtrar jogos dos últimos 30 dias
+    function filtrarJogos(jogos) {
+        const currentDate = new Date();
+        // Zeramos a hora, minuto, segundo e milissegundo para comparar apenas a data
+        currentDate.setHours(0, 0, 0, 0);
+
+        // Definimos a data limite para 30 dias atrás
+        const pastLimitDate = new Date();
+        pastLimitDate.setDate(currentDate.getDate() - 30);
+        pastLimitDate.setHours(0, 0, 0, 0);
+
+        return jogos.filter(jogo => {
+            const eventEndDate = new Date(jogo.end);
+            eventEndDate.setHours(0, 0, 0, 0);
+            return eventEndDate < currentDate && eventEndDate >= pastLimitDate;
+        });
+    }
+
     // Função para atualizar o gráfico externamente
     window.atualizarGrafico = function() {
         fetch('listar_jogos.php')
             .then(response => response.json())
             .then(jogos => {
-                const { vitorias, derrotas, empates } = contarResultados(jogos);
+                // Filtra os jogos dos últimos 30 dias
+                const jogosFiltrados = filtrarJogos(jogos);
+                const { vitorias, derrotas, empates } = contarResultados(jogosFiltrados);
                 renderizarGrafico(vitorias, derrotas, empates);
             })
             .catch(error => console.error('Erro ao buscar jogos:', error));
