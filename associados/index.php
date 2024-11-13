@@ -364,6 +364,18 @@ $header = gerarHeader($_SESSION['nome']);
             <dt class="col-sm-3">Celular:</dt>
             <dd class="col-sm-9" id="visualizar_celular"></dd>
 
+            <dd class="col-sm-9">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input big-checkbox" id="visualizar_ativo" checked disabled>
+                  <label class="form-check-label big-checkbox-label" for="visualizar_ativo">Ativo</label>
+                </div>
+
+                <dd class="col-sm-9">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input big-checkbox" id="visualizar_ativo" checked disabled>
+                  <label class="form-check-label big-checkbox-label" for="visualizar_ativo">Formado</label>
+                </div>
+
             <!-- Botão para alternar detalhes do local -->
             <button type="button" class="btn btn-link" id="btnDetalhesLocal">Mostrar Informações do Local</button>
 
@@ -424,6 +436,18 @@ $header = gerarHeader($_SESSION['nome']);
             <div class="mb-3">
               <label for="edit_nome" class="col-form-label">Nome:<span class="required">*</span></label>
               <input type="text" name="nome" class="form-control" id="edit_nome" placeholder="Digite o nome completo">
+            </div>
+
+
+            
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input big-checkbox" id="edit_formado" name="formado" checked>
+              <label class="form-check-label big-checkbox-label" for="edit_formado">Formado</label>
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input big-checkbox" id="edit_ativo" name="ativo" checked>
+              <label class="form-check-label big-checkbox-label" for="edit_ativo">Ativo</label>
             </div>
 
             <div class="mb-3">

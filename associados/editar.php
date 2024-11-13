@@ -53,13 +53,16 @@ if (empty($dados['id'])) {
                 $retorna = ['erro' => true, 'msg' => "<div class='alert alert-danger' role='alert'>Erro: RA já cadastrado por outro associado!</div>"];
             } else {
                 // Atualiza as informações do associado
-                $query_associado = "UPDATE associados SET nome = :nome, email = :email, ra = :ra, cpf = :cpf, genero = :genero, curso = :curso, celular = :celular, cep = :cep, rua = :rua, bairro = :bairro, cidade_id = :cidade_id, numero_resid = :numero_resid, complemento = :complemento, nome_responsavel = :nome_responsavel, telefone_responsavel = :telefone_responsavel WHERE id = :id";
+                $query_associado = "UPDATE associados SET nome = :nome, ativo = :ativo, formado = :formado, email = :email, ra = :ra, cpf = :cpf, genero = :genero, curso = :curso, celular = :celular, cep = :cep, rua = :rua, bairro = :bairro, cidade_id = :cidade_id, numero_resid = :numero_resid, complemento = :complemento, nome_responsavel = :nome_responsavel, telefone_responsavel = :telefone_responsavel WHERE id = :id";
                 $edit_associado = $conn->prepare($query_associado);
                 $edit_associado->bindParam(':nome', $dados['nome']);
                 $edit_associado->bindParam(':email', $dados['email']);
                 $edit_associado->bindParam(':id', $dados['id']);
                 $edit_associado->bindParam(':cpf', $dados['cpf']);
                 $edit_associado->bindParam(':ra', $dados['ra']);
+                $edit_associado->bindParam(':ativo', $dados['ativo']);
+                $edit_associado->bindParam(':formado', $dados['formado']);
+
                 $edit_associado->bindParam(':genero', $dados['genero']);
                 $edit_associado->bindParam(':celular', $dados['celular']);
                 $edit_associado->bindParam(':curso', $dados['curso']);
