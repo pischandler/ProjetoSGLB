@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return '<p>Instruções para editar...</p>';
             // Add more cases for other pages
             default:
-                return '<p>Instruções gerais...</p>';
+                return '<p>Instruções</p>';
         }
     }
 });
