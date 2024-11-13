@@ -366,7 +366,7 @@ $header = gerarHeader($_SESSION['nome']);
 
                 <dd class="col-sm-9">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input big-checkbox" id="visualizar_ativo" checked disabled>
+                  <input type="checkbox" class="form-check-input big-checkbox" id="visualizar_ativo" disabled>
                   <label class="form-check-label big-checkbox-label" for="visualizar_ativo">Formado</label>
                 </div>
 
@@ -435,7 +435,7 @@ $header = gerarHeader($_SESSION['nome']);
 
             
             <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input big-checkbox" id="edit_formado" name="formado" checked>
+              <input type="checkbox" class="form-check-input big-checkbox" id="edit_formado" name="formado">
               <label class="form-check-label big-checkbox-label" for="edit_formado">Formado</label>
             </div>
 
