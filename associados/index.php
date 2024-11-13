@@ -343,12 +343,6 @@ $header = gerarHeader($_SESSION['nome']);
             <dt class="col-sm-3">Curso:</dt>
             <dd class="col-sm-9" id="visualizar_curso"></dd>
 
-            <dt class="col-sm-3">Formado:</dt>
-            <dd class="col-sm-9" id="visualizar_formado"></dd>
-
-            <dt class="col-sm-3">Ativo:</dt>
-            <dd class="col-sm-9" id="visualizar_ativo"></dd>
-
             <dt class="col-sm-3">E-mail:</dt>
             <dd class="col-sm-9" id="visualizar_email"></dd>
 
