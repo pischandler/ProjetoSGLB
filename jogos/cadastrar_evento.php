@@ -63,8 +63,18 @@ if (empty($dados['cad_numero'])) {
 if (empty($dados['cad_cep'])) {
     echo json_encode(['status' => false, 'msg' => 'Erro: Necessário preencher o campo CEP']);
     exit;
-}if (!preg_match('/^\d{5}-?\d{3}$/', $dados['cad_cep'])) {
+}
+if (!preg_match('/^\d{5}-?\d{3}$/', $dados['cad_cep'])) {
     echo json_encode(['status' => false, 'msg' => 'Erro: O CEP deve conter 8 dígitos numéricos, com ou sem hífen.']);
+    exit;
+}
+
+// Add date validation
+$start_time = strtotime($dados['cad_start']);
+$end_time = strtotime($dados['cad_end']);
+
+if ($end_time < $start_time) {
+    echo json_encode(['status' => false, 'msg' => 'Erro: A data final não pode ser menor que a data inicial']);
     exit;
 }
 
