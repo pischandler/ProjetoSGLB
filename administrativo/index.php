@@ -136,11 +136,11 @@ $header = gerarHeader($_SESSION['nome']);
     <div class="row mt-4">
     <span id="msgAlerta"></span>
         <div class="col-lg-12 d-flex justify-content-between align-items-center">
-            <div>
-                <h4 style="display: inline; cursor: pointer; color: inherit;">
+            <div class="tabs-container">
+                <h4 class="tab active" id="tab-ativos" onclick="switchTab('ativos')">
                     Usuários Ativos
                 </h4>
-                <h4 style="display: inline; cursor: pointer; color: inherit; margin-left: 20px;">
+                <h4 class="tab" id="tab-pendentes" onclick="switchTab('pendentes')">
                     Pendentes
                 </h4>
             </div>

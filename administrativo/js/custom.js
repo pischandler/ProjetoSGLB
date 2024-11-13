@@ -141,3 +141,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 });
+
+// Add this script before the closing </body> tag:
+function switchTab(tab) {
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    
+    // Add active class to clicked tab
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    
+    // Show/hide content
+    if (tab === 'ativos') {
+        document.getElementById('usuarios-ativos').style.display = 'block';
+        document.getElementById('solicitacoes').style.display = 'none';
+    } else {
+        document.getElementById('usuarios-ativos').style.display = 'none';
+        document.getElementById('solicitacoes').style.display = 'block';
+    }
+}
