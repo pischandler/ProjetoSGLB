@@ -265,7 +265,61 @@ document.addEventListener("DOMContentLoaded", function () {
     function getHelpContent(page) {
         switch (page) {
             case 'index.php':
-                return '<p>Instruções para a página inicial...</p>';
+                return `
+                <h5>Página Inicial - Dashboard</h5>
+                <p>
+                    Bem-vindo ao seu painel! Esta página exibe um resumo dos jogos e eventos recentes e futuros, além de um gráfico que ilustra o desempenho das partidas recentes. Abaixo, estão as instruções para entender e navegar pelo dashboard.
+                </p>
+                
+                <h6>1. Histórico de Jogos</h6>
+                <p>
+                    A seção de <b>Histórico de Jogos</b> mostra os jogos realizados nos últimos 30 dias:
+                    <ul>
+                        <li>Os <b>cards</b> representam cada jogo, com uma cor que indica o resultado:
+                            <ul>
+                                <li><b>Verde</b> para vitórias</li>
+                                <li><b>Vermelho</b> para derrotas</li>
+                                <li><b>Cinza</b> para empates</li>
+                                <li><b>Branco</b> caso o placar ainda não tenha sido registrado</li>
+                            </ul>
+                        </li>
+                        <li>Clique em um card para visualizar mais detalhes do jogo, incluindo adversários, data e resultado.</li>
+                    </ul>
+                </p>
+                
+                <h6>2. Gráfico de Desempenho</h6>
+                <p>
+                    O <b>Gráfico de Jogos</b> exibe o desempenho recente em partidas:
+                    <ul>
+                        <li>Este gráfico de pizza mostra a proporção de <b>vitórias</b>, <b>derrotas</b> e <b>empates</b> entre os jogos realizados.</li>
+                        <li>Use este gráfico para analisar o desempenho da equipe ao longo dos últimos jogos.</li>
+                    </ul>
+                </p>
+
+                <h6>3. Próximos Jogos</h6>
+                <p>
+                    A seção de <b>Próximos Jogos</b> mostra os jogos futuros:
+                    <ul>
+                        <li>Se houver jogos marcados, os próximos eventos serão exibidos em forma de cards.</li>
+                        <li>Se não houver jogos futuros agendados, será exibida a mensagem "<b>Nenhum evento próximo encontrado</b>" e um link para ir até a página de marcação de jogos.</li>
+                        <li>É possível clicar nos cards de jogos futuros para visualizar os detalhes.</li>
+                    </ul>
+                </p>
+
+                <h6>4. Próximos Eventos</h6>
+                <p>
+                    A seção de <b>Próximos Eventos</b> mostra os eventos que estão por vir:
+                    <ul>
+                        <li>Assim como nos jogos, se houver eventos futuros, eles aparecerão em forma de cards.</li>
+                        <li>Caso não haja eventos futuros, a mensagem "<b>Nenhum evento próximo encontrado</b>" será exibida, com um link para a página de marcação de eventos.</li>
+                        <li>Você pode clicar nos cards de eventos futuros para visualizar mais informações.</li>
+                    </ul>
+                </p>
+
+                <p>
+                    Este painel facilita o acompanhamento das atividades esportivas recentes e futuras, além de fornecer uma visão clara do desempenho da equipe. Caso tenha alguma dúvida, entre em contato com o administrador do sistema.
+                </p>
+            `;
             default:
                 return `
                 <h5>Página Inicial - Dashboard</h5>

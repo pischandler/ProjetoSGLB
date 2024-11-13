@@ -271,3 +271,7 @@ padding-left: 110px;
     font-size: 24px;
     color: #007bff; /* Bootstrap primary color */
 }
+
+#helpContent {
+  color: black;
+}
