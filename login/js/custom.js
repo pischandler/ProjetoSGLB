@@ -30,6 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     <p>Se você esqueceu sua senha, envie um e-mail para o endereço de suporte informado, mencionando que deseja recuperar a senha e inclua o e-mail cadastrado no sistema.</p>
                     <p>Após enviar o e-mail, aguarde as instruções de recuperação. Caso lembre a senha ou queira tentar novamente, clique em <strong>"Voltar para página de login"</strong> para retornar à página inicial.</p>
                 `;
+                default:
+                    return `
+                    <p>Bem-vindo à página de login.</p>
+                    <p>Digite seu nome de usuário e senha nos campos correspondentes para acessar o sistema. Selecione a opção <strong>"Lembrar de mim"</strong> caso deseje que o sistema guarde suas credenciais para futuros acessos automáticos.</p>
+                    <p>Se esqueceu sua senha, clique em <strong>"Esqueceu sua Senha?"</strong> para recuperar o acesso. Caso ainda não tenha uma conta, clique em <strong>"Cadastrar"</strong> para criar uma nova conta.</p>
+                `;
         }
     }
 });
