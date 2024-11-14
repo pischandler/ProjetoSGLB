@@ -352,8 +352,8 @@ $header = gerarHeader($_SESSION['nome']);
                                 <div class="col-sm-10">
                                     <select name="edit_genero" class="form-control" id="edit_genero">
                                         <option value="">Selecione</option>
-                                        <option value="Masculino">Masculino</option>
                                         <option value="Feminino">Feminino</option>
+                                        <option value="Masculino">Masculino</option>
                                         <option value="Misto">Misto</option>
                                     </select>
                                 </div>
@@ -585,8 +585,8 @@ $header = gerarHeader($_SESSION['nome']);
                             <div class="col-sm-10">
                                 <select name="cad_genero" class="form-control" id="cad_genero">
                                     <option value="">Selecione</option>
-                                    <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
+                                    <option value="Masculino">Masculino</option>
                                     <option value="Misto">Misto</option>
                                 </select>
                             </div>
