@@ -19,7 +19,7 @@
     <div class="container">
       <h4 style="color: #fff;">Esqueci Minha Senha</h4>
       <div class="row mb-4"></div>
-      <h5 style="color: #fff;">Envie um e-mail para felipeschandle@gmail.com informando que esqueceu sua senha e incluía o e-mail que você utilizou no cadastro do sistema.</h5>
+      <h6 style="color: #fff;">Envie um e-mail para felipeschandle@gmail.com informando que esqueceu sua senha e incluía o e-mail que você utilizou no cadastro do sistema.</h6>
       <div class="row mb-4"></div>
       <div>
         <label>
